@@ -4,10 +4,10 @@
 
 <!-- Begin: Main Slider -->
 <div class="main-slider">
-    <img class="w-100" src="images/ban.jpg" alt="First slide">
+    <img class="w-100" src="images/ban1.jpg" alt="First slide">
     <div class="overlay">
-        <h3>Welcome UI</h3>
-        <h2>BParticipant (Chris Taylor)</h2>
+        <h3>Welcome UIB</h3>
+        <h2>Participant (Chris Taylor)</h2>
     </div>
 </div>
 <!-- END: Main Slider -->
@@ -97,7 +97,7 @@
                                 <td>$100</td>
                                 <td><span>12345</span></td>
                                 <td>SarahJones123</td>
-                                <td><button class="themeBtn w-100"><span></span><text>Retrive</text></button></td>
+                                <td><button class="themeBtn w-100"><span></span><text>Retired</text></button></td>
                             </tr>
                             <tr>
                                 <td>$100</td>
@@ -109,7 +109,7 @@
                                 <td>$100</td>
                                 <td><span>12345</span></td>
                                 <td>SarahJones123</td>
-                                <td><button class="themeBtn w-100"><span></span><text>Retrive</text></button></td>
+                                <td><button class="themeBtn w-100"><span></span><text>Retired</text></button></td>
                             </tr>
                             <tr>
                                 <td>$100</td>
@@ -121,7 +121,7 @@
                                 <td>$100</td>
                                 <td><span>12345</span></td>
                                 <td>SarahJones123</td>
-                                <td><button class="themeBtn w-100"><span></span><text>Retrive</text></button></td>
+                                <td><button class="themeBtn w-100"><span></span><text>Retired</text></button></td>
                             </tr>
                             <tr>
                                 <td>$100</td>
@@ -133,7 +133,7 @@
                                 <td>$100</td>
                                 <td><span>12345</span></td>
                                 <td>SarahJones123</td>
-                                <td><button class="themeBtn w-100"><span></span><text>Retrive</text></button></td>
+                                <td><button class="themeBtn w-100"><span></span><text>Retired</text></button></td>
                             </tr>
                         </tbody>
                     </table>
