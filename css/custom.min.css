@@ -352,5 +352,5 @@ h4 {
 
 .landingWrap .whiteSide .center .wlcm {
   font-style: italic;
-  text-transform: lowercase;
+  text-transform: inherit;
 }
