@@ -1,0 +1,65 @@
+@media (min-width: 1500px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1800px) {
+  .container {
+    max-width: 1440px;
+  }
+}
+@media only screen and (max-width: 1920px) {
+}
+
+@media only screen and (max-width: 1600px) {
+}
+
+@media only screen and (max-width: 1440px) {
+}
+
+@media only screen and (max-width: 1366px) {
+}
+
+@media only screen and (max-width: 1199px) {
+}
+
+@media only screen and (max-width: 991px) {
+}
+
+@media only screen and (max-width: 767px) {
+  .cartItemCard {
+    margin: 0 0 1rem;
+    padding-bottom: 15px;
+  }
+  .cartItemCard h4 {
+    margin: 12px 0;
+    font-size: 1.2rem;
+  }
+  .cartItemCard .price {
+    margin-bottom: 10px;
+    display: block;
+  }
+  .cartItemCard .proCounter {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .cartItemCard .proCounter input {
+    width: calc(100% - 100px);
+  }
+  .accountAccesSec .formStyle .input-group {
+    flex-flow: column;
+    align-items: center;
+  }
+  .accountAccesSec .formStyle .btnStyle {
+    margin-bottom: 1rem;
+  }
+  .accountAccesSec h2 span {
+    font-size: 30px;
+  }
+  .accountAccesSec h2 {
+    font-size: 22px;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+}
