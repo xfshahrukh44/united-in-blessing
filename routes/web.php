@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\UsernameController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,10 +17,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-//    return view('welcome');
     return view('auth.register');
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+//username
+Route::prefix('username')->group(function(){
+    Route::get('forgot', [UsernameController::class, 'index'])->name('forgot.username');
+    Route::post('request-change', [UsernameController::class, 'requestChange'])->name('request.username.change');
+});

@@ -9,6 +9,7 @@
         }
     </style>
 @endsection
+
 @section('content')
     <main class="loginWrap">
         <div class="container">

@@ -22,6 +22,10 @@
     <link rel="stylesheet" href="{{ asset('assets/css/custom.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/responsive.min.css') }}"/>
 
+    @if(\Illuminate\Support\Facades\Request::has('tree'))
+        <link rel="stylesheet" href="{{ asset('assets/css/tree.css') }}"/>
+    @endif
+
     @yield('css')
 </head>
 
@@ -57,10 +61,10 @@
                             <a href="index.php" class="nav-link">HOME</a>
                         </li>
                         <li class="nav-item">
-                            <a href="join.php" class="nav-link">JOIN</a>
+                            <a href="{{ url('/' . 'register') }}" class="nav-link">JOIN</a>
                         </li>
                         <li class="nav-item">
-                            <a href="login.php" class="nav-link">LOGIN</a>
+                            <a href="{{ url('/' . 'login') }}" class="nav-link">LOGIN</a>
                         </li>
                         <li class="nav-item">
                             <a href="landing.php" class="nav-link">LANDING</a>
