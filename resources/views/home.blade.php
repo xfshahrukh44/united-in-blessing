@@ -6,7 +6,7 @@
         <img class="w-100" src="{{ asset('assets/images/ban1.jpg') }}" alt="First slide">
         <div class="overlay">
             <h3>Welcome UIB</h3>
-            <h2>Participant (Chris Taylor)</h2>
+            <h2>Username (Chris Taylor)</h2>
         </div>
     </div>
     <!-- END: Main Slider -->

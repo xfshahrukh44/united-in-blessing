@@ -81,6 +81,11 @@ label {
   padding: 0.6rem 2rem;
 }
 
+textarea.form-control{
+    height: auto;
+    border-radius: 20px;
+}
+
 .form-control::placeholder {
   color: var(--text);
 }
