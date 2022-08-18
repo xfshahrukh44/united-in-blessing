@@ -141,6 +141,11 @@ h4 {
   color: var(--primary);
 }
 
+.formStyle a.themeBtn{
+    color: var(--white);
+    text-align: center;
+}
+
 .landingWrap {
   align-items: flex-end;
   padding-bottom: 5rem;
@@ -358,4 +363,8 @@ h4 {
 .landingWrap .whiteSide .center .wlcm {
   font-style: italic;
   text-transform: inherit;
+}
+
+.invalid-feedback{
+    display: unset;
 }

@@ -1,4 +1,6 @@
 @extends('layouts.app')
+@section('keywords', '')
+@section('description', '')
 
 @section('content')
     <!-- Begin: Main Slider -->

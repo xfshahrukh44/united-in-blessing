@@ -10,5 +10,9 @@ class UserProfileChangedLogs extends Model
 {
     use Uuids, HasFactory;
 
-    protected $fillable = ['user_id', 'key', 'value', 'old_value'];
+    protected $fillable = ['user_id', 'key', 'value', 'old_value' , 'message', 'status'];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'id', 'user_id');
+    }
 }
