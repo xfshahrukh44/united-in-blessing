@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserProfileChangedLogs;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -57,7 +58,7 @@ class RegisterController extends Controller
                     $fail($attribute . ' is not found.');
                 }
             }],
-            'username' => ['required', 'alpha_dash', 'unique:users'],
+            'username' => ['required', 'alpha_dash', 'unique:user_profile_changed_logs,value'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -78,7 +79,7 @@ class RegisterController extends Controller
         // get id again inviters username
         $invited_user = User::where('username', $data['inviters_username'])->first();
 
-        return User::create([
+        $user = User::create([
             'invited_by' => $invited_user->id,
             'username' => $data['username'],
             'first_name' => $data['first_name'],
@@ -87,5 +88,9 @@ class RegisterController extends Controller
             'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $userLogs = generateUserProfileLogs($user->id, 'username', $data['username'], 0, 'New Account Created', 'accepted');
+
+        return $user;
     }
 }

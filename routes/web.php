@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsernameController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,15 +18,22 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', function () {
-    return view('auth.register');
+    return view('index');
+});
+
+//username
+Route::prefix('username')->group(function(){
+    Route::get('forgot', [UsernameController::class, 'index'])->name('forgot.username');
+    Route::post('request-change', [UsernameController::class, 'requestChange'])->name('request.username.change');
 });
 
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-//username
-Route::prefix('username')->group(function(){
-    Route::get('forgot', [UsernameController::class, 'index'])->name('forgot.username');
-    Route::post('request-change', [UsernameController::class, 'requestChange'])->name('request.username.change');
+//Dashboard
+Route::prefix('')->middleware('auth')->group(function (){
+    // Profile
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('update-profile', [ProfileController::class, 'update'])->name('profile.update');
 });

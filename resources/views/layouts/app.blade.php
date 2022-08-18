@@ -22,6 +22,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/custom.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/responsive.min.css') }}"/>
 
+    <!-- Plugins -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toastr.min.css')}}">
+
     @if(\Illuminate\Support\Facades\Request::has('tree'))
         <link rel="stylesheet" href="{{ asset('assets/css/tree.css') }}"/>
     @endif
@@ -58,19 +61,27 @@
                 <div class="nav-inner">
                     <ul class="list-inline">
                         <li class="nav-item">
-                            <a href="index.php" class="nav-link">HOME</a>
+                            <a href="{{ url('home') }}" class="nav-link">HOME</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('/' . 'register') }}" class="nav-link">JOIN</a>
+                            <a href="{{ url('register') }}" class="nav-link">JOIN</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('/' . 'login') }}" class="nav-link">LOGIN</a>
+                            @if(Auth::check())
+                                <a href="{{ url('logout') }}" class="nav-link" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">Logout</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            @else
+                                <a href="{{ url('login') }}" class="nav-link">LOGIN</a>
+                            @endif
                         </li>
                         <li class="nav-item">
-                            <a href="landing.php" class="nav-link">LANDING</a>
+                            <a href="{{ url('/') }}" class="nav-link">LANDING</a>
                         </li>
                         <li class="nav-item">
-                            <a href="profile.php" class="nav-link">PROFILE</a>
+                            <a href="{{ url('profile') }}" class="nav-link">PROFILE</a>
                         </li>
                     </ul>
                 </div>
@@ -88,6 +99,14 @@
 <script src="{{ asset('assets/js/jquery.fancybox.min.js') }}"></script>
 <script src="{{ asset('assets/js/slick.min.js') }}"></script>
 <script src="{{ asset('assets/js/custom.min.js') }}"></script>
-</body>
+<script src="{{ asset('assets/plugins/toastr/toastr.min.js')}}"></script>
 
+@if(session()->has('success'))
+    <script type="text/javascript">  toastr.success('{{ session('success')}}');</script>
+@endif
+@if(session()->has('error'))
+    <script type="text/javascript"> toastr.error('{{ session('error')}}');</script>
+@endif
+
+</body>
 </html>

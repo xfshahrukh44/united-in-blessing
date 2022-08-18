@@ -29,7 +29,7 @@
                             <div class="mb-4">
                                 <input type="text" class="form-control" placeholder="john" name="username"
                                        value="{{ old('username') }}" required autofocus>
-                                <div class="text-end"><a href="#">Forgot Username?</a></div>
+                                <div class="text-end"><a href="{{ route('forgot.username') }}">Forgot Username?</a></div>
                                 @error('username')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
