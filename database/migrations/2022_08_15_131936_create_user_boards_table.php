@@ -16,6 +16,7 @@ class CreateUserBoardsTable extends Migration
         Schema::create('user_boards', function (Blueprint $table) {
             $table->uuid('user_id');
             $table->uuid('board_id');
+            $table->uuid('parent_id')->nullable();
             $table->enum('user_board_roles', ['grad', 'pregrad', 'undergrad', 'newbie']);
             $table->enum('position', ['left', 'right'])->nullable();
             $table->timestamps();

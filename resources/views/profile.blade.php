@@ -78,6 +78,7 @@
 {{--                            <div class="col-md-6 mb-4">--}}
 {{--                                <input type="text" class="form-control" placeholder="Confirm Password">--}}
 {{--                            </div>--}}
+
                             <div class="col-md-4">
                                 <button class="themeBtn w-100" type="submit"><span></span><text>Update Now</text></button>
                             </div>

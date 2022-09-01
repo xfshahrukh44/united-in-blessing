@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\UserBoards;
+use http\Client\Curl\User;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $userBoards = UserBoards::where('user_id', Auth::user()->id)
+            ->with('user', 'board', 'boardGrad')
+            ->get();
+
+        return view('home', compact('userBoards'));
     }
 }

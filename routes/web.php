@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BoardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsernameController;
@@ -29,11 +30,14 @@ Route::prefix('username')->group(function(){
 
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-
 //Dashboard
-Route::prefix('')->middleware('auth')->group(function (){
+Route::prefix('/')->middleware('auth')->group(function (){
+    Route::get('home', [HomeController::class, 'index'])->name('home');
+
     // Profile
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('update-profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Board Tree
+    Route::get('board-tree/{board_id}', [BoardController::class, 'index'])->name('board.index');
 });
