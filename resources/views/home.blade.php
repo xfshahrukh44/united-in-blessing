@@ -8,11 +8,10 @@
         <img class="w-100" src="{{ asset('assets/images/ban1.jpg') }}" alt="First slide">
         <div class="overlay">
             <h3>Welcome UIB</h3>
-            <h2>Username (Chris Taylor)</h2>
+            <h2>Username ({{ Auth::user()->username }})</h2>
         </div>
     </div>
     <!-- END: Main Slider -->
-
 
     <section class="inviterSec">
         <div class="container">
@@ -88,54 +87,22 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>$100</td>
-                                <td><span>12345</span></td>
-                                <td>SarahJones123</td>
-                                <td><button class="themeBtn w-100"><span></span><text>Active</text></button></td>
-                            </tr>
-                            <tr>
-                                <td>$100</td>
-                                <td><span>12345</span></td>
-                                <td>SarahJones123</td>
-                                <td><button class="themeBtn w-100"><span></span><text>Retired</text></button></td>
-                            </tr>
-                            <tr>
-                                <td>$100</td>
-                                <td><span>12345</span></td>
-                                <td>SarahJones123</td>
-                                <td><button class="themeBtn w-100"><span></span><text>Active</text></button></td>
-                            </tr>
-                            <tr>
-                                <td>$100</td>
-                                <td><span>12345</span></td>
-                                <td>SarahJones123</td>
-                                <td><button class="themeBtn w-100"><span></span><text>Retired</text></button></td>
-                            </tr>
-                            <tr>
-                                <td>$100</td>
-                                <td><span>12345</span></td>
-                                <td>SarahJones123</td>
-                                <td><button class="themeBtn w-100"><span></span><text>Active</text></button></td>
-                            </tr>
-                            <tr>
-                                <td>$100</td>
-                                <td><span>12345</span></td>
-                                <td>SarahJones123</td>
-                                <td><button class="themeBtn w-100"><span></span><text>Retired</text></button></td>
-                            </tr>
-                            <tr>
-                                <td>$100</td>
-                                <td><span>12345</span></td>
-                                <td>SarahJones123</td>
-                                <td><button class="themeBtn w-100"><span></span><text>Active</text></button></td>
-                            </tr>
-                            <tr>
-                                <td>$100</td>
-                                <td><span>12345</span></td>
-                                <td>SarahJones123</td>
-                                <td><button class="themeBtn w-100"><span></span><text>Retired</text></button></td>
-                            </tr>
+                            @forelse($userBoards as $uboard)
+                                <tr>
+                                    <td>${{ $uboard->board->amount }}</td>
+                                    <td><span>{{ $uboard->board->board_number }}</span></td>
+                                    <td>{{ $uboard->boardGrad->user->username }}</td>
+                                    <td>
+                                        <a href="{{ route('board.index', $uboard->board->id) }}" class="themeBtn w-100"><span></span>
+                                            <text>{{ $uboard->board->status }}</text>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td>No Records Found</td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -167,7 +134,9 @@
                                 <td>astar@uib.com</td>
                                 <td>
                                     <div class="btnWrap">
-                                        <button class="themeBtn w-100"><span></span><text>Confirm</text></button>
+                                        <button class="themeBtn w-100"><span></span>
+                                            <text>Confirm</text>
+                                        </button>
                                         <a href="#" class="tableIconBtn"><i class="fa fa-trash"></i></a>
                                     </div>
                                 </td>
@@ -181,7 +150,9 @@
                                 <td>astar@uib.com</td>
                                 <td>
                                     <div class="btnWrap">
-                                        <button class="themeBtn w-100"><span></span><text>Confirm</text></button>
+                                        <button class="themeBtn w-100"><span></span>
+                                            <text>Confirm</text>
+                                        </button>
                                         <a href="#" class="tableIconBtn"><i class="fa fa-trash"></i></a>
                                     </div>
                                 </td>
@@ -195,7 +166,9 @@
                                 <td>astar@uib.com</td>
                                 <td>
                                     <div class="btnWrap">
-                                        <button class="themeBtn w-100"><span></span><text>Confirm</text></button>
+                                        <button class="themeBtn w-100"><span></span>
+                                            <text>Confirm</text>
+                                        </button>
                                         <a href="#" class="tableIconBtn"><i class="fa fa-trash"></i></a>
                                     </div>
                                 </td>
@@ -209,7 +182,9 @@
                                 <td>astar@uib.com</td>
                                 <td>
                                     <div class="btnWrap">
-                                        <button class="themeBtn w-100"><span></span><text>Confirm</text></button>
+                                        <button class="themeBtn w-100"><span></span>
+                                            <text>Confirm</text>
+                                        </button>
                                         <a href="#" class="tableIconBtn"><i class="fa fa-trash"></i></a>
                                     </div>
                                 </td>
@@ -244,7 +219,9 @@
                                 <td>310-123-4567</td>
                                 <td>astar@uib.com</td>
                                 <td>
-                                    <button class="themeBtn w-100"><span></span><text>Cancel</text></button>
+                                    <button class="themeBtn w-100"><span></span>
+                                        <text>Cancel</text>
+                                    </button>
                                 </td>
                             </tr>
                             <tr>
@@ -255,7 +232,9 @@
                                 <td>310-123-4567</td>
                                 <td>astar@uib.com</td>
                                 <td>
-                                    <button class="themeBtn w-100"><span></span><text>Cancel</text></button>
+                                    <button class="themeBtn w-100"><span></span>
+                                        <text>Cancel</text>
+                                    </button>
                                 </td>
                             </tr>
                             <tr>
@@ -266,7 +245,9 @@
                                 <td>310-123-4567</td>
                                 <td>astar@uib.com</td>
                                 <td>
-                                    <button class="themeBtn w-100"><span></span><text>Cancel</text></button>
+                                    <button class="themeBtn w-100"><span></span>
+                                        <text>Cancel</text>
+                                    </button>
                                 </td>
                             </tr>
                             <tr>
@@ -277,7 +258,9 @@
                                 <td>310-123-4567</td>
                                 <td>astar@uib.com</td>
                                 <td>
-                                    <button class="themeBtn w-100"><span></span><text>Cancel</text></button>
+                                    <button class="themeBtn w-100"><span></span>
+                                        <text>Cancel</text>
+                                    </button>
                                 </td>
                             </tr>
                             </tbody>

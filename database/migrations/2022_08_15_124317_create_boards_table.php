@@ -15,7 +15,7 @@ class CreateBoardsTable extends Migration
     {
         Schema::create('boards', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->unsignedBigInteger('board_number');
+            $table->string('board_number');
             $table->enum('amount', ['100', '400', '1000', '2000']);
             $table->enum('status', ['active', 'retired'])->default('active');
             $table->timestamps();

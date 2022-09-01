@@ -25,7 +25,7 @@
     <!-- Plugins -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toastr.min.css')}}">
 
-    @if(\Illuminate\Support\Facades\Request::has('tree'))
+    @if(Request::is('board-tree/*'))
         <link rel="stylesheet" href="{{ asset('assets/css/tree.css') }}"/>
     @endif
 

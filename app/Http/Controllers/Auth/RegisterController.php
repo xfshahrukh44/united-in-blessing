@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\UserProfileChangedLogs;
+use App\Models\UserBoards;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use function PHPUnit\Framework\isNull;
 
 class RegisterController extends Controller
 {
@@ -51,10 +52,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'inviters_username' => ['required', 'alpha_dash', function($attribute, $val, $fail) {
-            if(!$val) return;
+            'inviters_username' => ['required', 'alpha_dash', function ($attribute, $val, $fail) {
+                if (!$val) return;
 
-                if(!User::where('username', $val)->exists()){
+                if (!User::where('username', $val)->exists()) {
                     $fail($attribute . ' is not found.');
                 }
             }],
@@ -76,8 +77,22 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        // get id again inviters username
         $invited_user = User::where('username', $data['inviters_username'])->first();
+
+        $invited_user_board_id = UserBoards::where('user_id', $invited_user->id)
+            ->has('children', '<', 2)
+            ->first();
+
+//        if ($invited_user_board_id == null){
+//            return ['message' => 'No Place to add the user'];
+//        }
+
+        $position = 'left';
+
+        foreach ($invited_user_board_id->children as $child){
+            if($child->position == 'left')
+                $position = 'right';
+        }
 
         $user = User::create([
             'invited_by' => $invited_user->id,
@@ -87,6 +102,14 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
+        ]);
+
+        UserBoards::create([
+            'user_id' => $user->id,
+            'board_id' => $invited_user_board_id->board_id,
+            'parent_id' => $invited_user_board_id->user_id,
+            'user_board_roles' => 'newbie',
+            'position' => $position
         ]);
 
         $userLogs = generateUserProfileLogs($user->id, 'username', $data['username'], 0, 'New Account Created', 'accepted');
