@@ -16,10 +16,11 @@
                             <div class="col-md-12 mb-4">
                                 <div class="userProfileCard">
                                     <div class="profilePic">
-                                        <img class="profile-pic" src="{{ asset('assets/images/user.jpg') }}">
+{{--                                        <img class="profile-pic" src="{{ asset('assets/images/user.jpg') }}">--}}
+                                        <img class="profile-pic" src="{{ Auth::user()->user_image ? asset('upload/user/' . Auth::user()->user_image) : asset('assets/images/user.png') }}">
                                         <div class="p-image">
                                             <i class="fa fa-camera upload-button"></i>
-                                            <input class="file-upload" type="file" accept="image/*" />
+                                            <input class="file-upload" type="file" name="user_image" accept="image/*" />
                                         </div>
                                     </div>
                                     <div class="profileDetl">

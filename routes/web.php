@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\GiftController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsernameController;
@@ -40,4 +41,7 @@ Route::prefix('/')->middleware('auth')->group(function (){
 
     // Board Tree
     Route::get('board-tree/{board_id}', [BoardController::class, 'index'])->name('board.index');
+
+    // Gifts
+    Route::get('update-gift-status/{id}/{status}', [GiftController::class, 'update'])->name('update-gift-status');
 });

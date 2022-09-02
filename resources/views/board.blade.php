@@ -36,41 +36,59 @@
                 <div class="col-12">
                     <div>
                         <ul class="tree vertical">
-                            @foreach($boardUsers['grad'] as $grad)
+                            @foreach($boardUsers['grad'] as $key => $grad)
                                 <li>
                                     <div>
                                         <div class="inviterCard invitees">
-                                            <img src="{{ asset('assets/images/invite-2.jpg') }}" alt="">
-                                            <h4>{{ $grad['user']->first_name }}</h4>
+                                            <img
+                                                src="{{ $grad['user']->user_image ? asset('upload/user/' . $grad['user']->user_image) : asset('assets/images/user.png') }}"
+                                                alt="">
+                                            <h4>{{ $grad['user']->username }}</h4>
                                         </div>
                                     </div>
+                                    <p>{{ $key + 1 }}</p>
+                                    <h4>Grad</h4>
                                     <ul>
-                                        @foreach($grad->children as $pregrad)
+                                        {{ $x = $y = 1 }}
+
+                                        @foreach($grad->children as $key => $pregrad)
                                             <li>
                                                 <div>
                                                     <div class="inviterCard invitees">
-                                                        <img src="{{ asset('assets/images/invite-2.jpg') }}" alt="">
-                                                        <h4>{{$pregrad['user']->first_name}}</h4>
+                                                        <img
+                                                            src="{{ $pregrad['user']->user_image ? asset('upload/user/' . $pregrad['user']->user_image) : asset('assets/images/user.png') }}"
+                                                            alt="">
+                                                        <h4>{{$pregrad['user']->username}}</h4>
                                                     </div>
                                                 </div>
+                                                <p>{{ $key + 1 }}</p>
+                                                <h4>Pregrads</h4>
                                                 <ul>
                                                     @foreach($pregrad->children as $undergrad)
                                                         <li>
                                                             <div>
                                                                 <div class="inviterCard invitees">
-                                                                    <img src="{{ asset('assets/images/invite-2.jpg') }}" alt="">
-                                                                    <h4>{{$undergrad['user']->first_name}}</h4>
+                                                                    <img
+                                                                        src="{{ $undergrad['user']->user_image ? asset('upload/user/' . $undergrad['user']->user_image) : asset('assets/images/user.png') }}"
+                                                                        alt="">
+                                                                    <h4>{{$undergrad['user']->username}}</h4>
                                                                 </div>
                                                             </div>
+                                                            <p>{{ $x++ }}</p>
+                                                            <h4>undergrads</h4>
                                                             <ul>
-                                                                @foreach($undergrad->children as $newbie)
+                                                                @foreach($undergrad->children as $key => $newbie)
                                                                     <li>
                                                                         <div>
                                                                             <div class="inviterCard invitees">
-                                                                                <img src="{{ asset('assets/images/invite-2.jpg') }}" alt="">
-                                                                                <h4>{{$newbie['user']->first_name}}</h4>
+                                                                                <img
+                                                                                    src="{{ $newbie['user']->user_image ? asset('upload/user/' . $newbie['user']->user_image) : asset('assets/images/user.png') }}"
+                                                                                    alt="">
+                                                                                <h4>{{$newbie['user']->username}}</h4>
                                                                             </div>
                                                                         </div>
+                                                                        <p>{{ $y++ }}</p>
+                                                                        <h4>Newbies</h4>
                                                                     </li>
                                                                 @endforeach
                                                             </ul>
@@ -79,12 +97,6 @@
                                                 </ul>
                                             </li>
                                         @endforeach
-{{--                                        @for($y = 1; $y < 3; $y++)--}}
-{{--                                            @for($z = 1; $z < 3; $z++)--}}
-{{--                                                @for($a = 1; $a < 3; $a++)--}}
-{{--                                                @endfor--}}
-{{--                                            @endfor--}}
-{{--                                        @endfor--}}
                                     </ul>
                                 </li>
                             @endforeach

@@ -20,10 +20,18 @@ class ProfileController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . Auth::user()->id,
             'phone' => 'required',
+            'user_image' => 'mimes:jpg,jpeg,png',
         ]);
 
         if ($validator->fails()){
             return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if($request->file('user_image')){
+            $file = $request->file('user_image');
+            $fileName = time() . '-' . $file->getClientOriginalName();
+            $file->move(public_path('upload/user'), $fileName);
+            $user_image = $fileName;
         }
 
         try {
@@ -36,6 +44,7 @@ class ProfileController extends Controller
                     'last_name' => $request['last_name'],
                     'email' => $request['email'],
                     'phone' => $request['phone'],
+                    'user_image' => $user_image ?? null,
                 ]
             );
 
