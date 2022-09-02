@@ -15,7 +15,7 @@
     <section class="treeSec">
         <div class="container-fluid">
             <div class="row mb-5 justify-content-center">
-                <div class="col-md-5">
+                <div class="col-md-8">
                     <div class="inviterCard invitees boardCard">
                         <div class="titles">
                             <p>Board: </p>
@@ -44,12 +44,12 @@
                                                 src="{{ $grad['user']->user_image ? asset('upload/user/' . $grad['user']->user_image) : asset('assets/images/user.png') }}"
                                                 alt="">
                                             <h4>{{ $grad['user']->username }}</h4>
+                                            <p>{{ ($key + 1) }}</p>
                                         </div>
                                     </div>
-                                    <p>{{ $key + 1 }}</p>
                                     <h4>Grad</h4>
                                     <ul>
-                                        {{ $x = $y = 1 }}
+                                        @php $x = $y = 1 @endphp
 
                                         @foreach($grad->children as $key => $pregrad)
                                             <li>
@@ -59,9 +59,9 @@
                                                             src="{{ $pregrad['user']->user_image ? asset('upload/user/' . $pregrad['user']->user_image) : asset('assets/images/user.png') }}"
                                                             alt="">
                                                         <h4>{{$pregrad['user']->username}}</h4>
+                                                        <p>{{ ($key + 1) }}</p>
                                                     </div>
                                                 </div>
-                                                <p>{{ $key + 1 }}</p>
                                                 <h4>Pregrads</h4>
                                                 <ul>
                                                     @foreach($pregrad->children as $undergrad)
@@ -72,9 +72,10 @@
                                                                         src="{{ $undergrad['user']->user_image ? asset('upload/user/' . $undergrad['user']->user_image) : asset('assets/images/user.png') }}"
                                                                         alt="">
                                                                     <h4>{{$undergrad['user']->username}}</h4>
+
+                                                                    <p>{{ ($x++) }}</p>
                                                                 </div>
                                                             </div>
-                                                            <p>{{ $x++ }}</p>
                                                             <h4>undergrads</h4>
                                                             <ul>
                                                                 @foreach($undergrad->children as $key => $newbie)
@@ -85,9 +86,10 @@
                                                                                     src="{{ $newbie['user']->user_image ? asset('upload/user/' . $newbie['user']->user_image) : asset('assets/images/user.png') }}"
                                                                                     alt="">
                                                                                 <h4>{{$newbie['user']->username}}</h4>
+
+                                                                                <p>{{ ($y++) }}</p>
                                                                             </div>
                                                                         </div>
-                                                                        <p>{{ $y++ }}</p>
                                                                         <h4>Newbies</h4>
                                                                     </li>
                                                                 @endforeach
