@@ -21,50 +21,32 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="inviterCard">
-                        <img src="{{ asset('assets/images/inviter.jpg') }}" alt="">
-                        <h4>Big_Giver</h4>
-                        <p>Barbara Harris</p>
+                        <img
+                            src="{{ Auth::user()->user_image ? asset('upload/user/' . Auth::user()->user_image) : asset('assets/images/user.png') }}"
+                            alt="">
+                        <h4>{{ Auth::user()->username }}</h4>
+                        <p>{{ Auth::user()->first_name . ' ' . Auth::user()->last_name }}</p>
                     </div>
                 </div>
                 <div class="col-lg-12 text-center my-5">
                     <h3>My Invitees</h3>
                 </div>
-                <div class="col-lg-3">
-                    <div class="inviterCard invitees">
-                        <img src="{{ asset('assets/images/invite-1.jpg') }}" alt="">
-                        <h4>Sarah_Jones</h4>
-                        <p>Barbara Harris</p>
-                        <a href="tel:3237777654"><i class="fa fa-phone"></i> 323-777-7654</a>
-                        <a href="mailto:email@uib.com"><i class="fa fa-envelope"></i> email@uib.com</a>
+                @forelse($invitees as $invitee)
+                    <div class="col-lg-3">
+                        <div class="inviterCard invitees">
+                            <img
+                                src="{{ $invitee->user_image ? asset('upload/user/' . $invitee->user_image) : asset('assets/images/user.png') }}"
+                                alt="">
+                            <h4>{{ $invitee->username }}</h4>
+                            <p>{{ $invitee->first_name . ' ' . $invitee->last_name }}</p>
+                            <a href="tel:{{ $invitee->phone }}"><i class="fa fa-phone"></i> {{ $invitee->phone }}</a>
+                            <a href="mailto:{{ $invitee->email }}"><i class="fa fa-envelope"></i> {{ $invitee->email }}
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="inviterCard invitees">
-                        <img src="{{ asset('assets/images/invite-2.jpg') }}" alt="">
-                        <h4>Barbara_Smith</h4>
-                        <p>Barbara Harris</p>
-                        <a href="tel:3237777654"><i class="fa fa-phone"></i> 323-777-7654</a>
-                        <a href="mailto:email@uib.com"><i class="fa fa-envelope"></i> email@uib.com</a>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="inviterCard invitees">
-                        <img src="{{ asset('assets/images/invite-3.jpg') }}" alt="">
-                        <h4>Sarah_Jones</h4>
-                        <p>Barbara Harris</p>
-                        <a href="tel:3237777654"><i class="fa fa-phone"></i> 323-777-7654</a>
-                        <a href="mailto:email@uib.com"><i class="fa fa-envelope"></i> email@uib.com</a>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="inviterCard invitees">
-                        <img src="{{ asset('assets/images/invite-4.jpg') }}" alt="">
-                        <h4>Barbara_Smith</h4>
-                        <p>Barbara Harris</p>
-                        <a href="tel:3237777654"><i class="fa fa-phone"></i> 323-777-7654</a>
-                        <a href="mailto:email@uib.com"><i class="fa fa-envelope"></i> email@uib.com</a>
-                    </div>
-                </div>
+                @empty
+                    <p class="text-center font-weight-bold">No Invitee Found</p>
+                @endforelse
             </div>
         </div>
     </section>
@@ -125,70 +107,28 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>$100</td>
-                                <td>12345</td>
-                                <td>Newbie: #1</td>
-                                <td>newbiesname</td>
-                                <td>310-123-4567</td>
-                                <td>astar@uib.com</td>
-                                <td>
-                                    <div class="btnWrap">
-                                        <button class="themeBtn w-100"><span></span>
-                                            <text>Confirm</text>
-                                        </button>
-                                        <a href="#" class="tableIconBtn"><i class="fa fa-trash"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>$100</td>
-                                <td>12345</td>
-                                <td>Newbie: #1</td>
-                                <td>newbiesname</td>
-                                <td>310-123-4567</td>
-                                <td>astar@uib.com</td>
-                                <td>
-                                    <div class="btnWrap">
-                                        <button class="themeBtn w-100"><span></span>
-                                            <text>Confirm</text>
-                                        </button>
-                                        <a href="#" class="tableIconBtn"><i class="fa fa-trash"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>$100</td>
-                                <td>12345</td>
-                                <td>Newbie: #1</td>
-                                <td>newbiesname</td>
-                                <td>310-123-4567</td>
-                                <td>astar@uib.com</td>
-                                <td>
-                                    <div class="btnWrap">
-                                        <button class="themeBtn w-100"><span></span>
-                                            <text>Confirm</text>
-                                        </button>
-                                        <a href="#" class="tableIconBtn"><i class="fa fa-trash"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>$100</td>
-                                <td>12345</td>
-                                <td>Newbie: #1</td>
-                                <td>newbiesname</td>
-                                <td>310-123-4567</td>
-                                <td>astar@uib.com</td>
-                                <td>
-                                    <div class="btnWrap">
-                                        <button class="themeBtn w-100"><span></span>
-                                            <text>Confirm</text>
-                                        </button>
-                                        <a href="#" class="tableIconBtn"><i class="fa fa-trash"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
+                            @forelse($pendingIncomingGifts as $gift)
+                                <tr>
+                                    <td>${{ round($gift->amount) }}</td>
+                                    <td>{{ $gift->board->board_number }}</td>
+                                    <td>Newbie</td>
+                                    <td>{{ $gift->receiver->username }}</td>
+                                    <td>{{ $gift->receiver->phone }}</td>
+                                    <td>{{ $gift->receiver->email }}</td>
+                                    <td>
+                                        <div class="btnWrap">
+                                            <a href="{{ route('update-gift-status', [$gift->id, 'accepted']) }}" class="themeBtn w-100"><span style="left: -8px; top: 1705px;"></span>
+                                                <text>Confirm</text>
+                                            </a>
+                                            <a href="{{ route('update-gift-status', [$gift->id, 'reject']) }}" class="tableIconBtn"><i class="fa fa-trash"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7">No records found</td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -211,58 +151,25 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>$100</td>
-                                <td>12345</td>
-                                <td>Newbie: #1</td>
-                                <td>newbiesname</td>
-                                <td>310-123-4567</td>
-                                <td>astar@uib.com</td>
-                                <td>
-                                    <button class="themeBtn w-100"><span></span>
-                                        <text>Cancel</text>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>$100</td>
-                                <td>12345</td>
-                                <td>Newbie: #1</td>
-                                <td>newbiesname</td>
-                                <td>310-123-4567</td>
-                                <td>astar@uib.com</td>
-                                <td>
-                                    <button class="themeBtn w-100"><span></span>
-                                        <text>Cancel</text>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>$100</td>
-                                <td>12345</td>
-                                <td>Newbie: #1</td>
-                                <td>newbiesname</td>
-                                <td>310-123-4567</td>
-                                <td>astar@uib.com</td>
-                                <td>
-                                    <button class="themeBtn w-100"><span></span>
-                                        <text>Cancel</text>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>$100</td>
-                                <td>12345</td>
-                                <td>Newbie: #1</td>
-                                <td>newbiesname</td>
-                                <td>310-123-4567</td>
-                                <td>astar@uib.com</td>
-                                <td>
-                                    <button class="themeBtn w-100"><span></span>
-                                        <text>Cancel</text>
-                                    </button>
-                                </td>
-                            </tr>
+                            @forelse($pendingOutgoingGifts as $gift)
+                                <tr>
+                                    <td>${{ round($gift->amount) }}</td>
+                                    <td>{{ $gift->board->board_number }}</td>
+                                    <td>Newbie</td>
+                                    <td>{{ $gift->receiver->username }}</td>
+                                    <td>{{ $gift->receiver->phone }}</td>
+                                    <td>{{ $gift->receiver->email }}</td>
+                                    <td>
+                                        <a href="{{ route('update-gift-status', [$gift->id, 'pending']) }}" class="themeBtn w-100"><span></span>
+                                            <text>{{ ($gift->status == 'pending') ? 'cancel' : 'send' }}</text>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7">No records found</td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
                     </div>

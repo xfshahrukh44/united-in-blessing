@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'invited_by', 'username', 'first_name', 'last_name', 'email', 'phone', 'role', 'timezone', 'password',
+        'invited_by', 'username', 'first_name', 'last_name', 'email', 'phone', 'role', 'timezone', 'password', 'user_image'
     ];
 
     /**
@@ -38,4 +38,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function boards(){
+        return $this->hasMany(UserBoards::class, 'user_id', 'id');
+    }
 }

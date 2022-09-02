@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Boards;
 use App\Models\User;
 use App\Models\UserBoards;
+use App\Models\UserProfileChangedLogs;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -51,6 +52,14 @@ class UserSeeder extends Seeder
             'parent_id' => null,
             'user_board_roles' => 'grad',
             'position' => null
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $admin->id,
+            'key' => 'username',
+            'value' => $admin->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
         ]);
 
         $user1 = User::create([

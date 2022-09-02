@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\GiftLogs;
 use App\Models\User;
 use App\Models\UserBoards;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use function PHPUnit\Framework\isNull;
 
 class RegisterController extends Controller
 {
@@ -56,7 +56,32 @@ class RegisterController extends Controller
                 if (!$val) return;
 
                 if (!User::where('username', $val)->exists()) {
-                    $fail($attribute . ' is not found.');
+                    $fail($attribute . ' not found.');
+                } else {
+                    $inviter = User::where('username', $val)->first();
+
+//                    $userBoard = UserBoards::where('user_id', $inviter->id)
+//                        ->first();
+//
+//                    switch ($userBoard->user_board_roles){
+//                        case('grad'):
+//                            dd('grad');
+//
+//                        case('pregrad'):
+////                            dd('pregrad');
+//                            $userBoard->has('children', '<', 2);
+//                            dd($userBoard->children);
+//
+//                        case('undergrad'):
+//                            dd('undergrad');
+//
+//                        case('newbie'):
+//                            dd('newbie');
+//                    }
+
+                    if (is_null(UserBoards::where('user_id', $inviter->id)->has('children', '<', 2)->first())) {
+                        $fail("There's no place left in the board. Please try again later.");
+                    }
                 }
             }],
             'username' => ['required', 'alpha_dash', 'unique:user_profile_changed_logs,value'],
@@ -83,14 +108,10 @@ class RegisterController extends Controller
             ->has('children', '<', 2)
             ->first();
 
-//        if ($invited_user_board_id == null){
-//            return ['message' => 'No Place to add the user'];
-//        }
-
         $position = 'left';
 
-        foreach ($invited_user_board_id->children as $child){
-            if($child->position == 'left')
+        foreach ($invited_user_board_id->children as $child) {
+            if ($child->position == 'left')
                 $position = 'right';
         }
 
@@ -110,6 +131,18 @@ class RegisterController extends Controller
             'parent_id' => $invited_user_board_id->user_id,
             'user_board_roles' => 'newbie',
             'position' => $position
+        ]);
+
+        $boardGrad = UserBoards::where('board_id', $invited_user_board_id->board_id)
+            ->where('user_board_roles', 'grad')
+            ->with('user', 'board')
+            ->first();
+
+        GiftLogs::create([
+            'sent_by' => $user->id,
+            'sent_to' => $boardGrad->user_id,
+            'board_id' => $invited_user_board_id->board_id,
+            'amount' => $boardGrad->board->amount,
         ]);
 
         $userLogs = generateUserProfileLogs($user->id, 'username', $data['username'], 0, 'New Account Created', 'accepted');

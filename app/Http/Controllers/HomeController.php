@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GiftLogs;
+use App\Models\User;
 use App\Models\UserBoards;
-use http\Client\Curl\User;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -29,6 +30,11 @@ class HomeController extends Controller
             ->with('user', 'board', 'boardGrad')
             ->get();
 
-        return view('home', compact('userBoards'));
+        $invitees = User::where('invited_by', Auth::user()->id)->get();
+
+        $pendingIncomingGifts = GiftLogs::where('sent_to', Auth::user()->id)->where('status', 'pending')->with('board', 'receiver')->get();
+        $pendingOutgoingGifts = GiftLogs::where('sent_by', Auth::user()->id)->where('status', '!=', 'accepted')->with('board', 'receiver')->get();
+
+        return view('home', compact('userBoards', 'invitees', 'pendingIncomingGifts', 'pendingOutgoingGifts'));
     }
 }
