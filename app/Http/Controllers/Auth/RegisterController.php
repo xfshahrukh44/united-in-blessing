@@ -60,26 +60,8 @@ class RegisterController extends Controller
                 } else {
                     $inviter = User::where('username', $val)->first();
 
-//                    $userBoard = UserBoards::where('user_id', $inviter->id)
-//                        ->first();
-//
-//                    switch ($userBoard->user_board_roles){
-//                        case('grad'):
-//                            dd('grad');
-//
-//                        case('pregrad'):
-////                            dd('pregrad');
-//                            $userBoard->has('children', '<', 2);
-//                            dd($userBoard->children);
-//
-//                        case('undergrad'):
-//                            dd('undergrad');
-//
-//                        case('newbie'):
-//                            dd('newbie');
-//                    }
-
-                    if (is_null(UserBoards::where('user_id', $inviter->id)->has('children', '<', 2)->first())) {
+                    // Get user Board where newbie count is less than 8
+                    if (is_null(UserBoards::where('user_id', $inviter->id)->has('newbies', '<', 8)->first())) {
                         $fail("There's no place left in the board. Please try again later.");
                     }
                 }
@@ -102,18 +84,126 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $invited_user = User::where('username', $data['inviters_username'])->first();
-
-        $invited_user_board_id = UserBoards::where('user_id', $invited_user->id)
-            ->has('children', '<', 2)
-            ->first();
-
+        $parent_id = '';
         $position = 'left';
 
-        foreach ($invited_user_board_id->children as $child) {
-            if ($child->position == 'left')
-                $position = 'right';
+        $invited_user = User::where('username', $data['inviters_username'])->first();
+
+        $invited_user_board = UserBoards::where('user_id', $invited_user->id)
+            ->has('newbies', '<', 8)
+            ->first();
+
+        switch ($invited_user_board->user_board_roles) {
+            case('grad'):
+                foreach ($invited_user_board->children as $pregrad) {
+                    foreach ($pregrad->children as $undergrad) {
+//                        dd($undergrad);
+                        if($undergrad->children->count() < 2){
+                            $parent_id = $undergrad->user_id;
+
+                            foreach ($undergrad->children as $child) {
+                                if ($child->position == 'left')
+                                    $position = 'right';
+                            }
+
+                            break;
+                        }
+                    }
+
+                    if ($parent_id != ''){
+                        break;
+                    }
+                }
+                break;
+
+            case('pregrad'):
+                // Undergrads
+                foreach ($invited_user_board->children as $undergrads) {
+                    // newbies
+                    if ($undergrads->children->count() < 2) {
+                        $parent_id = $undergrads->user_id;
+
+                        foreach ($undergrads->children as $child) {
+                            if ($child->position == 'left')
+                                $position = 'right';
+                        }
+                    } else {
+                        $sibling = $this->siblings($undergrads);
+
+                        if ($sibling->children->count() < 2) {
+                            $parent_id = $sibling->user_id;
+
+                            foreach ($sibling->children as $child) {
+                                if ($child->position == 'left')
+                                    $position = 'right';
+                            }
+                        } else{
+                            $sibling = $this->siblings($invited_user_board);
+
+                            foreach ($sibling->children as $undergrad) {
+                                // Undergrad
+                                if ($undergrad->children->count() < 2) {
+                                    $parent_id = $undergrad->user_id;
+
+                                    if ($undergrad->position == 'left')
+                                        $position = 'right';
+
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if ($parent_id != ''){
+                        break;
+                    }
+                }
+                break;
+
+            case('undergrad'):
+                if ($invited_user_board->children->count() < 2) {
+                    $parent_id = $invited_user_board->user_id;
+
+                    foreach ($invited_user_board->children as $child) {
+                        if ($child->position == 'left')
+                            $position = 'right';
+                    }
+                } else {
+                    // Get Siblings
+                    $sibling = $this->siblings($invited_user_board);
+
+                    if ($sibling->children->count() < 2) {
+                        $parent_id = $sibling->user_id;
+
+                        foreach ($sibling->children as $child) {
+                            if ($child->position == 'left')
+                                $position = 'right';
+                        }
+                    } else {
+                        $parent = $invited_user_board->parent;
+                        $sibling = $this->siblings($parent);
+
+                        foreach ($sibling->children as $child) {
+                            if ($child->children->count() < 2) {
+                                $parent_id = $child->user_id;
+
+                                if ($child->position == 'left')
+                                    $position = 'right';
+
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                break;
+
+            case('newbie'):
+                dd('newbie');
+                break;
         }
+
+//        dd('die');
 
         $user = User::create([
             'invited_by' => $invited_user->id,
@@ -127,13 +217,13 @@ class RegisterController extends Controller
 
         UserBoards::create([
             'user_id' => $user->id,
-            'board_id' => $invited_user_board_id->board_id,
-            'parent_id' => $invited_user_board_id->user_id,
+            'board_id' => $invited_user_board->board_id,
+            'parent_id' => $parent_id,
             'user_board_roles' => 'newbie',
             'position' => $position
         ]);
 
-        $boardGrad = UserBoards::where('board_id', $invited_user_board_id->board_id)
+        $boardGrad = UserBoards::where('board_id', $invited_user_board->board_id)
             ->where('user_board_roles', 'grad')
             ->with('user', 'board')
             ->first();
@@ -141,12 +231,20 @@ class RegisterController extends Controller
         GiftLogs::create([
             'sent_by' => $user->id,
             'sent_to' => $boardGrad->user_id,
-            'board_id' => $invited_user_board_id->board_id,
+            'board_id' => $invited_user_board->board_id,
             'amount' => $boardGrad->board->amount,
         ]);
 
         $userLogs = generateUserProfileLogs($user->id, 'username', $data['username'], 0, 'New Account Created', 'accepted');
 
         return $user;
+    }
+
+    protected function siblings($user)
+    {
+        return UserBoards::where('parent_id', $user->parent_id)
+            ->where('board_id', $user->board_id)
+            ->where('user_id', '!=', $user->user_id)
+            ->first();
     }
 }
