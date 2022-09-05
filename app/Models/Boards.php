@@ -16,4 +16,9 @@ class Boards extends Model
     {
         return $this->HasMany(UserBoards::class, 'board_id', 'id');
     }
+
+    public function newbies()
+    {
+        return $this->HasMany(UserBoards::class, 'board_id', 'id')->where('user_board_roles', 'newbie');
+    }
 }
