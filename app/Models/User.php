@@ -42,4 +42,8 @@ class User extends Authenticatable
     public function boards(){
         return $this->hasMany(UserBoards::class, 'user_id', 'id');
     }
+
+    public function invitedBy(){
+        return $this->belongsTo(User::class, 'invited_by', 'id');
+    }
 }

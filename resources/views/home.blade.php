@@ -20,13 +20,20 @@
                     <h3>My Inviter</h3>
                 </div>
                 <div class="col-lg-5">
-                    <div class="inviterCard">
-                        <img
-                            src="{{ Auth::user()->user_image ? asset('upload/user/' . Auth::user()->user_image) : asset('assets/images/user.png') }}"
-                            alt="">
-                        <h4>{{ Auth::user()->username }}</h4>
-                        <p>{{ Auth::user()->first_name . ' ' . Auth::user()->last_name }}</p>
-                    </div>
+                    @if($inviter->invitedBy != null)
+                        <div class="inviterCard">
+                            <img
+                                src="{{ $inviter->invitedBy->user_image ? asset('upload/user/' . $inviter->invitedBy->user_image) : asset('assets/images/user.png') }}"
+                                alt="">
+                            <h4>{{ $inviter->invitedBy->username }}</h4>
+                            <p>{{ $inviter->invitedBy->first_name . ' ' . $inviter->invitedBy->last_name }}</p>
+                        </div>
+                    @else
+                        <div class="inviterCard">
+                            <img src="{{ asset('assets/images/user.png') }}" alt="">
+                            <p>No Inviter Found</p>
+                        </div>
+                    @endif
                 </div>
                 <div class="col-lg-12 text-center my-5">
                     <h3>My Invitees</h3>
@@ -112,15 +119,17 @@
                                     <td>${{ round($gift->amount) }}</td>
                                     <td>{{ $gift->board->board_number }}</td>
                                     <td>Newbie</td>
-                                    <td>{{ $gift->receiver->username }}</td>
-                                    <td>{{ $gift->receiver->phone }}</td>
-                                    <td>{{ $gift->receiver->email }}</td>
+                                    <td>{{ $gift->sender->username }}</td>
+                                    <td>{{ $gift->sender->phone }}</td>
+                                    <td>{{ $gift->sender->email }}</td>
                                     <td>
                                         <div class="btnWrap">
-                                            <a href="{{ route('update-gift-status', [$gift->id, 'accepted']) }}" class="themeBtn w-100"><span style="left: -8px; top: 1705px;"></span>
+                                            <a href="{{ route('update-gift-status', [$gift->id, 'accepted']) }}"
+                                               class="themeBtn w-100"><span style="left: -8px; top: 1705px;"></span>
                                                 <text>Confirm</text>
                                             </a>
-                                            <a href="{{ route('update-gift-status', [$gift->id, 'reject']) }}" class="tableIconBtn"><i class="fa fa-trash"></i></a>
+                                            <a href="{{ route('update-gift-status', [$gift->id, 'reject']) }}"
+                                               class="tableIconBtn"><i class="fa fa-trash"></i></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -160,7 +169,8 @@
                                     <td>{{ $gift->receiver->phone }}</td>
                                     <td>{{ $gift->receiver->email }}</td>
                                     <td>
-                                        <a href="{{ route('update-gift-status', [$gift->id, 'pending']) }}" class="themeBtn w-100"><span></span>
+                                        <a href="{{ route('update-gift-status', [$gift->id, 'pending']) }}"
+                                           class="themeBtn w-100"><span></span>
                                             <text>{{ ($gift->status == 'pending') ? 'cancel' : 'send' }}</text>
                                         </a>
                                     </td>
