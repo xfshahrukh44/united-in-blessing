@@ -97,8 +97,7 @@ class RegisterController extends Controller
             case('grad'):
                 foreach ($invited_user_board->children as $pregrad) {
                     foreach ($pregrad->children as $undergrad) {
-//                        dd($undergrad);
-                        if($undergrad->children->count() < 2){
+                        if ($undergrad->children->count() < 2) {
                             $parent_id = $undergrad->user_id;
 
                             foreach ($undergrad->children as $child) {
@@ -110,16 +109,15 @@ class RegisterController extends Controller
                         }
                     }
 
-                    if ($parent_id != ''){
+                    if ($parent_id != '') {
                         break;
                     }
                 }
                 break;
 
             case('pregrad'):
-                // Undergrads
                 foreach ($invited_user_board->children as $undergrads) {
-                    // newbies
+                    // undergrads
                     if ($undergrads->children->count() < 2) {
                         $parent_id = $undergrads->user_id;
 
@@ -137,7 +135,7 @@ class RegisterController extends Controller
                                 if ($child->position == 'left')
                                     $position = 'right';
                             }
-                        } else{
+                        } else {
                             $sibling = $this->siblings($invited_user_board);
 
                             foreach ($sibling->children as $undergrad) {
@@ -154,7 +152,7 @@ class RegisterController extends Controller
                         }
                     }
 
-                    if ($parent_id != ''){
+                    if ($parent_id != '') {
                         break;
                     }
                 }
@@ -187,8 +185,10 @@ class RegisterController extends Controller
                             if ($child->children->count() < 2) {
                                 $parent_id = $child->user_id;
 
-                                if ($child->position == 'left')
-                                    $position = 'right';
+                                foreach ($child->children as $newbie) {
+                                    if ($child->position == 'left')
+                                        $position = 'right';
+                                }
 
                                 break;
                             }
@@ -199,11 +199,45 @@ class RegisterController extends Controller
                 break;
 
             case('newbie'):
-                dd('newbie');
+                if ($this->siblings($invited_user_board) == null) {
+                    $parent_id = $invited_user_board->parent_id;
+
+                    if ($invited_user_board->position == 'left')
+                        $position = 'right';
+                } else {
+                    $parent = $invited_user_board->parent;
+                    $sibling = $this->siblings($parent);
+
+                    if ($sibling->children->count() < 2) {
+                        $parent_id = $sibling->user_id;
+
+                        foreach ($sibling->children as $child) {
+                            $parent_id = $child->parent_id;
+
+                            if ($child->position == 'left')
+                                $position = 'right';
+
+                            break;
+                        }
+                    } else {
+                        // Pregrad
+                        $parent = $parent->parent;
+                        $sibling = $this->siblings($parent);
+
+                        foreach ($sibling->children as $undergrad) {
+                            if ($undergrad->children->count() < 2) {
+                                $parent_id = $undergrad->user_id;
+
+                                if ($undergrad->position == 'left')
+                                    $position = 'right';
+
+                                break;
+                            }
+                        }
+                    }
+                }
                 break;
         }
-
-//        dd('die');
 
         $user = User::create([
             'invited_by' => $invited_user->id,
