@@ -46,4 +46,9 @@ class User extends Authenticatable
     public function invitedBy(){
         return $this->belongsTo(User::class, 'invited_by', 'id');
     }
+
+    public function inviters(){
+        return $this->hasMany(User::class, 'invited_by', 'id');
+    }
+
 }

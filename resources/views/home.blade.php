@@ -38,6 +38,7 @@
                 <div class="col-lg-12 text-center my-5">
                     <h3>My Invitees</h3>
                 </div>
+
                 @forelse($invitees as $invitee)
                     <div class="col-lg-3">
                         <div class="inviterCard invitees">

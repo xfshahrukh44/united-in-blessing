@@ -40,7 +40,8 @@ class UserBoards extends Model
         return $this->hasMany(UserBoards::class, 'parent_id', 'user_id');
     }
 
-    public function newbies(){
+    public function newbies()
+    {
         return $this->hasMany(UserBoards::class, 'board_id', 'board_id')->where('user_board_roles', 'newbie');
     }
 }
