@@ -22,11 +22,13 @@ class GiftLogs extends Model
         return $this->belongsTo(Boards::class, 'board_id', 'id');
     }
 
-    public function sender(){
+    public function sender()
+    {
         return $this->belongsTo(User::class, 'sent_by', 'id');
     }
 
-    public function receiver(){
+    public function receiver()
+    {
         return $this->belongsTo(User::class, 'sent_to', 'id');
     }
 }

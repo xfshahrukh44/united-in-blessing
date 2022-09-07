@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Boards;
+use App\Models\User;
 use App\Models\UserBoards;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class BoardController extends Controller
 {
     public function index($board_id)
     {
-        $board = Boards::where('id', $board_id)->first();
+        $board = Boards::find($board_id);
+        $gifts = $board->gifts->keyBy('sent_by');
 //        $rawData = UserBoards::where('board_id', $board_id)->with(['user', 'children'])->get();
 
         $rawData = UserBoards::where('board_id', $board_id)->with(['user',
@@ -40,7 +44,17 @@ class BoardController extends Controller
 //        $boardPreGrad = UserBoards::where('board_id', $board_id)->where('user_board_roles', 'pregrad')->with('user')->get();
 
 //        return view('board', compact('board', 'boardUsers', 'boardGrad', 'boardPreGrad'));
-        return view('board', compact('board', 'boardUsers',));
+        return view('board', compact('board', 'boardUsers', 'gifts'));
+        $invitees = User::where('invited_by', Auth::user()->id)->get();
+
+        $inviteesCount = $invitees->count();
+
+       /* $data1['count'] = $inviteesCount;
+
+        $boardUsers1 = $data1;*/
+        //dd($boardUsers);
+        //return view('board', compact('board', 'boardUsers', 'boardGrad', 'boardPreGrad'));
+        return view('board', compact('board', 'boardUsers', 'boardGrad', 'boardPreGrad', 'inviteesCount', 'gifts'));
     }
 
     public static function create($amount)

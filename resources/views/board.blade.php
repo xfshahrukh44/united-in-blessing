@@ -11,7 +11,9 @@
         </div>
     </div>
     <!-- END: Main Slider -->
-
+    {{--@foreach($boardUsers1 as $count)
+        <h4>{{$count}}</h4>
+    @endforeach--}}
     <section class="treeSec">
         <div class="container-fluid">
             <div class="row mb-5 justify-content-center">
@@ -24,6 +26,7 @@
                             <p>Board Status: </p>
                         </div>
                         <div class="info">
+
                             <p>{{ $board->board_number }}</p>
                             <p>132456</p>
                             <p>Username</p>
@@ -36,14 +39,20 @@
                 <div class="col-12">
                     <div>
                         <ul class="tree vertical">
-                            @foreach($boardUsers['grad'] as $key => $grad)
+                        @foreach($boardUsers['grad'] as $key => $grad)
                                 <li>
                                     <div>
                                         <div class="inviterCard invitees">
                                             <img
                                                 src="{{ $grad['user']->user_image ? asset('upload/user/' . $grad['user']->user_image) : asset('assets/images/user.png') }}"
                                                 alt="">
-                                            <h4>{{ $grad['user']->username }}</h4>
+                                            @if($grad->user->inviters->count() == 0)
+                                                <h4>{{ $grad['user']->username }}</h4>
+                                                @elseif($grad->user->inviters->count() == 1)
+                                                    <h4 style="color:red">{{ $grad['user']->username }}</h4>
+                                                    @else
+                                                        <h4 style="color:green">{{ $grad['user']->username }}</h4>
+                                            @endif
                                             <p>{{ ($key + 1) }}</p>
                                         </div>
                                     </div>
@@ -58,7 +67,13 @@
                                                         <img
                                                             src="{{ $pregrad['user']->user_image ? asset('upload/user/' . $pregrad['user']->user_image) : asset('assets/images/user.png') }}"
                                                             alt="">
-                                                        <h4>{{$pregrad['user']->username}}</h4>
+                                                        @if($pregrad->user->inviters->count() == 0)
+                                                            <h4>{{ $pregrad['user']->username }}</h4>
+                                                            @elseif($pregrad->user->inviters->count() == 1)
+                                                                <h4 style="color:red">{{ $pregrad['user']->username }}</h4>
+                                                                @else
+                                                                    <h4 style="color:green">{{ $pregrad['user']->username }}</h4>
+                                                        @endif
                                                         <p>{{ ($key + 1) }}</p>
                                                     </div>
                                                 </div>
@@ -71,7 +86,13 @@
                                                                     <img
                                                                         src="{{ $undergrad['user']->user_image ? asset('upload/user/' . $undergrad['user']->user_image) : asset('assets/images/user.png') }}"
                                                                         alt="">
-                                                                    <h4>{{$undergrad['user']->username}}</h4>
+                                                                    @if($undergrad->user->inviters->count() == 0)
+                                                                        <h4>{{ $undergrad['user']->username }}</h4>
+                                                                        @elseif($undergrad->user->inviters->count() == 1)
+                                                                            <h4 style="color:red">{{ $undergrad['user']->username }}</h4>
+                                                                            @else
+                                                                                <h4 style="color:green">{{ $undergrad['user']->username }}</h4>
+                                                                    @endif
 
                                                                     <p>{{ ($x++) }}</p>
                                                                 </div>
@@ -85,8 +106,18 @@
                                                                                 <img
                                                                                     src="{{ $newbie['user']->user_image ? asset('upload/user/' . $newbie['user']->user_image) : asset('assets/images/user.png') }}"
                                                                                     alt="">
-                                                                                <h4>{{$newbie['user']->username}}</h4>
-
+                                                                                @if($gifts[$newbie['user']->id]->status == "accepted" || $gifts[$newbie['user']->id]->status == "")
+                                                                                    <h4>{{ $newbie['user']->username }}</h4>
+                                                                                    @else
+                                                                                        <h4 style="color:red">{{ $newbie['user']->username }}</h4>
+                                                                                @endif
+                                                                                {{--@if($newbie->user->inviters->count() == 0)
+                                                                                        <h4>{{ $newbie['user']->username }}</h4>
+                                                                                    @elseif($newbie->user->inviters->count() == 1)
+                                                                                        <h4 style="color:red">{{ $newbie['user']->username }}</h4>
+                                                                                        @else
+                                                                                            <h4 style="color:green">{{ $newbie['user']->username }}</h4>
+                                                                                @endif--}}
                                                                                 <p>{{ ($y++) }}</p>
                                                                             </div>
                                                                         </div>
