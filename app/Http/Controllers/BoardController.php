@@ -13,10 +13,19 @@ class BoardController extends Controller
     {
         $board = Boards::find($board_id);
         $gifts = $board->gifts->keyBy('sent_by');
+//        $rawData = UserBoards::where('board_id', $board_id)->with(['user', 'children'])->get();
 
-//        dd($gifts);
-
-        $rawData = UserBoards::where('board_id', $board_id)->with('user', 'children')->get();
+        $rawData = UserBoards::where('board_id', $board_id)->with(['user',
+            'children' => function ($q) use ($board_id) {
+                $q->where('board_id', $board_id);
+            },
+            'children.children' => function ($q) use ($board_id) {
+                $q->where('board_id', $board_id);
+            },
+            'children.children.children' => function ($q) use ($board_id) {
+                $q->where('board_id', $board_id);
+            },
+        ])->get();
 
         $grad = $rawData->where('user_board_roles', 'grad');
 
@@ -28,13 +37,13 @@ class BoardController extends Controller
         $data = [];
         $data['grad'] = $grad;
 
-//        $data1 = [];
-
         $boardUsers = $data;
 
-        $boardGrad = UserBoards::where('board_id', $board_id)->where('user_board_roles', 'grad')->with('user')->first();
-        $boardPreGrad = UserBoards::where('board_id', $board_id)->where('user_board_roles', 'pregrad')->with('user')->get();
+//        $boardGrad = UserBoards::where('board_id', $board_id)->where('user_board_roles', 'grad')->with('user')->first();
+//        $boardPreGrad = UserBoards::where('board_id', $board_id)->where('user_board_roles', 'pregrad')->with('user')->get();
 
+//        return view('board', compact('board', 'boardUsers', 'boardGrad', 'boardPreGrad'));
+        return view('board', compact('board', 'boardUsers',));
         $invitees = User::where('invited_by', Auth::user()->id)->get();
 
         $inviteesCount = $invitees->count();
@@ -47,7 +56,17 @@ class BoardController extends Controller
         return view('board', compact('board', 'boardUsers', 'boardGrad', 'boardPreGrad', 'inviteesCount', 'gifts'));
     }
 
-    public function create(){
+    public static function create($amount)
+    {
+        $latest_board = Boards::all();
 
+        try {
+            return Boards::create([
+                'board_number' => 'board-' . ($latest_board->count() + 1),
+                'amount' => (string)((int)$amount),
+            ]);
+        } catch (\Exception $exception) {
+            return $exception;
+        }
     }
 }
