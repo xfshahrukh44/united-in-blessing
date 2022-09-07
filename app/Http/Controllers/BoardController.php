@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Boards;
 use App\Models\User;
 use App\Models\UserBoards;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class BoardController extends Controller
@@ -43,7 +44,7 @@ class BoardController extends Controller
 //        $boardPreGrad = UserBoards::where('board_id', $board_id)->where('user_board_roles', 'pregrad')->with('user')->get();
 
 //        return view('board', compact('board', 'boardUsers', 'boardGrad', 'boardPreGrad'));
-        return view('board', compact('board', 'boardUsers',));
+        return view('board', compact('board', 'boardUsers', 'gifts'));
         $invitees = User::where('invited_by', Auth::user()->id)->get();
 
         $inviteesCount = $invitees->count();
