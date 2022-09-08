@@ -17,10 +17,10 @@
 }
 
 body {
-    display: flex;
-    flex-wrap: wrap;
-    font-family: Arial;
-    justify-content: center;
+/ display: flex; /
+/ flex-wrap: wrap; /
+/ font-family: Arial; /
+/ justify-content: center; /
 }
 
 h3 {
@@ -50,14 +50,15 @@ h3 {
 }
 
 .tree li > div {
-    /* background-color: #eee; */
-    color: #222;
+/ background-color: #eee; /
+color: #222;
     padding: 5px;
     display: inline-block;
 }
 
 .tree.vertical {
     display: flex;
+    justify-content: center;
 }
 
 .tree.vertical ul {

@@ -45,3 +45,7 @@ Route::prefix('/')->middleware('auth')->group(function (){
     // Gifts
     Route::get('update-gift-status/{id}/{status}', [GiftController::class, 'update'])->name('update-gift-status');
 });
+
+Route::get('/temp', function() {
+    Auth::logout();
+});

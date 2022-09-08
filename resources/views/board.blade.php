@@ -7,7 +7,7 @@
     <div class="main-slider">
         <img class="w-100" src="{{ asset('assets/images/ban1.jpg') }}" alt="First slide">
         <div class="overlay">
-            <!--            <h2>Lorem Ipsum</h2>-->
+            <!--<h2>Lorem Ipsum</h2>-->
         </div>
     </div>
     <!-- END: Main Slider -->
@@ -140,3 +140,68 @@
         </div>
     </section>
 @endsection
+<div class="modal fade" id="inactivity" tabindex="-1" role="dialog" aria-labelledby="inactivity" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Inactivity</h5>
+            </div>
+            <div class="modal-body">
+                You have been logged out due to inactivity for 15 minutes.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="reload()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    let global = 10;
+
+    function noMovement() {
+        if (global == 0) {
+            userLogout();
+            resetGlobal();
+            $('#inactivity').modal('show');
+        } else {
+            global--;
+        }
+    }
+
+    function  reload()
+    {
+        location.reload();
+    }
+    function resetGlobal() {
+        global=10;
+    }
+
+    function userLogout() {
+        $.ajax({
+            url: '{{route('logout')}}',
+            type: 'POST',
+            data: {
+                "_token": "{{ csrf_token() }}"
+            },
+            success: function (res) {
+                console.log(res);
+            },
+            error: function () {
+
+            }
+        })
+    }
+
+    $(document).ready(function(){
+        $('html').mousemove(function(event){
+            resetGlobal();
+        });
+
+    });
+
+    setInterval(function(){noMovement()}, 900000); //900000
+
+</script>
+
