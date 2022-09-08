@@ -63,9 +63,7 @@
                         <li class="nav-item">
                             <a href="{{ url('home') }}" class="nav-link">HOME</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ url('register') }}" class="nav-link">JOIN</a>
-                        </li>
+
                         <li class="nav-item">
                             @if(Auth::check())
                                 <a href="{{ url('logout') }}" class="nav-link" onclick="event.preventDefault();
@@ -74,6 +72,7 @@
                                     @csrf
                                 </form>
                             @else
+                                <a href="{{ url('register') }}" class="nav-link">JOIN</a>
                                 <a href="{{ url('login') }}" class="nav-link">LOGIN</a>
                             @endif
                         </li>
