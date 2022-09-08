@@ -100,6 +100,8 @@
 <script src="{{ asset('assets/js/custom.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/toastr/toastr.min.js')}}"></script>
 
+@yield('page_script')
+
 @if(session()->has('success'))
     <script type="text/javascript">  toastr.success('{{ session('success')}}');</script>
 @endif
