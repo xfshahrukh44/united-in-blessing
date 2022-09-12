@@ -44,4 +44,15 @@ class UserBoards extends Model
     {
         return $this->hasMany(UserBoards::class, 'board_id', 'board_id')->where('user_board_roles', 'newbie');
     }
+
+    /**
+     * Get Children By Board ID
+     *
+     * @param $board_id
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function boardChildren($board_id)
+    {
+        return $this->children()->where('board_id', $board_id)->get();
+    }
 }

@@ -12,49 +12,18 @@ class BoardController extends Controller
 {
     public function index($board_id)
     {
-        $board = Boards::find($board_id);
-        $gifts = $board->gifts->keyBy('sent_by');
-//        $rawData = UserBoards::where('board_id', $board_id)->with(['user', 'children'])->get();
+        try {
+            $board = Boards::find($board_id);
+            $gifts = $board->gifts->keyBy('sent_by');
+            $boardGrad = UserBoards::where('board_id', $board_id)
+                ->where('user_board_roles', 'grad')
+                ->with(['user', 'children'])
+                ->get();
 
-        $rawData = UserBoards::where('board_id', $board_id)->with(['user',
-            'children' => function ($q) use ($board_id) {
-                $q->where('board_id', $board_id);
-            },
-            'children.children' => function ($q) use ($board_id) {
-                $q->where('board_id', $board_id);
-            },
-            'children.children.children' => function ($q) use ($board_id) {
-                $q->where('board_id', $board_id);
-            },
-        ])->get();
-
-        $grad = $rawData->where('user_board_roles', 'grad');
-
-        $order = ['grad', 'pregrad', 'undergrad', 'newbie'];
-        $rawData = collect($rawData)->sortBy(function ($item) use ($order) {
-            return array_search($item->user_board_roles, $order);
-        });
-
-        $data = [];
-        $data['grad'] = $grad;
-
-        $boardUsers = $data;
-
-//        $boardGrad = UserBoards::where('board_id', $board_id)->where('user_board_roles', 'grad')->with('user')->first();
-//        $boardPreGrad = UserBoards::where('board_id', $board_id)->where('user_board_roles', 'pregrad')->with('user')->get();
-
-//        return view('board', compact('board', 'boardUsers', 'boardGrad', 'boardPreGrad'));
-        return view('board', compact('board', 'boardUsers', 'gifts'));
-        $invitees = User::where('invited_by', Auth::user()->id)->get();
-
-        $inviteesCount = $invitees->count();
-
-       /* $data1['count'] = $inviteesCount;
-
-        $boardUsers1 = $data1;*/
-        //dd($boardUsers);
-        //return view('board', compact('board', 'boardUsers', 'boardGrad', 'boardPreGrad'));
-        return view('board', compact('board', 'boardUsers', 'boardGrad', 'boardPreGrad', 'inviteesCount', 'gifts'));
+            return view('board', compact('board', 'boardGrad', 'gifts'));
+        } catch (\Exception $exception) {
+            return back()->withErrors($exception->getMessage());
+        }
     }
 
     public static function create($amount)

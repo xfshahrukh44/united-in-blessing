@@ -93,14 +93,16 @@ class RegisterController extends Controller
             ->has('newbies', '<', 8)
             ->first();
 
+        $board_member = $invited_user_board->boardChildren($invited_user_board->board_id);
+
         switch ($invited_user_board->user_board_roles) {
             case('grad'):
-                foreach ($invited_user_board->children as $pregrad) {
-                    foreach ($pregrad->children as $undergrad) {
-                        if ($undergrad->children->count() < 2) {
+                foreach ($invited_user_board->boardChildren($invited_user_board->board_id) as $pregrad) {
+                    foreach ($pregrad->boardChildren($invited_user_board->board_id) as $undergrad) {
+                        if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
                             $parent_id = $undergrad->user_id;
 
-                            foreach ($undergrad->children as $child) {
+                            foreach ($undergrad->boardChildren($invited_user_board->board_id) as $child) {
                                 if ($child->position == 'left')
                                     $position = 'right';
                             }
@@ -116,31 +118,31 @@ class RegisterController extends Controller
                 break;
 
             case('pregrad'):
-                foreach ($invited_user_board->children as $undergrads) {
+                foreach ($invited_user_board->boardChildren($invited_user_board->board_id) as $undergrads) {
                     // undergrads
-                    if ($undergrads->children->count() < 2) {
+                    if ($undergrads->boardChildren($invited_user_board->board_id)->count() < 2) {
                         $parent_id = $undergrads->user_id;
 
-                        foreach ($undergrads->children as $child) {
+                        foreach ($undergrads->boardChildren($invited_user_board->board_id) as $child) {
                             if ($child->position == 'left')
                                 $position = 'right';
                         }
                     } else {
                         $sibling = $this->siblings($undergrads);
 
-                        if ($sibling->children->count() < 2) {
+                        if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
                             $parent_id = $sibling->user_id;
 
-                            foreach ($sibling->children as $child) {
+                            foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
                                 if ($child->position == 'left')
                                     $position = 'right';
                             }
                         } else {
                             $sibling = $this->siblings($invited_user_board);
 
-                            foreach ($sibling->children as $undergrad) {
+                            foreach ($sibling->boardChildren($invited_user_board->board_id) as $undergrad) {
                                 // Undergrad
-                                if ($undergrad->children->count() < 2) {
+                                if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
                                     $parent_id = $undergrad->user_id;
 
                                     if ($undergrad->position == 'left')
@@ -159,10 +161,10 @@ class RegisterController extends Controller
                 break;
 
             case('undergrad'):
-                if ($invited_user_board->children->count() < 2) {
+                if ($invited_user_board->boardChildren($invited_user_board->board_id)->count() < 2) {
                     $parent_id = $invited_user_board->user_id;
 
-                    foreach ($invited_user_board->children as $child) {
+                    foreach ($invited_user_board->boardChildren($invited_user_board->board_id) as $child) {
                         if ($child->position == 'left')
                             $position = 'right';
                     }
@@ -170,10 +172,10 @@ class RegisterController extends Controller
                     // Get Siblings
                     $sibling = $this->siblings($invited_user_board);
 
-                    if ($sibling->children->count() < 2) {
+                    if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
                         $parent_id = $sibling->user_id;
 
-                        foreach ($sibling->children as $child) {
+                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
                             if ($child->position == 'left')
                                 $position = 'right';
                         }
@@ -181,11 +183,11 @@ class RegisterController extends Controller
                         $parent = $invited_user_board->parent;
                         $sibling = $this->siblings($parent);
 
-                        foreach ($sibling->children as $child) {
-                            if ($child->children->count() < 2) {
+                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
+                            if ($child->boardChildren($invited_user_board->board_id)->count() < 2) {
                                 $parent_id = $child->user_id;
 
-                                foreach ($child->children as $newbie) {
+                                foreach ($child->boardChildren($invited_user_board->board_id) as $newbie) {
                                     if ($child->position == 'left')
                                         $position = 'right';
                                 }
@@ -208,10 +210,10 @@ class RegisterController extends Controller
                     $parent = $invited_user_board->parent;
                     $sibling = $this->siblings($parent);
 
-                    if ($sibling->children->count() < 2) {
+                    if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
                         $parent_id = $sibling->user_id;
 
-                        foreach ($sibling->children as $child) {
+                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
                             $parent_id = $child->parent_id;
 
                             if ($child->position == 'left')
@@ -224,8 +226,8 @@ class RegisterController extends Controller
                         $parent = $parent->parent;
                         $sibling = $this->siblings($parent);
 
-                        foreach ($sibling->children as $undergrad) {
-                            if ($undergrad->children->count() < 2) {
+                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $undergrad) {
+                            if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
                                 $parent_id = $undergrad->user_id;
 
                                 if ($undergrad->position == 'left')
