@@ -78,7 +78,7 @@
                                                             </div>
                                                             <h4>undergrads</h4>
                                                             <ul>
-                                                                @foreach($undergrad->children as $key => $newbie)
+                                                                @forelse($undergrad->children as $key => $newbie)
                                                                     <li>
                                                                         <div>
                                                                             <div class="inviterCard invitees">
@@ -92,7 +92,37 @@
                                                                         </div>
                                                                         <h4>Newbies</h4>
                                                                     </li>
-                                                                @endforeach
+                                                                    @if($undergrad->children->count() == 1)
+                                                                        <li>
+                                                                            <div>
+                                                                                <div class="inviterCard invitees">
+                                                                                    <h4>No Invitee</h4>
+                                                                                    <p>{{ ($y++) }}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <h4>Newbies</h4>
+                                                                        </li>
+                                                                    @endif
+                                                                @empty
+                                                                    <li>
+                                                                        <div>
+                                                                            <div class="inviterCard invitees">
+                                                                                <h4>No Invitee</h4>
+                                                                                <p>{{ ($y++) }}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <h4>Newbies</h4>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div>
+                                                                            <div class="inviterCard invitees">
+                                                                                <h4>No Invitee</h4>
+                                                                                <p>{{ ($y++) }}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <h4>Newbies</h4>
+                                                                    </li>
+                                                                @endforelse
                                                             </ul>
                                                         </li>
                                                     @endforeach
