@@ -43,7 +43,7 @@
                                             <img
                                                 src="{{ $grad['user']->user_image ? asset('upload/user/' . $grad['user']->user_image) : asset('assets/images/user.png') }}"
                                                 alt="">
-                                            <h4>{{ $grad['user']->username }}</h4>
+                                            <h4 style="color: {{ ($grad->user->inviters->count() == 0) ? '' : (($grad->user->inviters->count() == 1) ? 'red' : 'green') }}">{{$grad['user']->username}}</h4>
                                             <p>{{ ($key + 1) }}</p>
                                         </div>
                                     </div>
@@ -58,7 +58,7 @@
                                                         <img
                                                             src="{{ $pregrad['user']->user_image ? asset('upload/user/' . $pregrad['user']->user_image) : asset('assets/images/user.png') }}"
                                                             alt="">
-                                                        <h4>{{$pregrad['user']->username}}</h4>
+                                                        <h4 style="color: {{ ($pregrad->user->inviters->count() == 0) ? '' : (($pregrad->user->inviters->count() == 1) ? 'red' : 'green') }}">{{$pregrad['user']->username}}</h4>
                                                         <p>{{ ($key + 1) }}</p>
                                                     </div>
                                                 </div>
@@ -71,7 +71,8 @@
                                                                     <img
                                                                         src="{{ $undergrad['user']->user_image ? asset('upload/user/' . $undergrad['user']->user_image) : asset('assets/images/user.png') }}"
                                                                         alt="">
-                                                                    <h4>{{$undergrad['user']->username}}</h4>
+                                                                    {{ $undergrad->user->inviters->count() }}
+                                                                    <h4 style="color: {{ ($undergrad->user->inviters->count() == 0) ? 'black' : (($undergrad->user->inviters->count() == 1) ? 'red' : 'green') }}">{{$undergrad['user']->username}}</h4>
 
                                                                     <p>{{ ($x++) }}</p>
                                                                 </div>
@@ -85,7 +86,7 @@
                                                                                 <img
                                                                                     src="{{ $newbie['user']->user_image ? asset('upload/user/' . $newbie['user']->user_image) : asset('assets/images/user.png') }}"
                                                                                     alt="">
-                                                                                <h4>{{$newbie['user']->username}}</h4>
+                                                                                <h4 style="color: {{ ($newbie->user->inviters->count() == 0) ? '' : (($newbie->user->inviters->count() == 1) ? 'red' : 'green') }}">{{$newbie['user']->username}}</h4>
 
                                                                                 <p>{{ ($y++) }}</p>
                                                                             </div>
