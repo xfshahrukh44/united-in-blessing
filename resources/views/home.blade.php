@@ -171,7 +171,7 @@
                                     <td>{{ $gift->receiver->phone }}</td>
                                     <td>{{ $gift->receiver->email }}</td>
                                     <td>
-                                        <a href="{{ route('update-gift-status', [$gift->id, 'pending']) }}"
+                                        <a href="{{ route('update-gift-status', [$gift->id, ($gift->status != 'pending') ? 'pending' : 'not_sent']) }}"
                                            class="themeBtn w-100"><span></span>
                                             <text>{{ ($gift->status == 'pending') ? 'cancel' : 'send' }}</text>
                                         </a>

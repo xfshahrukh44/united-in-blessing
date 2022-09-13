@@ -63,7 +63,7 @@ class UserSeeder extends Seeder
         ]);
 
         $user1 = User::create([
-            'invited_by' => '0',
+            'invited_by' => $admin->id,
             'username' => 'user1',
             'first_name' => 'User',
             'last_name' => 'One',
@@ -89,7 +89,7 @@ class UserSeeder extends Seeder
         ]);
 
         $user2 = User::create([
-            'invited_by' => '0',
+            'invited_by' => $admin->id,
             'username' => 'user2',
             'first_name' => 'User',
             'last_name' => 'Two',
@@ -114,108 +114,108 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
-        $user3 = User::create([
-            'invited_by' => '0',
-            'username' => 'user3',
-            'first_name' => 'User',
-            'last_name' => 'Three',
-            'email' => 'user3@mailinator.com',
-            'phone' => '321654987',
-            'password' => Hash::make('Pa$$w0rd!'),
-        ]);
-
-        UserBoards::create([
-            'user_id' => $user3->id,
-            'board_id' => $board100->id,
-            'parent_id' => $user1->id,
-            'user_board_roles' => 'undergrad',
-            'position' => 'left'
-        ]);
-
-        UserProfileChangedLogs::create([
-            'user_id' => $user3->id,
-            'key' => 'username',
-            'value' => $user3->username,
-            'old_value' => 0,
-            'message' => 'New Account Created',
-        ]);
-
-        $user4 = User::create([
-            'invited_by' => '0',
-            'username' => 'user4',
-            'first_name' => 'User',
-            'last_name' => 'Four',
-            'email' => 'user4@mailinator.com',
-            'phone' => '321654987',
-            'password' => Hash::make('Pa$$w0rd!'),
-        ]);
-
-        UserBoards::create([
-            'user_id' => $user4->id,
-            'board_id' => $board100->id,
-            'parent_id' => $user1->id,
-            'user_board_roles' => 'undergrad',
-            'position' => 'right'
-        ]);
-
-        UserProfileChangedLogs::create([
-            'user_id' => $user4->id,
-            'key' => 'username',
-            'value' => $user4->username,
-            'old_value' => 0,
-            'message' => 'New Account Created',
-        ]);
-
-        $user5 = User::create([
-            'invited_by' => '0',
-            'username' => 'user5',
-            'first_name' => 'User',
-            'last_name' => 'Five',
-            'email' => 'user5@mailinator.com',
-            'phone' => '321654987',
-            'password' => Hash::make('Pa$$w0rd!'),
-        ]);
-
-        UserBoards::create([
-            'user_id' => $user5->id,
-            'board_id' => $board100->id,
-            'parent_id' => $user2->id,
-            'user_board_roles' => 'undergrad',
-            'position' => 'left'
-        ]);
-
-        UserProfileChangedLogs::create([
-            'user_id' => $user5->id,
-            'key' => 'username',
-            'value' => $user5->username,
-            'old_value' => 0,
-            'message' => 'New Account Created',
-        ]);
-
-        $user6 = User::create([
-            'invited_by' => '0',
-            'username' => 'user6',
-            'first_name' => 'User',
-            'last_name' => 'Six',
-            'email' => 'user6@mailinator.com',
-            'phone' => '321654987',
-            'password' => Hash::make('Pa$$w0rd!'),
-        ]);
-
-        UserBoards::create([
-            'user_id' => $user6->id,
-            'board_id' => $board100->id,
-            'parent_id' => $user2->id,
-            'user_board_roles' => 'undergrad',
-            'position' => 'right'
-        ]);
-
-        UserProfileChangedLogs::create([
-            'user_id' => $user6->id,
-            'key' => 'username',
-            'value' => $user6->username,
-            'old_value' => 0,
-            'message' => 'New Account Created',
-        ]);
+//        $user3 = User::create([
+//            'invited_by' => '0',
+//            'username' => 'user3',
+//            'first_name' => 'User',
+//            'last_name' => 'Three',
+//            'email' => 'user3@mailinator.com',
+//            'phone' => '321654987',
+//            'password' => Hash::make('Pa$$w0rd!'),
+//        ]);
+//
+//        UserBoards::create([
+//            'user_id' => $user3->id,
+//            'board_id' => $board100->id,
+//            'parent_id' => $user1->id,
+//            'user_board_roles' => 'undergrad',
+//            'position' => 'left'
+//        ]);
+//
+//        UserProfileChangedLogs::create([
+//            'user_id' => $user3->id,
+//            'key' => 'username',
+//            'value' => $user3->username,
+//            'old_value' => 0,
+//            'message' => 'New Account Created',
+//        ]);
+//
+//        $user4 = User::create([
+//            'invited_by' => '0',
+//            'username' => 'user4',
+//            'first_name' => 'User',
+//            'last_name' => 'Four',
+//            'email' => 'user4@mailinator.com',
+//            'phone' => '321654987',
+//            'password' => Hash::make('Pa$$w0rd!'),
+//        ]);
+//
+//        UserBoards::create([
+//            'user_id' => $user4->id,
+//            'board_id' => $board100->id,
+//            'parent_id' => $user1->id,
+//            'user_board_roles' => 'undergrad',
+//            'position' => 'right'
+//        ]);
+//
+//        UserProfileChangedLogs::create([
+//            'user_id' => $user4->id,
+//            'key' => 'username',
+//            'value' => $user4->username,
+//            'old_value' => 0,
+//            'message' => 'New Account Created',
+//        ]);
+//
+//        $user5 = User::create([
+//            'invited_by' => '0',
+//            'username' => 'user5',
+//            'first_name' => 'User',
+//            'last_name' => 'Five',
+//            'email' => 'user5@mailinator.com',
+//            'phone' => '321654987',
+//            'password' => Hash::make('Pa$$w0rd!'),
+//        ]);
+//
+//        UserBoards::create([
+//            'user_id' => $user5->id,
+//            'board_id' => $board100->id,
+//            'parent_id' => $user2->id,
+//            'user_board_roles' => 'undergrad',
+//            'position' => 'left'
+//        ]);
+//
+//        UserProfileChangedLogs::create([
+//            'user_id' => $user5->id,
+//            'key' => 'username',
+//            'value' => $user5->username,
+//            'old_value' => 0,
+//            'message' => 'New Account Created',
+//        ]);
+//
+//        $user6 = User::create([
+//            'invited_by' => '0',
+//            'username' => 'user6',
+//            'first_name' => 'User',
+//            'last_name' => 'Six',
+//            'email' => 'user6@mailinator.com',
+//            'phone' => '321654987',
+//            'password' => Hash::make('Pa$$w0rd!'),
+//        ]);
+//
+//        UserBoards::create([
+//            'user_id' => $user6->id,
+//            'board_id' => $board100->id,
+//            'parent_id' => $user2->id,
+//            'user_board_roles' => 'undergrad',
+//            'position' => 'right'
+//        ]);
+//
+//        UserProfileChangedLogs::create([
+//            'user_id' => $user6->id,
+//            'key' => 'username',
+//            'value' => $user6->username,
+//            'old_value' => 0,
+//            'message' => 'New Account Created',
+//        ]);
     }
 }

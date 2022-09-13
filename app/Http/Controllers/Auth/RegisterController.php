@@ -84,7 +84,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $parent_id = '';
+        $parent_id = $role = '';
         $position = 'left';
 
         $invited_user = User::where('username', $data['inviters_username'])->first();
@@ -98,16 +98,26 @@ class RegisterController extends Controller
         switch ($invited_user_board->user_board_roles) {
             case('grad'):
                 foreach ($invited_user_board->boardChildren($invited_user_board->board_id) as $pregrad) {
-                    foreach ($pregrad->boardChildren($invited_user_board->board_id) as $undergrad) {
-                        if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
-                            $parent_id = $undergrad->user_id;
+                    if ($pregrad->boardChildren($invited_user_board->board_id)->count() < 2) {
+                        $parent_id = $pregrad->user_id;
+                        $role = 'undergrad';
 
-                            foreach ($undergrad->boardChildren($invited_user_board->board_id) as $child) {
-                                if ($child->position == 'left')
-                                    $position = 'right';
+                        foreach ($pregrad->boardChildren($invited_user_board->board_id) as $undergrad) {
+                            if ($undergrad->position == 'left')
+                                $position = 'right';
+                        }
+                    } else {
+                        foreach ($pregrad->boardChildren($invited_user_board->board_id) as $undergrad) {
+                            if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
+                                $parent_id = $undergrad->user_id;
+
+                                foreach ($undergrad->boardChildren($invited_user_board->board_id) as $child) {
+                                    if ($child->position == 'left')
+                                        $position = 'right';
+                                }
+
+                                break;
                             }
-
-                            break;
                         }
                     }
 
@@ -118,44 +128,54 @@ class RegisterController extends Controller
                 break;
 
             case('pregrad'):
-                foreach ($invited_user_board->boardChildren($invited_user_board->board_id) as $undergrads) {
-                    // undergrads
-                    if ($undergrads->boardChildren($invited_user_board->board_id)->count() < 2) {
-                        $parent_id = $undergrads->user_id;
+                if ($invited_user_board->boardChildren($invited_user_board->board_id)->count() < 2) {
+                    $parent_id = $invited_user_board->user_id;
+                    $role = 'undergrad';
 
-                        foreach ($undergrads->boardChildren($invited_user_board->board_id) as $child) {
-                            if ($child->position == 'left')
-                                $position = 'right';
-                        }
-                    } else {
-                        $sibling = $this->siblings($undergrads);
+                    foreach ($invited_user_board->boardChildren($invited_user_board->board_id) as $undergrad) {
+                        if ($undergrad->position == 'left')
+                            $position = 'right';
+                    }
+                } else {
+                    foreach ($invited_user_board->boardChildren($invited_user_board->board_id) as $undergrads) {
+                        // undergrads
+                        if ($undergrads->boardChildren($invited_user_board->board_id)->count() < 2) {
+                            $parent_id = $undergrads->user_id;
 
-                        if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
-                            $parent_id = $sibling->user_id;
-
-                            foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
+                            foreach ($undergrads->boardChildren($invited_user_board->board_id) as $child) {
                                 if ($child->position == 'left')
                                     $position = 'right';
                             }
                         } else {
-                            $sibling = $this->siblings($invited_user_board);
+                            $sibling = $this->siblings($undergrads);
 
-                            foreach ($sibling->boardChildren($invited_user_board->board_id) as $undergrad) {
-                                // Undergrad
-                                if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
-                                    $parent_id = $undergrad->user_id;
+                            if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
+                                $parent_id = $sibling->user_id;
 
-                                    if ($undergrad->position == 'left')
+                                foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
+                                    if ($child->position == 'left')
                                         $position = 'right';
+                                }
+                            } else {
+                                $sibling = $this->siblings($invited_user_board);
 
-                                    break;
+                                foreach ($sibling->boardChildren($invited_user_board->board_id) as $undergrad) {
+                                    // Undergrad
+                                    if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
+                                        $parent_id = $undergrad->user_id;
+
+                                        if ($undergrad->position == 'left')
+                                            $position = 'right';
+
+                                        break;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    if ($parent_id != '') {
-                        break;
+                        if ($parent_id != '') {
+                            break;
+                        }
                     }
                 }
                 break;
@@ -241,6 +261,7 @@ class RegisterController extends Controller
                 break;
         }
 
+        // Create User
         $user = User::create([
             'invited_by' => $invited_user->id,
             'username' => $data['username'],
@@ -251,25 +272,30 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
+        // Add User to the board
         UserBoards::create([
             'user_id' => $user->id,
             'board_id' => $invited_user_board->board_id,
             'parent_id' => $parent_id,
-            'user_board_roles' => 'newbie',
+            'user_board_roles' => $role ?? 'newbie',
             'position' => $position
         ]);
 
+        // Get grad of the board to send the gift
         $boardGrad = UserBoards::where('board_id', $invited_user_board->board_id)
             ->where('user_board_roles', 'grad')
             ->with('user', 'board')
             ->first();
 
-        GiftLogs::create([
-            'sent_by' => $user->id,
-            'sent_to' => $boardGrad->user_id,
-            'board_id' => $invited_user_board->board_id,
-            'amount' => $boardGrad->board->amount,
-        ]);
+        // If role is empty so it means that the new user is invitee and create a gift log to send the gift to the admin.
+        if (empty($role)) {
+            GiftLogs::create([
+                'sent_by' => $user->id,
+                'sent_to' => $boardGrad->user_id,
+                'board_id' => $invited_user_board->board_id,
+                'amount' => $boardGrad->board->amount,
+            ]);
+        }
 
         $userLogs = generateUserProfileLogs($user->id, 'username', $data['username'], 0, 'New Account Created', 'accepted');
 
