@@ -71,7 +71,6 @@
                                                                     <img
                                                                         src="{{ $undergrad['user']->user_image ? asset('upload/user/' . $undergrad['user']->user_image) : asset('assets/images/user.png') }}"
                                                                         alt="">
-                                                                    {{ $undergrad->user->inviters->count() }}
                                                                     <h4 style="color: {{ ($undergrad->user->inviters->count() == 0) ? 'black' : (($undergrad->user->inviters->count() == 1) ? 'red' : 'green') }}">{{$undergrad['user']->username}}</h4>
 
                                                                     <p>{{ ($x++) }}</p>

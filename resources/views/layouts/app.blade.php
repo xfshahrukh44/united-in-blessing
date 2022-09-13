@@ -79,9 +79,11 @@
                         <li class="nav-item">
                             <a href="{{ url('/') }}" class="nav-link">LANDING</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ url('profile') }}" class="nav-link">PROFILE</a>
-                        </li>
+                        @if(Auth::check())
+                            <li class="nav-item">
+                                <a href="{{ url('profile') }}" class="nav-link">PROFILE</a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>
