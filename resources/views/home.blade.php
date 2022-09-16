@@ -131,7 +131,9 @@
                                                 <text>Confirm</text>
                                             </a>
                                             <a href="{{ route('update-gift-status', [$gift->id, 'reject']) }}"
-                                               class="tableIconBtn"><i class="fa fa-trash"></i></a>
+                                               class="themeBtn w-100" style="background-color: red"><span style="left: -8px; top: 1705px;"></span>
+                                                <text>Remove</text>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
