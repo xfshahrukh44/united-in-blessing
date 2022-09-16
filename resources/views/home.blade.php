@@ -36,7 +36,7 @@
                         </div>
                     @endif
                 </div>
-                <div class="col-lg-12 text-center my-5">
+                <div class="col-lg-12 text-center mb-3 mt-5">
                     <h3>My Invitees</h3>
                 </div>
 
@@ -98,7 +98,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-lg-12 text-center my-5">
+                <div class="col-lg-12 text-center mb-3 mt-5">
                     <h3>Pending Incoming Gifts</h3>
                 </div>
                 <div class="col-lg-9">
@@ -144,7 +144,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-lg-12 text-center my-5">
+                <div class="col-lg-12 text-center mb-3 mt-5">
                     <h3>Pending Outgoing Gifts</h3>
                 </div>
                 <div class="col-lg-9">

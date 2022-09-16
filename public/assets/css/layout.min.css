@@ -6,6 +6,11 @@ header {
     left: 0;
     right: 0;
     padding-top: 1.5rem;
+    z-index: 1;
+}
+
+header img {
+    filter: grayscale(1) brightness(100);
 }
 
 .indexHeader {
@@ -52,25 +57,25 @@ header {
     transition: all ease 0.5s;
 }
 
-.menu-toggler .navbar-icon>span:nth-child(2) {
+.menu-toggler .navbar-icon > span:nth-child(2) {
     margin: 4px auto;
 }
 
-.menu-toggler.active .navbar-icon>span:not(:nth-child(2)) {
+.menu-toggler.active .navbar-icon > span:not(:nth-child(2)) {
     position: absolute;
 }
 
-.menu-toggler.active .navbar-icon>span:nth-child(1) {
+.menu-toggler.active .navbar-icon > span:nth-child(1) {
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
 }
 
-.menu-toggler.active .navbar-icon>span:nth-child(3) {
+.menu-toggler.active .navbar-icon > span:nth-child(3) {
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
 
-.menu-toggler.active .navbar-icon>span:nth-child(2) {
+.menu-toggler.active .navbar-icon > span:nth-child(2) {
     opacity: 0;
 }
 
