@@ -36,7 +36,7 @@
                         </div>
                     @endif
                 </div>
-                <div class="col-lg-12 text-center my-5">
+                <div class="col-lg-12 text-center mb-3 mt-5">
                     <h3>My Invitees</h3>
                 </div>
 
@@ -98,7 +98,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-lg-12 text-center my-5">
+                <div class="col-lg-12 text-center mb-3 mt-5">
                     <h3>Pending Incoming Gifts</h3>
                 </div>
                 <div class="col-lg-9">
@@ -131,7 +131,9 @@
                                                 <text>Confirm</text>
                                             </a>
                                             <a href="{{ route('update-gift-status', [$gift->id, 'reject']) }}"
-                                               class="tableIconBtn"><i class="fa fa-trash"></i></a>
+                                               class="themeBtn w-100" style="background-color: red"><span style="left: -8px; top: 1705px;"></span>
+                                                <text>Remove</text>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
@@ -144,7 +146,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-lg-12 text-center my-5">
+                <div class="col-lg-12 text-center mb-3 mt-5">
                     <h3>Pending Outgoing Gifts</h3>
                 </div>
                 <div class="col-lg-9">
