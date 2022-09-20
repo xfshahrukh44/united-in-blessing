@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/jquery.fancybox.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/slick.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/slick-theme.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('assets/css/fontawesome.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/custom.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/responsive.min.css') }}"/>
 

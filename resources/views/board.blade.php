@@ -13,21 +13,34 @@
     <!-- END: Main Slider -->
 
     <section class="treeSec">
-        <div class="container-fluid">
-            <div class="row mb-5 justify-content-center">
-                <div class="col-md-3">
-                    <div class="inviterCard invitees boardCard">
-                        <div class="titles">
-                            <p>Board: </p>
-                            <p>Previous Board No:</p>
-                            <p>Previous GRAD: </p>
-                            <p>Board Status: </p>
-                        </div>
-                        <div class="info">
-                            <p>{{ $board->board_number }}</p>
-                            <p>132456</p>
-                            <p>Username</p>
-                            <p>{{ $board->status }}</p>
+        <a href="{{route('home')}}" class="backBtn">
+            <i class="fas fa-arrow-to-left"></i>
+        </a>
+        <div class="container">
+            <div class="row my-5 justify-content-center">
+                <div class="col-md-8">
+                    <div class="container-fluid">
+                        <div class="row justify-content-between">
+                            <div class="col-md-5">
+                                <div class="titles">
+                                    <p>Board: </p>
+                                    <p>Previous Board No:</p>
+                                </div>
+                                <div class="info">
+                                    <p>{{ $board->board_number }}</p>
+                                    <p>132456</p>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="titles">
+                                    <p>Previous GRAD: </p>
+                                    <p>Board Status: </p>
+                                </div>
+                                <div class="info">
+                                    <p>Username</p>
+                                    <p>{{ $board->status }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
