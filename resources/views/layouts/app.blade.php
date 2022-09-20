@@ -53,11 +53,9 @@
 </header>
 <!-- navigation -->
 <div class="navigation-menu" id="overlayNavigation">
-    <div class="navigation-bg one"></div>
-    <div class="navigation-bg two"></div>
     <div class="container-fluid h-100">
         <div class="row h-100">
-            <div class="offset-md-6 col-md-6 navigation-wrapper">
+            <div class="col-12 navigation-wrapper">
                 <div class="nav-inner">
                     <ul class="list-inline">
                         <li class="nav-item">

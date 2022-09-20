@@ -202,3 +202,30 @@ color: #222;
 .treeSec .inviterCard.invitees.noimg {
     margin: 0;
 }
+
+.treeSec .row .row {
+    background: #fff;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    padding: 2rem 3.5rem;
+    border-radius: 10px;
+}
+
+.treeSec .row .row > * {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.treeSec .row .row .titles p {
+    font-size: 1.375rem;
+    font-weight: 500;
+}
+
+.treeSec .row .row .titles p + p, .treeSec .row .row .info p + p {
+    margin-top: 1rem;
+}
+
+.treeSec .row .row .info p {
+    font-size: 1.125rem;
+    font-weight: 400;
+}

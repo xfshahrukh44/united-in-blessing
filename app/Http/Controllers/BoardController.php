@@ -20,7 +20,7 @@ class BoardController extends Controller
                 ->with(['user', 'children'])
                 ->get();
 
-            return view('board', compact('board', 'boardGrad', 'gifts'));
+            return view('board-new', compact('board', 'boardGrad', 'gifts'));
         } catch (\Exception $exception) {
             return back()->withErrors($exception->getMessage());
         }
