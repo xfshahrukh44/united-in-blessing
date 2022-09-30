@@ -9,7 +9,7 @@
         <img class="w-100" src="{{ asset('assets/images/ban1.jpg') }}" alt="First slide">
         <div class="overlay">
             <h3>Welcome UIB</h3>
-            <h2>Username ({{ Auth::user()->username }})</h2>
+            <h2>{{ Auth::user()->first_name . ' ' . Auth::user()->last_name }} ({{ Auth::user()->username }})</h2>
         </div>
     </div>
     <!-- END: Main Slider -->
@@ -82,7 +82,10 @@
                                 <tr>
                                     <td>${{ $uboard->board->amount }}</td>
                                     <td><span>{{ $uboard->board->board_number }}</span></td>
-                                    <td>{{ $uboard->boardGrad->user->username }}</td>
+                                    <td>{{ $uboard->boardGrad->user->username }}
+                                        ({{ $uboard->boardGrad->user->first_name . ' ' . $uboard->boardGrad->user->last_name }}
+                                        )
+                                    </td>
                                     <td>
                                         <a href="{{ route('board.index', $uboard->board->id) }}" class="themeBtn w-100"><span></span>
                                             <text>{{ $uboard->board->status }}</text>
@@ -121,7 +124,7 @@
                                     <td>${{ round($gift->amount) }}</td>
                                     <td>{{ $gift->board->board_number }}</td>
                                     <td>Newbie</td>
-                                    <td>{{ $gift->sender->username }}</td>
+                                    <td>{{ $gift->sender->username }} ({{ $gift->sender->first_name . ' ' . $gift->sender->last_name }})</td>
                                     <td>{{ $gift->sender->phone }}</td>
                                     <td>{{ $gift->sender->email }}</td>
                                     <td>
@@ -131,7 +134,7 @@
                                                 <text>Confirm</text>
                                             </a>
                                             <a href="{{ route('update-gift-status', [$gift->id, 'reject']) }}"
-                                               class="tableIconBtn"><i class="fa fa-trash"></i></a>
+                                               class="tableIconBtn" title="Delete"><i class="fa fa-trash"></i></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -167,7 +170,7 @@
                                     <td>${{ round($gift->amount) }}</td>
                                     <td>{{ $gift->board->board_number }}</td>
                                     <td>Newbie</td>
-                                    <td>{{ $gift->receiver->username }}</td>
+                                    <td>{{ $gift->receiver->username }} ({{ $gift->receiver->first_name . ' ' . $gift->receiver->last_name }})</td>
                                     <td>{{ $gift->receiver->phone }}</td>
                                     <td>{{ $gift->receiver->email }}</td>
                                     <td>
@@ -189,7 +192,7 @@
             </div>
         </div>
     </section>
-{{--    MODAL--}}
+    {{--    MODAL--}}
     <div class="modal fade" id="inactivity" tabindex="-1" role="dialog" aria-labelledby="inactivity" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -209,52 +212,54 @@
 
 @section('page_script')
     <script>
-    let global = 10;
+        let global = 10;
 
-    function noMovement() {
-        if (global == 0) {
-            userLogout();
-            resetGlobal();
-            $('#inactivity').modal('show');
-        } else {
-            global--;
-        }
-    }
-
-    function  reload()
-    {
-        location.reload();
-    }
-    function resetGlobal() {
-        global=10;
-    }
-
-    function userLogout() {
-        $.ajax({
-            url: '{{route('logout')}}',
-            type: 'POST',
-            data: {
-                "_token": "{{ csrf_token() }}"
-            },
-            success: function (res) {
-                console.log(res);
-            },
-            error: function () {
-
+        function noMovement() {
+            if (global == 0) {
+                userLogout();
+                resetGlobal();
+                $('#inactivity').modal('show');
+            } else {
+                global--;
             }
-        })
-    }
+        }
 
-    $(document).ready(function(){
-        $('html').mousemove(function(event){
-            resetGlobal();
+        function reload() {
+            location.reload();
+        }
+
+        function resetGlobal() {
+            global = 10;
+        }
+
+        function userLogout() {
+            $.ajax({
+                url: '{{route('logout')}}',
+                type: 'POST',
+                data: {
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function (res) {
+                    console.log(res);
+                },
+                error: function () {
+
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('html').mousemove(function (event) {
+                resetGlobal();
+            });
+
         });
 
-    });
+        setInterval(function () {
+            noMovement()
+        }, 900000); //900000
 
-    setInterval(function(){noMovement()}, 900000); //900000
-
-</script>
+    </script>
 @endsection
 
 

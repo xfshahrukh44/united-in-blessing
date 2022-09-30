@@ -61,8 +61,9 @@ class RegisterController extends Controller
                     $inviter = User::where('username', $val)->first();
 
                     // Get user Board where newbie count is less than 8
-                    if (is_null(UserBoards::where('user_id', $inviter->id)->has('newbies', '<', 8)->first())) {
-                        $fail("There's no place left in the board. Please try again later.");
+                    // Check if the inviter is not newbie
+                    if (is_null(UserBoards::where('user_id', $inviter->id)->where('user_board_roles', '!=', 'newbie')->has('newbies', '<', 8)->first())) {
+                        $fail("There's no place left in the board or the person that invited you is 'newbie' in the board. Please try again later.");
                     }
                 }
             }],
@@ -220,45 +221,45 @@ class RegisterController extends Controller
 
                 break;
 
-            case('newbie'):
-                if ($this->siblings($invited_user_board) == null) {
-                    $parent_id = $invited_user_board->parent_id;
-
-                    if ($invited_user_board->position == 'left')
-                        $position = 'right';
-                } else {
-                    $parent = $invited_user_board->parent;
-                    $sibling = $this->siblings($parent);
-
-                    if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
-                        $parent_id = $sibling->user_id;
-
-                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
-                            $parent_id = $child->parent_id;
-
-                            if ($child->position == 'left')
-                                $position = 'right';
-
-                            break;
-                        }
-                    } else {
-                        // Pregrad
-                        $parent = $parent->parent;
-                        $sibling = $this->siblings($parent);
-
-                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $undergrad) {
-                            if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
-                                $parent_id = $undergrad->user_id;
-
-                                if ($undergrad->position == 'left')
-                                    $position = 'right';
-
-                                break;
-                            }
-                        }
-                    }
-                }
-                break;
+//            case('newbie'):
+//                if ($this->siblings($invited_user_board) == null) {
+//                    $parent_id = $invited_user_board->parent_id;
+//
+//                    if ($invited_user_board->position == 'left')
+//                        $position = 'right';
+//                } else {
+//                    $parent = $invited_user_board->parent;
+//                    $sibling = $this->siblings($parent);
+//
+//                    if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
+//                        $parent_id = $sibling->user_id;
+//
+//                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
+//                            $parent_id = $child->parent_id;
+//
+//                            if ($child->position == 'left')
+//                                $position = 'right';
+//
+//                            break;
+//                        }
+//                    } else {
+//                        // Pregrad
+//                        $parent = $parent->parent;
+//                        $sibling = $this->siblings($parent);
+//
+//                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $undergrad) {
+//                            if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
+//                                $parent_id = $undergrad->user_id;
+//
+//                                if ($undergrad->position == 'left')
+//                                    $position = 'right';
+//
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
+//                break;
         }
 
         // Create User
@@ -277,7 +278,7 @@ class RegisterController extends Controller
             'user_id' => $user->id,
             'board_id' => $invited_user_board->board_id,
             'parent_id' => $parent_id,
-            'user_board_roles' => $role ?? 'newbie',
+            'user_board_roles' => $role != '' ? $role : 'newbie',
             'position' => $position
         ]);
 
