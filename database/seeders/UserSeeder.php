@@ -26,11 +26,11 @@ class UserSeeder extends Seeder
             'board_number' => 'board-2',
             'amount' => '400',
         ]);
-        $board1000 =Boards::create([
+        $board1000 = Boards::create([
             'board_number' => 'board-3',
             'amount' => '1000',
         ]);
-        $board2000 =Boards::create([
+        $board2000 = Boards::create([
             'board_number' => 'board-4',
             'amount' => '2000',
         ]);
