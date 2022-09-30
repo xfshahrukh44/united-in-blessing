@@ -28,7 +28,7 @@
                                 </div>
                                 <div class="info">
                                     <p>{{ $board->board_number }}</p>
-                                    <p>132456</p>
+                                    <p>{{ $board->previous_board_number }}</p>
                                 </div>
                             </div>
                             <div class="col-md-5">
@@ -98,7 +98,7 @@
                                                                                 <img
                                                                                     src="{{ $newbie['user']->user_image ? asset('upload/user/' . $newbie['user']->user_image) : asset('assets/images/user.png') }}"
                                                                                     alt="">
-                                                                                <h4 style="color: {{ ($newbie->user->inviters->count() == 0) ? 'black' : (($newbie->user->inviters->count() == 1) ? 'red' : 'gree0n') }}">{{$newbie['user']->username}}</h4>
+                                                                                <h4 style="color: {{ ($newbie->user->inviters->count() == 0) ? '' : (($newbie->user->inviters->count() == 1) ? 'red' : 'green') }}">{{$newbie['user']->username}}</h4>
 
                                                                                 <p>{{ ($y++) }}</p>
                                                                             </div>

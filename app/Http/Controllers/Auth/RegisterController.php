@@ -288,13 +288,14 @@ class RegisterController extends Controller
             ->with('user', 'board')
             ->first();
 
-        // If role is empty so it means that the new user is invitee and create a gift log to send the gift to the admin.
+        // If role is empty so it means that the new user is newbie and create a gift log to send the gift to the admin.
         if (empty($role)) {
             GiftLogs::create([
                 'sent_by' => $user->id,
                 'sent_to' => $boardGrad->user_id,
                 'board_id' => $invited_user_board->board_id,
                 'amount' => $boardGrad->board->amount,
+                'status' => 'pending',
             ]);
         }
 

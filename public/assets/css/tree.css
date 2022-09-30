@@ -78,27 +78,27 @@ color: #222;
 }
 
 .tree.vertical li:before {
-    border-left: 1px solid #ddd;
+    /*border-left: 1px solid #ddd;*/
     height: 18px;
     width: 0;
     top: 0;
 }
 
 .tree.vertical li:after {
-    border-top: 1px solid #ddd;
+    /*border-top: 1px solid #ddd;*/
     height: 0;
     width: 100%;
 }
 
 .tree.vertical li:first-child:after {
-    border-top: 1px solid #ddd;
+    /*border-top: 1px solid #ddd;*/
     height: 0;
     width: 100%;
     left: 50%;
 }
 
 .tree.vertical li:last-child:after {
-    border-top: 1px solid #ddd;
+    /*border-top: 1px solid #ddd;*/
     height: 0;
     width: 50%;
     right: 50%;
@@ -108,11 +108,49 @@ color: #222;
     content: none;
 }
 
-.tree.vertical li ul:before {
-    border-left: 1px solid #ddd;
-    height: 18px;
-    width: 0;
-    top: -18px;
+.tree.vertical li ul li:before {
+    height: 7px;
+    border-radius: 10px;
+    background: var(--primary);
+    width: 100%;
+}
+
+.tree.vertical > li > ul > li:first-child:before{
+    transform: rotate(-30deg);
+    right: 0;
+    width: 50%;
+}
+
+.tree.vertical > li > ul > li:last-child:before {
+    transform: rotate(30deg);
+    left: 0;
+    width: 50%;
+}
+
+.tree.vertical > li > ul > li > ul > li:first-child:before {
+    transform: rotate(-45deg) translateX(-75%);
+    left: 75%;
+    width: 50%;
+    top: -24%;
+}
+
+.tree.vertical > li > ul > li > ul > li:last-child:before {
+    transform: rotate(45deg);
+    left: 0;
+    width: 50%;
+    top: -5%;
+}
+
+.tree.vertical > li > ul > li > ul > li > ul > li:first-child:before {
+    transform: rotate(-45deg) translateX(-50%);
+    top: -40%;
+    left: 50%;
+}
+
+.tree.vertical > li > ul > li > ul > li > ul > li:last-child:before{
+    transform: rotate(45deg) translateX(50%);
+    top: -40%;
+    right: 50%;
 }
 
 .tree.vertical > li:only-child:before, .tree.vertical > li:only-child:after {
@@ -191,6 +229,10 @@ color: #222;
     font-size: 1.5rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
+    position: relative;
+    z-index: 11;
+    background: #fff;
+    padding: 0.25rem 0.75rem;
 }
 
 .treeSec p {
@@ -201,4 +243,35 @@ color: #222;
 
 .treeSec .inviterCard.invitees.noimg {
     margin: 0;
+}
+
+.treeSec .row .row {
+    background: #fff;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    padding: 2rem 3.5rem;
+    border-radius: 10px;
+}
+
+.treeSec .row .row > * {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.treeSec .row .row .titles p {
+    font-size: 1.375rem;
+    font-weight: 500;
+}
+
+.treeSec .row .row .titles p + p, .treeSec .row .row .info p + p {
+    margin-top: 1rem;
+}
+
+.treeSec .row .row .info p {
+    font-size: 1.125rem;
+    font-weight: 400;
+}
+
+.treeSec{
+    position: relative;
 }
