@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class UserBoards extends Model
 {
-    use HasFactory;
+    use Uuids, HasFactory;
 
-    protected $primaryKey = null;
-    public $incrementing = false;
+//    protected $primaryKey = null;
+//    public $incrementing = false;
 
     protected $fillable = ['user_id', 'board_id', 'parent_id', 'user_board_roles', 'position'];
 
