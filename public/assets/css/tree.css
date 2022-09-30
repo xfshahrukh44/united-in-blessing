@@ -188,7 +188,7 @@ color: #222;
 }
 
 .treeSec h4 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
 }
@@ -196,5 +196,9 @@ color: #222;
 .treeSec p {
     font-weight: 700;
     font-size: 1.125rem;
+    margin: 0;
+}
+
+.treeSec .inviterCard.invitees.noimg {
     margin: 0;
 }

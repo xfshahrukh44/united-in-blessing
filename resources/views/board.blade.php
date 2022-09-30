@@ -15,7 +15,7 @@
     <section class="treeSec">
         <div class="container-fluid">
             <div class="row mb-5 justify-content-center">
-                <div class="col-md-8">
+                <div class="col-md-3">
                     <div class="inviterCard invitees boardCard">
                         <div class="titles">
                             <p>Board: </p>
@@ -106,7 +106,7 @@
                                                                 @empty
                                                                     <li>
                                                                         <div>
-                                                                            <div class="inviterCard invitees">
+                                                                            <div class="inviterCard invitees noimg">
                                                                                 <h4>No Invitee</h4>
                                                                                 <p>{{ ($y++) }}</p>
                                                                             </div>
@@ -115,7 +115,7 @@
                                                                     </li>
                                                                     <li>
                                                                         <div>
-                                                                            <div class="inviterCard invitees">
+                                                                            <div class="inviterCard invitees noimg">
                                                                                 <h4>No Invitee</h4>
                                                                                 <p>{{ ($y++) }}</p>
                                                                             </div>
