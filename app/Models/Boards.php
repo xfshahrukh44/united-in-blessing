@@ -10,7 +10,7 @@ class Boards extends Model
 {
     use Uuids, HasFactory;
 
-    protected $fillable = ['board_number', 'amount', 'status'];
+    protected $fillable = ['board_number', 'previous_board_number', 'amount', 'status'];
 
     public function members()
     {
