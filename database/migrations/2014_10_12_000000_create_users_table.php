@@ -16,10 +16,10 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('invited_by');
-            $table->string('username');
+            $table->string('username')->unique();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('phone');
             $table->enum('role', ['admin', 'user'])->default('user');
             $table->enum('timezone', ['EST', 'CST', 'MST', 'PST'])->nullable();
