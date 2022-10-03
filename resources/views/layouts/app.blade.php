@@ -63,24 +63,44 @@
                             <a href="{{ url('home') }}" class="nav-link">HOME</a>
                         </li>
 
-                        <li class="nav-item">
-                            @if(Auth::check())
+                        @if(Auth::check())
+                            <li class="nav-item">
+                                <a href="{{ url('profile') }}" class="nav-link">My PROFILE</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">How it works</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Guidelines</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">FAQ</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Board Placement</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Gifting Forms</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Privacy Statement</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ url('logout') }}" class="nav-link" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">LOGOUT</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
-                            @else
-                                <a href="{{ url('register') }}" class="nav-link">JOIN</a>
-                                <a href="{{ url('login') }}" class="nav-link">LOGIN</a>
-                            @endif
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('/') }}" class="nav-link">LANDING</a>
-                        </li>
-                        @if(Auth::check())
+                            </li>
+                        @else
                             <li class="nav-item">
-                                <a href="{{ url('profile') }}" class="nav-link">PROFILE</a>
+                                <a href="{{ url('register') }}" class="nav-link">JOIN</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('login') }}" class="nav-link">LOGIN</a>
                             </li>
                         @endif
                     </ul>
@@ -105,12 +125,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
 
 <script>
-    $(document).ready(function (){
+    $(document).ready(function () {
         $('input[name="phone"]').inputmask('999-999-9999');
     })
 </script>
 
-@yield('page_script')
+@yield('js')
 
 @if(session()->has('success'))
     <script type="text/javascript">  toastr.success('{{ session('success')}}');</script>
