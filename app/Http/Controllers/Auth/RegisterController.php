@@ -60,8 +60,8 @@ class RegisterController extends Controller
                 } else {
                     $inviter = User::where('username', $val)->first();
 
-                    // Get user Board where newbie count is less than 8
                     // Check if the inviter is not newbie
+                    // Get user Board where newbie count is less than 8
                     if (is_null(UserBoards::where('user_id', $inviter->id)
                         ->where('user_board_roles', '!=', 'newbie')
                         ->whereHas('board', function ($q){

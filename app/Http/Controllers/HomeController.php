@@ -37,9 +37,8 @@ class HomeController extends Controller
         $invitees = User::where('invited_by', Auth::user()->id)->get();
 
         $pendingIncomingGifts = GiftLogs::where('sent_to', Auth::user()->id)->where('status', 'pending')->with('board', 'sender')->get();
-        $pendingOutgoingGifts = GiftLogs::where('sent_by', Auth::user()->id)->where('status', '!=', 'accepted')->with('board', 'receiver')->get();
+        $pendingOutgoingGifts = GiftLogs::where('sent_by', Auth::user()->id)->where('status', 'pending')->with('board', 'receiver')->get();
 
         return view('home', compact('userBoards', 'inviter', 'invitees', 'pendingIncomingGifts', 'pendingOutgoingGifts'));
-//        return view('home', compact('userBoards', 'inviter', 'invitees','inviteesCount', 'pendingIncomingGifts', 'pendingOutgoingGifts'));
     }
 }
