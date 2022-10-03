@@ -60,9 +60,15 @@ class RegisterController extends Controller
                 } else {
                     $inviter = User::where('username', $val)->first();
 
-                    // Get user Board where newbie count is less than 8
                     // Check if the inviter is not newbie
-                    if (is_null(UserBoards::where('user_id', $inviter->id)->where('user_board_roles', '!=', 'newbie')->has('newbies', '<', 8)->first())) {
+                    // Get user Board where newbie count is less than 8
+                    if (is_null(UserBoards::where('user_id', $inviter->id)
+                        ->where('user_board_roles', '!=', 'newbie')
+                        ->whereHas('board', function ($q){
+                            $q->where('amount', '100');
+                        })
+                        ->has('newbies', '<', 8)->first())
+                    ) {
                         $fail("There's no place left in the board or the person that invited you is 'newbie' in the board. Please try again later.");
                     }
                 }
@@ -91,6 +97,9 @@ class RegisterController extends Controller
         $invited_user = User::where('username', $data['inviters_username'])->first();
 
         $invited_user_board = UserBoards::where('user_id', $invited_user->id)
+            ->whereHas('board', function ($q){
+                $q->where('amount', '100');
+            })
             ->has('newbies', '<', 8)
             ->first();
 

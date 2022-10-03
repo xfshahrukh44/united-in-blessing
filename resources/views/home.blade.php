@@ -133,7 +133,7 @@
                                                class="themeBtn w-100"><span style="left: -8px; top: 1705px;"></span>
                                                 <text>Confirm</text>
                                             </a>
-                                            <a href="{{ route('update-gift-status', [$gift->id, 'reject']) }}"
+                                            <a href="{{ route('update-gift-status', [$gift->id, 'not_sent']) }}"
                                                class="tableIconBtn" title="Delete"><i class="fa fa-trash"></i></a>
                                         </div>
                                     </td>
