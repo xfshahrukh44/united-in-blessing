@@ -101,6 +101,15 @@
 <script src="{{ asset('assets/js/custom.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/toastr/toastr.min.js')}}"></script>
 
+{{--input masking--}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function (){
+        $('input[name="phone"]').inputmask('999-999-9999');
+    })
+</script>
+
 @yield('page_script')
 
 @if(session()->has('success'))
