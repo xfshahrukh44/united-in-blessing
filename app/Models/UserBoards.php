@@ -31,6 +31,15 @@ class UserBoards extends Model
             ->with('user');
     }
 
+    /**
+     * Get board of specific amount
+     * @param $amount
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function boardAmount($amount){
+        return $this->belongsTo(Boards::class, 'board_id', 'id')->where('amount', $amount);
+    }
+
     public function parent()
     {
         return $this->belongsTo(UserBoards::class, 'parent_id', 'user_id');
