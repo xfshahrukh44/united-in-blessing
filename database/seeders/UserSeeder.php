@@ -446,7 +446,7 @@ class UserSeeder extends Seeder
             'user_id' => $LoyalT1->id,
             'board_id' => $board1000->id,
             'parent_id' => $nzinga->id,
-            'user_board_roles' => 'undegrad',
+            'user_board_roles' => 'pregrad',
             'position' => 'left',
         ]);
 
