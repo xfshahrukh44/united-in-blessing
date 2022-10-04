@@ -26,13 +26,14 @@ class BoardController extends Controller
         }
     }
 
-    public static function create($amount)
+    public static function create($amount, $previous_board_number)
     {
         $latest_board = Boards::all();
 
         try {
             return Boards::create([
                 'board_number' => 'board-' . ($latest_board->count() + 1),
+                'previous_board_number' => $previous_board_number,
                 'amount' => (string)((int)$amount),
             ]);
         } catch (\Exception $exception) {
