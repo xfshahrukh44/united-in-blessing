@@ -54,6 +54,6 @@ class UserBoards extends Model
      */
     public function boardChildren($board_id)
     {
-        return $this->children()->where('board_id', $board_id)->get();
+        return $this->children()->where('board_id', $board_id)->orderBy('position')->get();
     }
 }
