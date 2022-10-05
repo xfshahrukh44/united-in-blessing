@@ -20,6 +20,7 @@ class CreateBoardsTable extends Migration
             $table->enum('amount', ['100', '400', '1000', '2000']);
             $table->enum('status', ['active', 'retired'])->default('active');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

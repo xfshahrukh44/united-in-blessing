@@ -24,9 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-//        view()->composer('*', function ($view) {
-//            $setting = Settings::find(1);
-//            $view->with('setting', $setting);
-//        });
+        view()->composer('*', function ($view) {
+            $setting = Settings::find(1);
+            $view->with('setting', $setting);
+        });
     }
 }

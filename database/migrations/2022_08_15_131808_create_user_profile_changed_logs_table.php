@@ -19,7 +19,10 @@ class CreateUserProfileChangedLogsTable extends Migration
             $table->string('key');
             $table->string('value');
             $table->string('old_value');
+            $table->text('message')->nullable();
+            $table->enum('status', ['pending', 'accepted', 'rejected', 'discarded'])->default('accepted');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
