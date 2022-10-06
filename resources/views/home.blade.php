@@ -80,9 +80,9 @@
                             <tbody>
                             @forelse($userBoards as $uboard)
                                 <tr>
-                                    <td>${{ $uboard->board->amount }}</td>
-                                    <td><span>{{ $uboard->board->board_number }}</span></td>
-                                    <td>{{ $uboard->boardGrad->user->username }}
+                                    <td>${{ $uboard->board->amount ?? '' }}</td>
+                                    <td><span>{{ $uboard->board->board_number ?? '' }}</span></td>
+                                    <td>{{ $uboard->boardGrad->user->username ?? '' }}
                                         ({{ $uboard->boardGrad->user->first_name . ' ' . $uboard->boardGrad->user->last_name }}
                                         )
                                     </td>

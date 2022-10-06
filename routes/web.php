@@ -87,6 +87,22 @@ Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function
     Route::post('user/update/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('user/destroy/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
+    //Boards
+    Route::get('boards', [BoardController::class, 'boards'])->name('admin.boards.index');
+    Route::get('board/create/form', [BoardController::class, 'createForm'])->name('admin.board.create.view');
+    Route::post('board/store/{amount?}/{previous_board_number?}', [BoardController::class, 'create'])->name('admin.board.store');
+    Route::get('board/edit/{id}', [BoardController::class, 'edit'])->name('admin.board.edit');
+    Route::post('board/update/{id}', [BoardController::class, 'update'])->name('admin.board.update');
+    Route::delete('board/destroy/{id}', [BoardController::class, 'destroy'])->name('admin.board.destroy');
+
+    // Board Members
+    Route::get('board/members/{id}', [BoardController::class, 'boardMembers'])->name('admin.board.members');
+
+    // Gifts
+    Route::get('gifts', [GiftController::class, 'index'])->name('admin.gift.index');
+    Route::get('gift/edit/{id}', [GiftController::class, 'edit'])->name('admin.gift.edit');
+    Route::post('gift/update/{id}', [GiftController::class, 'update'])->name('admin.gift.update');
+
     //category
     Route::get('category', [Categories::class, 'index'])->name('category');
     Route::match(['get', 'post'], '/add-category', [Categories::class, 'addCategory'])->name('admin.add-category');

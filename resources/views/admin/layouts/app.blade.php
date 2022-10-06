@@ -133,18 +133,66 @@
                         </a>
                     </li>
 
-                    <li class="nav-item has-treeview {{ request()->IS('admin/settings') ? 'menu-is-opening menu-open' : '' }}">
+                    <li class="nav-item has-treeview {{ request()->IS('admin/users') || request()->IS('admin/user/create') ? 'menu-is-opening menu-open' : '' }}">
                         <a href="#" class="nav-link ">
                             <i class="nav-icon fas fa-user fw"></i>
                             <p>Users</p>
                         </a>
                         <ul class="nav nav-treeview"
-                            style="{{ request()->IS('admin/users') || request()->IS('admin/users') ? 'display:block;' : '' }}">
+                            style="{{ request()->IS('admin/users') ? 'display:block;' : '' }}">
+                            <li class="nav-item">
+                                <a href="{{route('user.create')}}"
+                                   class="nav-link {{ request()->IS('admin/user/create') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-user"></i>
+                                    <p>Create New User</p>
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a href="{{route('users.index')}}"
                                    class="nav-link {{ request()->IS('admin/users') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-user"></i>
                                     <p>All Users</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item has-treeview {{ request()->IS('admin/boards') || request()->IS('admin/board/create/form') ? 'menu-is-opening menu-open' : '' }}">
+                        <a href="#" class="nav-link ">
+                            <i class="nav-icon fas fa-clipboard fw"></i>
+                            <p>Boards</p>
+                        </a>
+                        <ul class="nav nav-treeview"
+                            style="{{ request()->IS('admin/boards') ? 'display:block;' : '' }}">
+                            <li class="nav-item">
+                                <a href="{{route('admin.board.create.view')}}"
+                                   class="nav-link {{ request()->IS('admin/board/create/form') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-clipboard"></i>
+                                    <p>Create New Boards</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('admin.boards.index')}}"
+                                   class="nav-link {{ request()->IS('admin/boards') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-clipboard"></i>
+                                    <p>All Boards</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item has-treeview {{ request()->IS('admin/boards') || request()->IS('admin/board/create/form') ? 'menu-is-opening menu-open' : '' }}">
+                        <a href="#" class="nav-link ">
+                            <i class="nav-icon fas fa-gift fw"></i>
+                            <p>Gifts</p>
+                        </a>
+                        <ul class="nav nav-treeview"
+                            style="{{ request()->IS('admin/gifts') ? 'display:block;' : '' }}">
+                            <li class="nav-item">
+                                <a href="{{route('admin.gift.index')}}"
+                                   class="nav-link {{ request()->IS('admin/gifts') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-gift"></i>
+                                    <p>All Gifts</p>
                                 </a>
                             </li>
                         </ul>
