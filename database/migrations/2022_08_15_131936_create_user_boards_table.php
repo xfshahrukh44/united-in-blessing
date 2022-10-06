@@ -21,6 +21,7 @@ class CreateUserBoardsTable extends Migration
             $table->enum('user_board_roles', ['grad', 'pregrad', 'undergrad', 'newbie']);
             $table->enum('position', ['left', 'right'])->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
