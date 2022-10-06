@@ -12,10 +12,10 @@ class GiftLogs extends Model
 
     protected $fillable = ['sent_by', 'sent_to', 'board_id', 'amount', 'status'];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
+//    public function user()
+//    {
+//        return $this->belongsTo(User::class, 'user_id', 'id');
+//    }
 
     public function board()
     {

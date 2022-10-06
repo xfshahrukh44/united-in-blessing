@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserBoards extends Model
 {
-    use Uuids, HasFactory;
+    use Uuids, HasFactory, SoftDeletes;
 
 //    protected $primaryKey = null;
 //    public $incrementing = false;
@@ -55,5 +56,12 @@ class UserBoards extends Model
     public function boardChildren($board_id)
     {
         return $this->children()->where('board_id', $board_id)->orderBy('position')->get();
+    }
+
+    public function boardMember($board_id, $user_board_role, $position){
+        return $this->where('board_id', $board_id)
+            ->where('user_board_roles', $user_board_role)
+            ->where('position', $position)
+            ->first();
     }
 }
