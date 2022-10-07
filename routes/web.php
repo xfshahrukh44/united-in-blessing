@@ -28,6 +28,7 @@ use App\Http\Controllers\BoardController;
 use App\Http\Controllers\GiftController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserBoardsController;
 use App\Http\Controllers\UsernameController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -97,9 +98,12 @@ Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function
 
     // Board Members
     Route::get('board/members/{id}', [BoardController::class, 'boardMembers'])->name('admin.board.members');
+    Route::post('board/members/update/{id}', [UserBoardsController::class, 'update'])->name('admin.update.board.members');
 
     // Gifts
     Route::get('gifts', [GiftController::class, 'index'])->name('admin.gift.index');
+    Route::get('gift/create', [GiftController::class, 'create'])->name('admin.gift.create');
+    Route::get('gift/store', [GiftController::class, 'store'])->name('admin.gift.store');
     Route::get('gift/edit/{id}', [GiftController::class, 'edit'])->name('admin.gift.edit');
     Route::post('gift/update/{id}', [GiftController::class, 'update'])->name('admin.gift.update');
 

@@ -146,9 +146,23 @@ class BoardController extends Controller
     }
 
     public function boardMembers($id){
-        $board = UserBoards::where('board_id', $id)->first();
-        $users = User::all();
+//        $board = UserBoards::where('board_id', $id)->first();
+//        $users = User::all();
+//
+//        return view('admin.boards.members', compact('board', 'users'));
 
-        return view('admin.boards.members', compact('board', 'users'));
+        try {
+            $users = User::all();
+            $board = Boards::find($id);
+            $gifts = $board->gifts->keyBy('sent_by');
+            $boardGrad = UserBoards::where('board_id', $id)
+                ->where('user_board_roles', 'grad')
+                ->with(['user', 'children'])
+                ->get();
+
+            return view('admin.boards.members', compact('users', 'board', 'boardGrad', 'gifts'));
+        } catch (\Exception $exception) {
+            return back()->with('error', $exception->getMessage());
+        }
     }
 }

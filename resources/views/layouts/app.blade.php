@@ -26,7 +26,7 @@
     <!-- Plugins -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toastr.min.css')}}">
 
-    @if(Request::is('board-tree/*'))
+    @if(Request::is('board-tree/*') || Request::is('admin/board/members/*'))
         <link rel="stylesheet" href="{{ asset('assets/css/tree.css') }}"/>
     @endif
 

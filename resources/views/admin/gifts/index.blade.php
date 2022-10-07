@@ -23,9 +23,9 @@
                     <div class="col-12">
                         <!-- /.card -->
                         <div class="card">
-                            <div class="card-header text-right">
-                                <a class="btn btn-primary pull-right addBtn" href="{{route('admin.board.create.view')}}">Create New Gifts</a>
-                            </div>
+{{--                            <div class="card-header text-right">--}}
+{{--                                <a class="btn btn-primary pull-right addBtn" href="{{route('admin.gift.create')}}">Create New Gifts</a>--}}
+{{--                            </div>--}}
                             <div class="col-md-12">
 
                             </div>
