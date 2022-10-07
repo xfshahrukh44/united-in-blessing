@@ -106,6 +106,7 @@ Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function
     Route::get('gift/store', [GiftController::class, 'store'])->name('admin.gift.store');
     Route::get('gift/edit/{id}', [GiftController::class, 'edit'])->name('admin.gift.edit');
     Route::post('gift/update/{id}', [GiftController::class, 'update'])->name('admin.gift.update');
+    Route::delete('gift/destroy/{id}', [GiftController::class, 'destroy'])->name('admin.gift.destroy');
 
     //category
     Route::get('category', [Categories::class, 'index'])->name('category');

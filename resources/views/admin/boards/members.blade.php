@@ -49,6 +49,7 @@
                     <div>
                         <form action="{{ route('admin.update.board.members', $board->id) }}" method="POST">
                             @csrf
+                            <button class="themeBtn" type="submit">Update Board</button>
                             <ul class="tree vertical">
                                 @foreach($boardGrad as $key => $grad)
                                     <li>
@@ -227,7 +228,6 @@
                                     </li>
                                 @endforeach
                             </ul>
-                            <button class="btn btn-success" type="submit">Update Board</button>
                         </form>
                     </div>
                 </div>

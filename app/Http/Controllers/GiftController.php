@@ -141,7 +141,9 @@ class GiftController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $gift = GiftLogs::find($id);
+        $gift->delete();
+        echo 1;
     }
 
     protected function siblings($user)

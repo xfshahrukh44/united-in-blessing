@@ -96,7 +96,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault"
                                            name="accept" required>
-                                    <label class="form-check-label" for="flexCheckDefault">Please confirm that you are a US resident in order to proceed</label>
+                                    <label class="form-check-label" for="flexCheckDefault">Please confirm that you are a US resident in order to proceed. Only CLICK HERE if you choose to place yourself on a $100 board to begin the voluntary gifting activity and  acknowledge that you have read and consent to the Guidelines.</label>
                                 </div>
                             </div>
                             <div class="mb-4">

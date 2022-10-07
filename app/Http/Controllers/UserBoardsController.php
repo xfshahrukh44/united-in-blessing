@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Boards;
+use App\Models\GiftLogs;
 use App\Models\UserBoards;
 use Illuminate\Http\Request;
 
@@ -80,6 +82,7 @@ class UserBoardsController extends Controller
     public function update(Request $request, $id)
     {
 //         dd($request->all());
+        $board = Boards::find($id);
         $input = $request->all();
 
         try {
@@ -163,8 +166,6 @@ class UserBoardsController extends Controller
             }
 
             // Newbies
-//            $position = 'left';
-//            dd($input['newbie']);
             foreach ($input['newbie'] as $parent => $newbie) {
                 // Check if newbie has changed
                 foreach ($newbie as $position => $user) {
@@ -177,6 +178,8 @@ class UserBoardsController extends Controller
 
                         if (!$new_newbie)
                             $new_newbie = new UserBoards();
+                        else
+                            $old_newbie = $new_newbie->user_id;
 
                         $new_newbie->user_id = $user;
 
@@ -188,6 +191,21 @@ class UserBoardsController extends Controller
 //                            dd($new_newbie);
 
                             $new_newbie->save();
+
+                            $giftlog = GiftLogs::where('board_id', $id)
+                                ->where('sent_by', $old_newbie)
+                                ->first();
+
+                            if (!$giftlog)
+                                $giftlog = new GiftLogs();
+
+                            $giftlog->sent_by = $user;
+                            $giftlog->sent_to = $grad->user_id;
+                            $giftlog->board_id = $id;
+                            $giftlog->amount = $board->amount;
+                            $giftlog->status = 'pending';
+
+                            $giftlog->save();
                         }
 
                     }
@@ -199,9 +217,6 @@ class UserBoardsController extends Controller
         } catch (\Exception $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }
-
-
-        dd('die');
     }
 
     public function updateMember($position, $children)

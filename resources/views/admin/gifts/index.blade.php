@@ -109,7 +109,7 @@
 
             $(document).on('click','#ok_delete',function(){
                 $.ajax({
-                    url:"{{url('admin/board/destroy')}}/"+delete_id,
+                    url:"{{url('admin/gift/destroy')}}/"+delete_id,
                     type:'post',
                     data:{
                         id:delete_id,

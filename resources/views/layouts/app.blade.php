@@ -77,9 +77,6 @@
                                 <a href="#" class="nav-link">FAQ</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link">Board Placement</a>
-                            </li>
-                            <li class="nav-item">
                                 <a href="#" class="nav-link">Gifting Forms</a>
                             </li>
                             <li class="nav-item">
