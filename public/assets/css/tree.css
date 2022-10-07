@@ -17,10 +17,11 @@
 }
 
 body {
-/ display: flex; /
-/ flex-wrap: wrap; /
-/ font-family: Arial; /
-/ justify-content: center; /
+/ display: flex;
+/ / flex-wrap: wrap;
+/ / font-family: Arial;
+/ / justify-content: center;
+/
 }
 
 h3 {
@@ -50,8 +51,8 @@ h3 {
 }
 
 .tree li > div {
-/ background-color: #eee; /
-color: #222;
+/ background-color: #eee;
+/ color: #222;
     padding: 5px;
     display: inline-block;
 }
@@ -115,7 +116,7 @@ color: #222;
     width: 100%;
 }
 
-.tree.vertical > li > ul > li:first-child:before{
+.tree.vertical > li > ul > li:first-child:before {
     transform: rotate(-30deg);
     right: 0;
     width: 50%;
@@ -147,7 +148,7 @@ color: #222;
     left: 50%;
 }
 
-.tree.vertical > li > ul > li > ul > li > ul > li:last-child:before{
+.tree.vertical > li > ul > li > ul > li > ul > li:last-child:before {
     transform: rotate(45deg) translateX(50%);
     top: -40%;
     right: 50%;
@@ -247,7 +248,7 @@ color: #222;
 
 .treeSec .row .row {
     background: #fff;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
     padding: 2rem 3.5rem;
     border-radius: 10px;
 }
@@ -272,6 +273,23 @@ color: #222;
     font-weight: 400;
 }
 
-.treeSec{
+.treeSec {
     position: relative;
+}
+
+.treeSec form {
+    position: relative;
+}
+
+.treeSec form button {
+    position: absolute;
+    right: 0;
+    z-index: 111;
+}
+
+
+.inviterCard select {
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
 }

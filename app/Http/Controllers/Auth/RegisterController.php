@@ -67,7 +67,7 @@ class RegisterController extends Controller
                         ->whereHas('board', function ($q){
                             $q->where('amount', '100');
                         })
-                        ->has('newbies', '<', 8)->first())
+                        ->has('newbies', '<', 9)->first())
                     ) {
                         $fail("There's no place left in the board or the person that invited you is 'newbie' in the board. Please try again later.");
                     }

@@ -23,9 +23,9 @@
                     <div class="col-12">
                         <!-- /.card -->
                         <div class="card">
-                            <div class="card-header text-right">
-                                <a class="btn btn-primary pull-right addBtn" href="{{route('admin.board.create.view')}}">Create New Gifts</a>
-                            </div>
+{{--                            <div class="card-header text-right">--}}
+{{--                                <a class="btn btn-primary pull-right addBtn" href="{{route('admin.gift.create')}}">Create New Gifts</a>--}}
+{{--                            </div>--}}
                             <div class="col-md-12">
 
                             </div>
@@ -109,7 +109,7 @@
 
             $(document).on('click','#ok_delete',function(){
                 $.ajax({
-                    url:"{{url('admin/board/destroy')}}/"+delete_id,
+                    url:"{{url('admin/gift/destroy')}}/"+delete_id,
                     type:'post',
                     data:{
                         id:delete_id,

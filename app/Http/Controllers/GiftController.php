@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Boards;
 use App\Models\GiftLogs;
 use App\Models\UserBoards;
 use Illuminate\Http\Request;
@@ -49,11 +50,13 @@ class GiftController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        $data['boards'] = Boards::all();
+
+        return view('admin.gifts.create', $data);
     }
 
     /**
@@ -138,7 +141,9 @@ class GiftController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $gift = GiftLogs::find($id);
+        $gift->delete();
+        echo 1;
     }
 
     protected function siblings($user)

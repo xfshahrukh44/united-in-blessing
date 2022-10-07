@@ -92,6 +92,17 @@
                                                             <h4>undergrads</h4>
                                                             <ul>
                                                                 @forelse($undergrad->boardChildren(Request::segment(2)) as $key => $newbie)
+                                                                    @if($undergrad->boardChildren(Request::segment(2))->count() == 1 && $newbie->position == 'right')
+                                                                        <li>
+                                                                            <div>
+                                                                                <div class="inviterCard invitees">
+                                                                                    <h4>No Invitee</h4>
+                                                                                    <p>{{ ($y++) }}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <h4>Newbies</h4>
+                                                                        </li>
+                                                                    @endif
                                                                     <li>
                                                                         <div>
                                                                             <div class="inviterCard invitees">
@@ -105,7 +116,7 @@
                                                                         </div>
                                                                         <h4>Newbies</h4>
                                                                     </li>
-                                                                    @if($undergrad->boardChildren(Request::segment(2))->count() == 1)
+                                                                    @if($undergrad->boardChildren(Request::segment(2))->count() == 1 && $newbie->position == 'left')
                                                                         <li>
                                                                             <div>
                                                                                 <div class="inviterCard invitees">
