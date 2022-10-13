@@ -121,9 +121,7 @@
                                                                                         <select
                                                                                             name="newbie[{{ $undergrad->user_id }}][{{ $newbie->position == 'left' ? 'right' : 'left' }}]"
                                                                                             id="newbie">
-                                                                                            <option value="">No
-                                                                                                invitee
-                                                                                            </option>
+                                                                                            <option value="">No invitee</option>
                                                                                             @foreach($users as $user)
                                                                                                 <option
                                                                                                     value="{{ $user->id }}">{{ $user->username }}</option>
@@ -142,7 +140,7 @@
                                                                                     <img
                                                                                         src="{{ $newbie['user']->user_image ? asset('upload/user/' . $newbie['user']->user_image) : asset('assets/images/user.png') }}"
                                                                                         alt="">
-                                                                                    {{--                                                                                    <select name="newbie_{{ $y . '_' . $newbie->position }}" id="newbie">--}}
+                                                                                    <a href="{{ route('admin.destroy.board.member', [$board->id, $newbie->user_id]) }}"><i class="fa fa-trash"></i></a>
                                                                                     <select
                                                                                         name="newbie[{{ $undergrad->user_id }}][{{ $newbie->position }}]"
                                                                                         id="newbie">

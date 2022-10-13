@@ -99,6 +99,7 @@ Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function
     // Board Members
     Route::get('board/members/{id}', [BoardController::class, 'boardMembers'])->name('admin.board.members');
     Route::post('board/members/update/{id}', [UserBoardsController::class, 'update'])->name('admin.update.board.members');
+    Route::get('board/members/destroy/{board_id}/{user_id}', [UserBoardsController::class, 'destroy'])->name('admin.destroy.board.member');
 
     // Gifts
     Route::get('gifts', [GiftController::class, 'index'])->name('admin.gift.index');

@@ -176,6 +176,7 @@ class UserBoardsController extends Controller
                             ->where('parent_id', $parent)
                             ->first();
 
+                        $old_newbie = null;
                         if (!$new_newbie)
                             $new_newbie = new UserBoards();
                         else
@@ -192,12 +193,13 @@ class UserBoardsController extends Controller
 
                             $new_newbie->save();
 
-                            $giftlog = GiftLogs::where('board_id', $id)
-                                ->where('sent_by', $old_newbie)
-                                ->first();
-
-                            if (!$giftlog)
+                            if (!is_null($old_newbie)) {
+                                $giftlog = GiftLogs::where('board_id', $id)
+                                    ->where('sent_by', $old_newbie)
+                                    ->first();
+                            } else {
                                 $giftlog = new GiftLogs();
+                            }
 
                             $giftlog->sent_by = $user;
                             $giftlog->sent_to = $grad->user_id;
@@ -232,10 +234,20 @@ class UserBoardsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($board_id, $user_id)
     {
-        //
+        try {
+            $user = UserBoards::where('board_id', $board_id)->where('user_id', $user_id)->first();
+            $user->delete();
+
+            $gift = GiftLogs::where('board_id', $board_id)->where('sent_by', $user_id)->first();
+            $gift->delete();
+
+            return redirect()->back()->with('success', 'User Removed from the board');
+        } catch (\Exception $exception){
+            return redirect()->back()->with('error', $exception->getMessage());
+        }
     }
 }
