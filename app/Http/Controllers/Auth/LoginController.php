@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -59,11 +60,17 @@ class LoginController extends Controller
                 ->withInput();
         }
 
+        if(User::where('username', $request['username'])->where('is_blocked', 'yes')->first())
+            return redirect()->back()
+                ->with("error", "You are currently blocked from the portal. Please contact the admin.")
+                ->withInput();
+
         $credentials = $request->only('username', 'password');
+        $credentials['is_blocked'] = 'no';
         if (Auth::attempt($credentials)) {
-            if(Auth::user()->role == 'admin'){
+            if (Auth::user()->role == 'admin') {
                 return redirect()->route('dashboard');
-            }else{
+            } else {
                 return redirect()->route('home');
             }
         }
