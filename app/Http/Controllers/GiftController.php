@@ -116,7 +116,7 @@ class GiftController extends Controller
         if ($status == 'accepted') {
             $response = $this->giftFromOtherMembersOfSameMatrix($id);
             if ($response) {
-                $createBoard = BoardController::create(null, $gift->amount, $gift->board->board_number);
+                $createBoard = BoardController::create($gift->amount, $gift->board->board_number);
                 if ($createBoard instanceof \Exception) {
                     return redirect()->back()->with('error', $createBoard->getMessage());
                 }
@@ -129,7 +129,7 @@ class GiftController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Status Updated Successfully');
+        return redirect()->route('admin.gift.index')->with('success', 'Status Updated Successfully');
 
     }
 
@@ -173,7 +173,7 @@ class GiftController extends Controller
 
             if ($siblingGift->status == 'accepted') {
                 // Get parent and then sibling of parent to check if cousins have gifted
-                $parent = $sibling->parent;
+                $parent = $sibling->board_parent($gift->board_id);
                 $sibling = $this->siblings($parent);
 
                 // Get it's children
@@ -206,7 +206,6 @@ class GiftController extends Controller
 
     public function addUsersToBoard($gift, $newBoard)
     {
-
         try {
             //  Get Details of selected newbie to find the matrix and it's parent
             $newbie = UserBoards::where('user_id', $gift->sent_by)

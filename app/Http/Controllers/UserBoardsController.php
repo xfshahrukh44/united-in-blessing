@@ -81,88 +81,94 @@ class UserBoardsController extends Controller
      */
     public function update(Request $request, $id)
     {
-//         dd($request->all());
+//        dd($request->all());
         $board = Boards::find($id);
         $input = $request->all();
 
         try {
             // Check if grad has changed
             $grad = UserBoards::where('board_id', $id)->where('user_board_roles', 'grad')->first();
-            $grad_children = $grad->boardChildren($id);
-            $grad->user_id = $input['grad'];
 
-            if ($grad->isDirty()) {
-                $this->updateMember($grad, $grad_children);
+            if (!$grad) {
+                $grad = new UserBoards();
+
+                $grad->user_id = $input['grad'];
+                $grad->board_id = $board->id;
+                $grad->user_board_roles = 'grad';
+                $grad->position = 'left';
+
+                $grad->save();
+            } else {
+                $grad_children = $grad->boardChildren($id);
+                $grad->user_id = $input['grad'];
+
+                if ($grad->isDirty()) {
+                    $this->updateMember($grad, $grad_children);
+                }
             }
 
-            // Check if left pregrad has changed
-            $pregrad_left = UserBoards::where('board_id', $id)->where('user_board_roles', 'pregrad')->where('position', 'left')->first();
-            $pregrad_left_children = $pregrad_left->boardChildren($id);
-            $pregrad_left->user_id = $input['pregrad_left'];
+            // Check if pregrads have changed
+            foreach ($input['pregrad'] as $parent => $pregrads) {
+                foreach ($pregrads as $position => $pregrad) {
+                    if ($pregrad) {
+                        ${'pregrad_' . $position} = UserBoards::where('board_id', $id)
+                            ->where('user_board_roles', 'pregrad')
+                            ->where('position', $position)
+                            ->where('parent_id', $parent)
+                            ->first();
 
-            if ($pregrad_left->isDirty()) {
-                $this->updateMember($pregrad_left, $pregrad_left_children);
+                        if (!${'pregrad_' . $position}) {
+                            ${'pregrad_' . $position} = new UserBoards();
+
+                            ${'pregrad_' . $position}->user_id = $pregrad;
+                            ${'pregrad_' . $position}->board_id = $board->id;
+                            ${'pregrad_' . $position}->parent_id = $parent;
+                            ${'pregrad_' . $position}->user_board_roles = 'pregrad';
+                            ${'pregrad_' . $position}->position = $position;
+
+                            ${'pregrad_' . $position}->save();
+                        } else {
+                            ${'pregrad_' . $position . '_children'} = ${'pregrad_' . $position}->boardChildren($id);
+                            ${'pregrad_' . $position}->user_id = $pregrad;
+
+                            if (${'pregrad_' . $position}->isDirty()) {
+                                $this->updateMember(${'pregrad_' . $position}, ${'pregrad_' . $position . '_children'});
+                            }
+                        }
+                    }
+                }
             }
 
-            // Check if right pregrad has changed
-            $pregrad_right = UserBoards::where('board_id', $id)->where('user_board_roles', 'pregrad')->where('position', 'right')->first();
-            $pregrad_right_children = $pregrad_right->boardChildren($id);
-            $pregrad_right->user_id = $input['pregrad_right'];
+            // Check if undergrads have changed
+            foreach ($input['undergrads'] as $parent => $undergrads) {
+                foreach ($undergrads as $position => $undergrad) {
+                    if ($undergrad){
+                        ${'undergrad_' . $position} = UserBoards::where('board_id', $id)
+                            ->where('user_board_roles', 'undergrad')
+                            ->where('position', $position)
+                            ->where('parent_id', $parent)
+                            ->first();
 
-            if ($pregrad_right->isDirty()) {
-                $this->updateMember($pregrad_right, $pregrad_right_children);
-            }
+                        if (!${'undergrad_' . $position}){
+                            ${'undergrad_' . $position} = new UserBoards();
 
-            // Check if left undergrad under left pregrad has changed
-            $undergrad_left_left = UserBoards::where('board_id', $id)
-                ->where('user_board_roles', 'undergrad')
-                ->where('position', 'left')
-                ->where('parent_id', $pregrad_left->user_id)
-                ->first();
-            $undergrad_left_left_children = $undergrad_left_left->boardChildren($id);
-            $undergrad_left_left->user_id = $input['undergrad_1_left'];
+                            ${'undergrad_' . $position}->user_id = $undergrad;
+                            ${'undergrad_' . $position}->board_id = $board->id;
+                            ${'undergrad_' . $position}->parent_id = $parent;
+                            ${'undergrad_' . $position}->user_board_roles = 'undergrad';
+                            ${'undergrad_' . $position}->position = $position;
 
-            if ($undergrad_left_left->isDirty()) {
-                $this->updateMember($undergrad_left_left, $undergrad_left_left_children);
-            }
+                            ${'undergrad_' . $position}->save();
+                        } else{
+                            ${'undergrad_' . $position . '_children'} = ${'undergrad_' . $position}->boardChildren($id);
+                            ${'undergrad_' . $position}->user_id = $undergrad;
 
-            // Check if right undergrad under left pregrad has changed
-            $undergrad_left_right = UserBoards::where('board_id', $id)
-                ->where('user_board_roles', 'undergrad')
-                ->where('position', 'right')
-                ->where('parent_id', $pregrad_left->user_id)
-                ->first();
-            $undergrad_left_right_children = $undergrad_left_right->boardChildren($id);
-            $undergrad_left_right->user_id = $input['undergrad_2_right'];
-
-            if ($undergrad_left_right->isDirty()) {
-                $this->updateMember($undergrad_left_right, $undergrad_left_right_children);
-            }
-
-            // Check if left undergrad under right pregrad has changed
-            $undergrad_right_left = UserBoards::where('board_id', $id)
-                ->where('user_board_roles', 'undergrad')
-                ->where('position', 'left')
-                ->where('parent_id', $pregrad_right->user_id)
-                ->first();
-            $undergrad_right_left_children = $undergrad_right_left->boardChildren($id);
-            $undergrad_right_left->user_id = $input['undergrad_3_left'];
-
-            if ($undergrad_right_left->isDirty()) {
-                $this->updateMember($undergrad_right_left, $undergrad_right_left_children);
-            }
-
-            // Check if right undergrad under right pregrad has changed
-            $undergrad_right_right = UserBoards::where('board_id', $id)
-                ->where('user_board_roles', 'undergrad')
-                ->where('position', 'right')
-                ->where('parent_id', $pregrad_right->user_id)
-                ->first();
-            $undergrad_right_right_children = $undergrad_right_right->boardChildren($id);
-            $undergrad_right_right->user_id = $input['undergrad_4_right'];
-
-            if ($undergrad_right_right->isDirty()) {
-                $this->updateMember($undergrad_right_right, $undergrad_right_right_children);
+                            if(${'undergrad_' . $position}->isDirty()){
+                                $this->updateMember(${'undergrad_' . $position}, ${'undergrad_' . $position . '_children'});
+                            }
+                        }
+                    }
+                }
             }
 
             // Newbies
@@ -246,7 +252,7 @@ class UserBoardsController extends Controller
             $gift->delete();
 
             return redirect()->back()->with('success', 'User Removed from the board');
-        } catch (\Exception $exception){
+        } catch (\Exception $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }
     }
