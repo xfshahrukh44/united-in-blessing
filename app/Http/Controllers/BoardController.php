@@ -32,9 +32,10 @@ class BoardController extends Controller
         return view('admin.boards.create');
     }
 
-    public static function create(Request $request = null, $amount = null, $previous_board_number = null)
+    public static function create($amount = null, $previous_board_number = null)
     {
         $latest_board = Boards::all();
+        $request = Request::capture() ?? null;
 
         if ($request) {
             $validator = Validator::make($request->all(), [
@@ -62,11 +63,8 @@ class BoardController extends Controller
                 'amount' => ($request) ? ($request->amount ?? '') : (string)((int)$amount),
             ]);
 
-            if ($request) {
-                return redirect()->back()->with('success', 'New board created successfully');
-            } else {
-                return $board;
-            }
+            return redirect()->back()->with('success', 'New board created successfully');
+
         } catch (\Exception $exception) {
             return $exception;
         }
@@ -139,13 +137,14 @@ class BoardController extends Controller
         $board = Boards::find($id);
         $board->delete();
 
-        UserBoards::where('board_id', $id)->each(function ($board, $key){
+        UserBoards::where('board_id', $id)->each(function ($board, $key) {
             $board->delete();
         });
         echo 1;
     }
 
-    public function boardMembers($id){
+    public function boardMembers($id)
+    {
 //        $board = UserBoards::where('board_id', $id)->first();
 //        $users = User::all();
 //
