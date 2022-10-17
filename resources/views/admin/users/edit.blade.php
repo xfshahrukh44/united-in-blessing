@@ -81,6 +81,15 @@
                                                        value="{{ $user->invitedBy->username }}" required>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <label for="block">Blocked</label>
+                                            <div class="form-group">
+                                                <select name="is_blocked" id="block" class="form-control">
+                                                    <option value="yes" {{ $user->is_blocked == 'yes' ? 'selected' : '' }}>Yes</option>
+                                                    <option value="no" {{ $user->is_blocked == 'no' ? 'selected' : '' }}>No</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
