@@ -37,6 +37,10 @@ class UserBoards extends Model
         return $this->belongsTo(UserBoards::class, 'parent_id', 'user_id');
     }
 
+    public function board_parent($board_id){
+        return $this->parent()->where('board_id', $board_id)->first();
+    }
+
     public function children()
     {
         return $this->hasMany(UserBoards::class, 'parent_id', 'user_id');

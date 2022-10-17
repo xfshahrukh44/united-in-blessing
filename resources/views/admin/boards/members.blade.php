@@ -51,7 +51,7 @@
                             @csrf
                             <button class="themeBtn" type="submit">Update Board</button>
                             <ul class="tree vertical">
-                                @foreach($boardGrad as $key => $grad)
+                                @forelse($boardGrad as $key => $grad)
                                     <li>
                                         <div>
                                             <div class="inviterCard invitees">
@@ -72,27 +72,60 @@
                                         <ul>
                                             @php $x = $y = 1 @endphp
 
-                                            @foreach($grad->boardChildren($board->id) as $key => $pregrad)
+                                            @forelse($grad->boardChildren($board->id) as $key => $pregrad)
+                                                @if($grad->boardChildren($board->id)->count() == 1 && $pregrad->position == 'right')
+                                                    <li>
+                                                        <div>
+                                                            <div class="inviterCard invitees noimg">
+                                                                <select name="pregrad[{{ $grad->user_id }}][left]"
+                                                                        id="">
+                                                                    <option value="">Please Select Pregrad</option>
+                                                                    @foreach($users as $user)
+                                                                        <option
+                                                                            value="{{ $user->id }}">{{ $user->username }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <h4>Pregrads</h4>
+                                                    </li>
+                                                @endif
                                                 <li>
                                                     <div>
                                                         <div class="inviterCard invitees">
                                                             <img
                                                                 src="{{ $pregrad['user']->user_image ? asset('upload/user/' . $pregrad['user']->user_image) : asset('assets/images/user.png') }}"
                                                                 alt="">
-                                                            <select name="pregrad_{{ $pregrad->position }}"
-                                                                    id="pregrad_{{ $pregrad->position }}">
+                                                            <select
+                                                                name="pregrad[{{ $grad->user_id }}][{{ $pregrad->position }}]"
+                                                                id="pregrad[{{ $grad->user_id }}][{{ $pregrad->position }}]">
                                                                 @foreach($users as $user)
                                                                     <option
                                                                         value="{{ $user->id }}" {{ $pregrad->user_id == $user->id ? 'selected' : '' }}>{{ $user->username }}</option>
                                                                 @endforeach
                                                             </select>
-                                                            {{--                                                            <h4 style="color: {{ ($pregrad->user->inviters->count() == 0) ? '' : (($pregrad->user->inviters->count() == 1) ? 'red' : 'green') }}">{{$pregrad['user']->username}}</h4>--}}
                                                             <p>{{ ($key + 1) }}</p>
                                                         </div>
                                                     </div>
                                                     <h4>Pregrads</h4>
                                                     <ul>
-                                                        @foreach($pregrad->boardChildren($board->id) as $key => $undergrad)
+                                                        @forelse($pregrad->boardChildren($board->id) as $key => $undergrad)
+                                                            @if($pregrad->boardChildren($board->id)->count() == 1 && $undergrad->position == 'right')
+                                                                <li>
+                                                                    <div>
+                                                                        <div class="inviterCard invitees noimg">
+                                                                            <select name="undergrads[{{ $pregrad->user_id }}][left]" id="">
+                                                                                <option value="">Please Select Undergrad</option>
+                                                                                @foreach($users as $user)
+                                                                                    <option
+                                                                                        value="{{ $user->id }}">{{ $user->username }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <h4>Undergrads</h4>
+                                                                </li>
+                                                            @endif
                                                             <li>
                                                                 <div>
                                                                     <div class="inviterCard invitees">
@@ -100,7 +133,7 @@
                                                                             src="{{ $undergrad['user']->user_image ? asset('upload/user/' . $undergrad['user']->user_image) : asset('assets/images/user.png') }}"
                                                                             alt="">
                                                                         <select
-                                                                            name="undergrad_{{ $x . '_' . $undergrad->position }}"
+                                                                            name="undergrads[{{ $pregrad->user_id }}][{{ $undergrad->position }}]"
                                                                             id="undergrad">
                                                                             @foreach($users as $user)
                                                                                 <option
@@ -121,7 +154,9 @@
                                                                                         <select
                                                                                             name="newbie[{{ $undergrad->user_id }}][{{ $newbie->position == 'left' ? 'right' : 'left' }}]"
                                                                                             id="newbie">
-                                                                                            <option value="">No invitee</option>
+                                                                                            <option value="">No
+                                                                                                invitee
+                                                                                            </option>
                                                                                             @foreach($users as $user)
                                                                                                 <option
                                                                                                     value="{{ $user->id }}">{{ $user->username }}</option>
@@ -140,7 +175,8 @@
                                                                                     <img
                                                                                         src="{{ $newbie['user']->user_image ? asset('upload/user/' . $newbie['user']->user_image) : asset('assets/images/user.png') }}"
                                                                                         alt="">
-                                                                                    <a href="{{ route('admin.destroy.board.member', [$board->id, $newbie->user_id]) }}"><i class="fa fa-trash"></i></a>
+                                                                                    <a href="{{ route('admin.destroy.board.member', [$board->id, $newbie->user_id]) }}"><i
+                                                                                            class="fa fa-trash"></i></a>
                                                                                     <select
                                                                                         name="newbie[{{ $undergrad->user_id }}][{{ $newbie->position }}]"
                                                                                         id="newbie">
@@ -218,13 +254,118 @@
                                                                     @endforelse
                                                                 </ul>
                                                             </li>
-                                                        @endforeach
+                                                                @if($pregrad->boardChildren($board->id)->count() == 1 && $undergrad->position == 'left')
+                                                                    <li>
+                                                                        <div>
+                                                                            <div class="inviterCard invitees noimg">
+                                                                                <select name="undergrads[{{ $pregrad->user_id }}][right]" id="">
+                                                                                    <option value="">Please Select Undergrad</option>
+                                                                                    @foreach($users as $user)
+                                                                                        <option
+                                                                                            value="{{ $user->id }}">{{ $user->username }}</option>
+                                                                                    @endforeach
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <h4>Undergrads</h4>
+                                                                    </li>
+                                                                @endif
+                                                        @empty
+                                                            <li>
+                                                                <div>
+                                                                    <div class="inviterCard invitees noimg">
+                                                                        <select name="undergrads[{{ $pregrad->user_id }}][left]" id="">
+                                                                            <option value="">Please Select Undergrad</option>
+                                                                            @foreach($users as $user)
+                                                                                <option
+                                                                                    value="{{ $user->id }}">{{ $user->username }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <h4>Undergrads</h4>
+                                                            </li>
+                                                            <li>
+                                                                <div>
+                                                                    <div class="inviterCard invitees noimg">
+                                                                        <select name="undergrads[{{ $pregrad->user_id }}][right]" id="">
+                                                                            <option value="">Please Select Undergrad</option>
+                                                                            @foreach($users as $user)
+                                                                                <option
+                                                                                    value="{{ $user->id }}">{{ $user->username }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <h4>Undergrads</h4>
+                                                            </li>
+                                                        @endforelse
                                                     </ul>
                                                 </li>
-                                            @endforeach
+                                                @if($grad->boardChildren($board->id)->count() == 1 && $pregrad->position == 'left')
+                                                    <li>
+                                                        <div>
+                                                            <div class="inviterCard invitees noimg">
+                                                                <select name="pregrad[{{ $grad->user_id }}][right]"
+                                                                        id="">
+                                                                    <option value="">Please Select Pregrad</option>
+                                                                    @foreach($users as $user)
+                                                                        <option
+                                                                            value="{{ $user->id }}">{{ $user->username }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <h4>Pregrads</h4>
+                                                    </li>
+                                                @endif
+                                            @empty
+                                                <li>
+                                                    <div>
+                                                        <div class="inviterCard invitees noimg">
+                                                            <select name="pregrad[{{ $grad->user_id }}][left]" id="">
+                                                                <option value="">Please Select Pregrad</option>
+                                                                @foreach($users as $user)
+                                                                    <option
+                                                                        value="{{ $user->id }}">{{ $user->username }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <h4>Pregrads</h4>
+                                                </li>
+                                                <li>
+                                                    <div>
+                                                        <div class="inviterCard invitees noimg">
+                                                            <select name="pregrad[{{ $grad->user_id }}][right]" id="">
+                                                                <option value="">Please Select Pregrad</option>
+                                                                @foreach($users as $user)
+                                                                    <option
+                                                                        value="{{ $user->id }}">{{ $user->username }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <h4>Pregrads</h4>
+                                                </li>
+                                            @endforelse
                                         </ul>
                                     </li>
-                                @endforeach
+                                @empty
+                                    <li>
+                                        <div>
+                                            <div class="inviterCard invitees noimg">
+                                                <select name="grad" id="grad">
+                                                    <option value="">Please Select Grad</option>
+                                                    @foreach($users as $user)
+                                                        <option value="{{ $user->id }}">{{ $user->username }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <h4>Grad</h4>
+                                    </li>
+                                @endforelse
                             </ul>
                         </form>
                     </div>
