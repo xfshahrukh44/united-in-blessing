@@ -64,6 +64,11 @@
                         </li>
 
                         @if(Auth::check())
+                            @if(Auth::user()->role == 'admin')
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard') }}" class="nav-link">Admin Dashboard</a>
+                            </li>
+                            @endif
                             <li class="nav-item">
                                 <a href="{{ url('profile') }}" class="nav-link">My PROFILE</a>
                             </li>
