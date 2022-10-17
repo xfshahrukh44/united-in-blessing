@@ -27,4 +27,9 @@ class Boards extends Model
     {
         return $this->hasMany(GiftLogs::class, 'board_id');
     }
+
+    public function user_gift($user_id)
+    {
+        return $this->gifts()->where('sent_by', $user_id)->first();
+    }
 }

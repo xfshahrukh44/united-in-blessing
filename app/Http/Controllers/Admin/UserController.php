@@ -133,12 +133,13 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
+        $old_user = $user->toArray();
 
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'username' => 'required|alpha_dash|unique:users,username,' . $user->id,
+            'username' => 'required|alpha_dash|unique:user_profile_changed_logs,value,' . $user->id . ',user_id|unique:users,username,' . $user->id,
             'invited_by' => 'required|alpha_dash',
             'phone' => 'required',
             'user_image' => 'mimes:jpg,jpeg,png',
@@ -158,6 +159,12 @@ class UserController extends Controller
             $input['invited_by'] = $inviter->id;
         } else {
             return redirect()->back()->with('error', "Inviters username not found");
+        }
+
+        $user->username = $request->username;
+
+        if ($user->isDirty()){
+            generateUserProfileLogs($user->id, 'username', $user->username, $old_user['username'], 'Username changed by admin', 'accepted');
         }
 
         $user->update($input);
