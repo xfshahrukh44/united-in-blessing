@@ -12,7 +12,7 @@
     <!-- END: Main Slider -->
 
     <section class="treeSec">
-        <a href="{{route('home')}}" class="backBtn">
+        <a href="{{ url()->previous() }}" class="backBtn">
             <i class="fas fa-arrow-to-left"></i>
         </a>
         <div class="container">

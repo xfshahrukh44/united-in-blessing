@@ -13,7 +13,7 @@
     <!-- END: Main Slider -->
 
     <section class="treeSec">
-        <a href="{{route('home')}}" class="backBtn">
+        <a href="{{ url()->previous() }}" class="backBtn">
             <i class="fas fa-arrow-to-left"></i>
         </a>
         <div class="container">
@@ -21,9 +21,14 @@
                 <div class="col-md-8">
                     <div class="container-fluid">
                         <div class="row justify-content-between">
+                            <div class="col-md-12 justify-content-center mb-4">
+                                <div class="titles">
+                                    <p>${{ $board->amount }} Board</p>
+                                </div>
+                            </div>
                             <div class="col-md-5">
                                 <div class="titles">
-                                    <p>Board: </p>
+                                    <p>Board No: </p>
                                     <p>Previous Board No:</p>
                                 </div>
                                 <div class="info">
