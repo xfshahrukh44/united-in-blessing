@@ -91,6 +91,7 @@ Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function
     //Boards
     Route::get('boards', [BoardController::class, 'boards'])->name('admin.boards.index');
     Route::get('board/create/form', [BoardController::class, 'createForm'])->name('admin.board.create.view');
+    Route::get('board/previous-board-grad', [BoardController::class, 'previousBoardGrad'])->name('admin.board.previous-board-grad');
     Route::post('board/store/{amount?}/{previous_board_number?}', [BoardController::class, 'create'])->name('admin.board.store');
     Route::get('board/edit/{id}', [BoardController::class, 'edit'])->name('admin.board.edit');
     Route::post('board/update/{id}', [BoardController::class, 'update'])->name('admin.board.update');
