@@ -34,7 +34,7 @@
                                 <table id="users-table" class="table table-bordered table-striped">
                                     <thead>
                                     <tr style="text-align: center">
-                                        <th>S.No</th>
+                                        <th>No</th>
                                         <th>Username</th>
                                         <th>Name</th>
                                         <th>Email</th>
