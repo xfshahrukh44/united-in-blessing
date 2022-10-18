@@ -65,9 +65,9 @@
 
                         @if(Auth::check())
                             @if(Auth::user()->role == 'admin')
-                            <li class="nav-item">
-                                <a href="{{ route('dashboard') }}" class="nav-link">Admin Dashboard</a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard') }}" class="nav-link">Admin Dashboard</a>
+                                </li>
                             @endif
                             <li class="nav-item">
                                 <a href="{{ url('profile') }}" class="nav-link">My PROFILE</a>
@@ -115,6 +115,23 @@
 
 @yield('content')
 
+{{-- INACTIVITY MODAL--}}
+<div class="modal fade" id="inactivity" tabindex="-1" role="dialog" aria-labelledby="inactivity" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Inactivity</h5>
+            </div>
+            <div class="modal-body">
+                You have been logged out due to inactivity.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="reload()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="{{ asset('assets/js/jquery-3.5.1.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
@@ -127,9 +144,56 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
 
 <script>
+    let global = 15;
+
     $(document).ready(function () {
+        // Input Masking for phone number
         $('input[name="phone"]').inputmask('999-999-9999');
+
+        // Logout user due to inactivity
     })
+
+    $('html').mousemove(function (event) {
+        resetGlobal();
+    });
+
+    function resetGlobal() {
+        global = 15;
+    }
+
+    function reload() {
+        location.reload();
+    }
+
+    setInterval(function () {
+        noMovement()
+    }, 60000); //every minute
+
+    function noMovement() {
+        if (global == 0) {
+            userLogout();
+            resetGlobal();
+            $('#inactivity').modal('show');
+        } else {
+            global--;
+        }
+    }
+
+    function userLogout() {
+        $.ajax({
+            url: '{{route('logout')}}',
+            type: 'POST',
+            data: {
+                "_token": "{{ csrf_token() }}"
+            },
+            success: function (res) {
+                console.log(res);
+            },
+            error: function () {
+
+            }
+        })
+    }
 </script>
 
 @yield('js')
