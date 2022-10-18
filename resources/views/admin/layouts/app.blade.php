@@ -38,6 +38,9 @@
     <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 
+{{--    searchable select--}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <style>
         table.dataTable thead th, table.dataTable thead td {
             border-bottom: 0px;
@@ -451,9 +454,13 @@
 {{--input masking--}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
 
+{{--Searchable Select--}}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script>
     $(document).ready(function () {
         $('input[name="phone"]').inputmask('999-999-9999');
+        $('.searchable-select').select2();
     })
 </script>
 

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Boards;
 use App\Models\Customers;
+use App\Models\GiftLogs;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductReview;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -20,6 +23,9 @@ class AdminController extends Controller
         $data['customers'] = Customers::count();
         $data['latestOrders'] = Order::with('customer')->orderBy('created_at', 'desc')->take(7)->get();
         $data['latestReviews'] = ProductReview::with('product', 'customer')->orderBy('created_at', 'desc')->take(7)->get();
+        $data['users'] = User::count();
+        $data['boards'] = Boards::count();
+        $data['gifts'] = GiftLogs::where('status', '!=', 'accepted')->count();
 
         return view('admin.dashboard', compact('data'));
     }

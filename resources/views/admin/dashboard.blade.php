@@ -28,13 +28,13 @@
                     <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>{{$data['orders']}}</h3>
-                            <p>New Orders</p>
+                            <h3>{{ $data['users'] }}</h3>
+                            <p>Users</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-bag"></i>
+                            <i class="ion ion-person"></i>
                         </div>
-                        <a href="{{route('order.index')}}" class="small-box-footer">More info <i
+                        <a href="{{ route('users.index') }}" class="small-box-footer">More info <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -43,13 +43,13 @@
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>{{$data['products']}}</h3>
-                            <p>Products</p>
+                            <h3>{{ $data['boards'] }}</h3>
+                            <p>Boards</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
+                            <i class="ion ion-android-clipboard"></i>
                         </div>
-                        <a href="{{route('product.index')}}" class="small-box-footer">More info <i
+                        <a href="{{route('admin.boards.index')}}" class="small-box-footer">More info <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -58,13 +58,13 @@
                     <!-- small box -->
                     <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3>{{$data['customers']}}</h3>
-                            <p>Customers</p>
+                            <h3>{{$data['gifts']}}</h3>
+                            <p>Pending Gifts</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-person-add"></i>
+                            <i class="fa fa-gift"></i>
                         </div>
-                        <a href="{{route('customers.index')}}" class="small-box-footer">More info <i
+                        <a href="{{route('admin.gift.index')}}" class="small-box-footer">More info <i
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
