@@ -1,5 +1,9 @@
 @extends('layouts.app')
-
+<style>
+    .menu-toggler{
+        display: none !important;
+    }
+</style>
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

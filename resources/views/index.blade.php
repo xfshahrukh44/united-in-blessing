@@ -1,7 +1,12 @@
 @extends('layouts.app')
 @section('keywords', '')
 @section('description', '')
+<style>
 
+    .menu-toggler{
+        display: none !important;
+    }
+</style>
 @section('content')
     <main class="loginWrap landingWrap">
         <div class="container">

@@ -7,6 +7,10 @@
         .invalid-feedback{
             display: block;
         }
+
+        .menu-toggler{
+            display: none !important;
+        }
     </style>
 @endsection
 
