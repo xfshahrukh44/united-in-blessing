@@ -224,7 +224,7 @@ h4 {
 }
 
 .main-slider > img {
-    max-height: 440px;
+    max-height: 250px;
     object-fit: cover;
     object-position: center bottom;
 }
