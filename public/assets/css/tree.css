@@ -117,15 +117,15 @@ h3 {
 }
 
 .tree.vertical > li > ul > li:first-child:before {
-    transform: rotate(-30deg);
-    right: 0;
-    width: 50%;
+    transform: rotate(-20deg);
+    right: -120px;
+    width: 70%;
 }
 
 .tree.vertical > li > ul > li:last-child:before {
-    transform: rotate(30deg);
-    left: 0;
-    width: 50%;
+    transform: rotate(20deg);
+    left: -40px;
+    width: 60%;
 }
 
 .tree.vertical > li > ul > li > ul > li:first-child:before {
@@ -292,4 +292,12 @@ h3 {
     height: 40px;
     border: 1px solid #ddd;
     border-radius: 10px;
+}
+
+li.heading {
+    justify-content: space-around;
+}
+
+.tree.vertical li ul li.heading:before {
+    content: none;
 }
