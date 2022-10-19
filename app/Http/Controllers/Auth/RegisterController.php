@@ -320,4 +320,183 @@ class RegisterController extends Controller
             ->where('user_id', '!=', $user->user_id)
             ->first();
     }
+
+    public static function getPositionToPlaceUserInBoard($invited_user_board){
+        $position = 'left';
+        $parent_id = $role = '';
+        switch ($invited_user_board->user_board_roles) {
+            case('grad'):
+                foreach ($invited_user_board->boardChildren($invited_user_board->board_id) as $pregrad) {
+                    if ($pregrad->boardChildren($invited_user_board->board_id)->count() < 2) {
+                        $parent_id = $pregrad->user_id;
+                        $role = 'undergrad';
+
+                        foreach ($pregrad->boardChildren($invited_user_board->board_id) as $undergrad) {
+                            if ($undergrad->position == 'left')
+                                $position = 'right';
+                        }
+                    } else {
+                        foreach ($pregrad->boardChildren($invited_user_board->board_id) as $undergrad) {
+                            if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
+                                $parent_id = $undergrad->user_id;
+
+                                foreach ($undergrad->boardChildren($invited_user_board->board_id) as $child) {
+                                    if ($child->position == 'left')
+                                        $position = 'right';
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($parent_id != '') {
+                        break;
+                    }
+                }
+
+                break;
+
+            case('pregrad'):
+                if ($invited_user_board->boardChildren($invited_user_board->board_id)->count() < 2) {
+                    $parent_id = $invited_user_board->user_id;
+                    $role = 'undergrad';
+
+                    foreach ($invited_user_board->boardChildren($invited_user_board->board_id) as $undergrad) {
+                        if ($undergrad->position == 'left')
+                            $position = 'right';
+                    }
+                } else {
+                    foreach ($invited_user_board->boardChildren($invited_user_board->board_id) as $undergrads) {
+                        // undergrads
+                        if ($undergrads->boardChildren($invited_user_board->board_id)->count() < 2) {
+                            $parent_id = $undergrads->user_id;
+
+                            foreach ($undergrads->boardChildren($invited_user_board->board_id) as $child) {
+                                if ($child->position == 'left')
+                                    $position = 'right';
+                            }
+                        } else {
+                            $sibling = (new RegisterController)->siblings($undergrads);
+
+                            if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
+                                $parent_id = $sibling->user_id;
+
+                                foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
+                                    if ($child->position == 'left')
+                                        $position = 'right';
+                                }
+                            } else {
+                                $sibling = (new RegisterController)->siblings($invited_user_board);
+
+                                foreach ($sibling->boardChildren($invited_user_board->board_id) as $undergrad) {
+                                    // Undergrad
+                                    if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
+                                        $parent_id = $undergrad->user_id;
+
+                                        if ($undergrad->position == 'left')
+                                            $position = 'right';
+
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if ($parent_id != '') {
+                            break;
+                        }
+                    }
+                }
+
+                break;
+
+            case('undergrad'):
+                if ($invited_user_board->boardChildren($invited_user_board->board_id)->count() < 2) {
+                    $parent_id = $invited_user_board->user_id;
+
+                    foreach ($invited_user_board->boardChildren($invited_user_board->board_id) as $child) {
+                        if ($child->position == 'left')
+                            $position = 'right';
+                    }
+                } else {
+                    // Get Siblings
+                    $sibling = (new RegisterController)->siblings($invited_user_board);
+
+                    if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
+                        $parent_id = $sibling->user_id;
+
+                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
+                            if ($child->position == 'left')
+                                $position = 'right';
+                        }
+                    } else {
+                        $parent = $invited_user_board->parent;
+                        $sibling = (new RegisterController)->siblings($parent);
+
+                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
+                            if ($child->boardChildren($invited_user_board->board_id)->count() < 2) {
+                                $parent_id = $child->user_id;
+
+                                foreach ($child->boardChildren($invited_user_board->board_id) as $newbie) {
+                                    if ($child->position == 'left')
+                                        $position = 'right';
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                break;
+
+//            case('newbie'):
+//                if ((new RegisterController)->siblings($invited_user_board) == null) {
+//                    $parent_id = $invited_user_board->parent_id;
+//
+//                    if ($invited_user_board->position == 'left')
+//                        $position = 'right';
+//                } else {
+//                    $parent = $invited_user_board->parent;
+//                    $sibling = (new RegisterController)->siblings($parent);
+//
+//                    if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
+//                        $parent_id = $sibling->user_id;
+//
+//                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
+//                            $parent_id = $child->parent_id;
+//
+//                            if ($child->position == 'left')
+//                                $position = 'right';
+//
+//                            break;
+//                        }
+//                    } else {
+//                        // Pregrad
+//                        $parent = $parent->parent;
+//                        $sibling = (new RegisterController)->siblings($parent);
+//
+//                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $undergrad) {
+//                            if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
+//                                $parent_id = $undergrad->user_id;
+//
+//                                if ($undergrad->position == 'left')
+//                                    $position = 'right';
+//
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
+//                break;
+
+            default:
+
+        }
+
+        return array('parent_id' =>$parent_id,
+            'position' => $position,
+            'role' => $role);
+    }
 }

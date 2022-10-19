@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\RegisterController;
 use App\Models\Boards;
 use App\Models\GiftLogs;
 use App\Models\UserBoards;
@@ -114,7 +115,12 @@ class GiftController extends Controller
         $gift = GiftLogs::where('id', $id)->first();
 
         if ($status == 'accepted') {
-            $response = $this->giftFromOtherMembersOfSameMatrix($id);
+            $boardUser = UserBoards::where('user_id', $gift->sent_by)
+                ->where('board_id', $gift->board_id)
+                ->first();
+            $response = $this->giftFromOtherMembersOfSameMatrix($boardUser);
+
+//            $response = true;
             if ($response) {
                 $createBoard = BoardController::create($gift->amount, $gift->board->board_number);
                 if ($createBoard instanceof \Exception) {
@@ -125,6 +131,55 @@ class GiftController extends Controller
 
                 if ($addUserToBoard instanceof \Exception) {
                     return redirect()->back()->with('error', $addUserToBoard->getMessage());
+                }
+
+                // If all the newbies in the same matrix has gifted then take there grad parent and find it's sibling
+                // to check if newbies in other matrix have gifted.
+                $grandParent = $boardUser->board_parent($boardUser->board_id)->board_parent($boardUser->board_id);
+                $sibling = $this->siblings($grandParent);
+                $undergrads = $sibling->boardChildren($sibling->board_id);
+                $newbies = $undergrads[0]->boardChildren($sibling->board_id);
+
+                $response = $this->giftFromOtherMembersOfSameMatrix($newbies[0]);
+
+                if ($response) {
+                    // Get grad to move in the new board.
+                    $grad = UserBoards::where('board_id', $sibling->board_id)->where('user_board_roles', 'grad')->first();
+
+                    $newBoard = UserBoards::where('user_id', $grad->user->invitedBy->id)
+                        ->where('user_board_roles', '!=', 'newbie')
+//                        ->where('board_id', '!=', $grad->board_id)
+                        ->whereHas('board', function ($q) use ($grad){
+                            $q->where('amount', $grad->board->amount);
+                        })
+                        ->has('newbies', '<', 9)
+                        ->first();
+
+                    $userPlacement = RegisterController::getPositionToPlaceUserInBoard($newBoard);
+
+                    // Add User to the board
+                    UserBoards::create([
+                        'user_id' => $grad->user_id,
+                        'board_id' => $newBoard->board_id,
+                        'parent_id' => $userPlacement['parent_id'],
+                        'user_board_roles' => $userPlacement['role'] != '' ? $userPlacement['role'] : 'newbie',
+                        'position' => $userPlacement['position']
+                    ]);
+
+                    // Get grad of the board to send the gift
+                    $boardGrad = UserBoards::where('board_id', $newBoard->board_id)
+                        ->where('user_board_roles', 'grad')
+                        ->with('user', 'board')
+                        ->first();
+
+                    // Create gift log
+                    GiftLogs::create([
+                        'sent_by' => $grad->user_id,
+                        'sent_to' => $boardGrad->user_id,
+                        'board_id' => $newBoard->board_id,
+                        'amount' => $newBoard->board->amount,
+                        'status' => 'pending',
+                    ]);
                 }
             }
         }
@@ -155,15 +210,10 @@ class GiftController extends Controller
     }
 
     // Check if other members of the same matrix have gifted
-    public function giftFromOtherMembersOfSameMatrix($id)
+    public function giftFromOtherMembersOfSameMatrix($boardUser)
     {
-        $gift = GiftLogs::where('id', $id)->first();
-        $board = UserBoards::where('user_id', $gift->sent_by)
-            ->where('board_id', $gift->board_id)
-            ->first();
-
         // Get Sibling
-        $sibling = $this->siblings($board);
+        $sibling = $this->siblings($boardUser);
 
         if (!is_null($sibling)) {
             // check if sibling has already gifted
@@ -173,11 +223,11 @@ class GiftController extends Controller
 
             if ($siblingGift->status == 'accepted') {
                 // Get parent and then sibling of parent to check if cousins have gifted
-                $parent = $sibling->board_parent($gift->board_id);
+                $parent = $sibling->board_parent($sibling->board_id);
                 $sibling = $this->siblings($parent);
 
                 // Get it's children
-                foreach ($sibling->boardChildren($gift->board_id) as $newbie) {
+                foreach ($sibling->boardChildren($sibling->board_id) as $newbie) {
                     $siblingGift = GiftLogs::where('sent_by', $newbie->user_id)
                         ->where('board_id', $newbie->board_id)
                         ->first();
