@@ -73,22 +73,22 @@
                                 <a href="{{ url('profile') }}" class="nav-link">My PROFILE</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link">How it works</a>
+                                <a href="{{route('front.work')}}" class="nav-link">How it works</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link">Guidelines</a>
+                                <a href="{{route('front.guidelines')}}" class="nav-link">Guidelines</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link">FAQ</a>
+                                <a href="{{route('front.faq')}}" class="nav-link">FAQs</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link">Gifting Forms</a>
+                                <a href="{{route('front.gifting-forms')}}" class="nav-link">Gifting Forms</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link">Privacy Statement</a>
+                                <a href="{{route('front.privacy-statement')}}" class="nav-link">Privacy Statement</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link">Contact Us</a>
+                                <a href="{{route('front.contact-us')}}" class="nav-link">Contact Us</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ url('logout') }}" class="nav-link" onclick="event.preventDefault();
