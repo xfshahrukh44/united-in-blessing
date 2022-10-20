@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AttributeGroupController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\Categories;
+use App\Http\Controllers\FrontController;
 use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\CollectionProductController;
 use App\Http\Controllers\Admin\CouponController;
@@ -69,6 +70,20 @@ Route::prefix('/')->middleware('auth')->group(function (){
 
     // Gifts
     Route::get('update-gift-status/{id}/{status}', [GiftController::class, 'update'])->name('update-gift-status');
+
+    //Menu Pages
+    Route::get('/how-it-works', [FrontController::class, 'howItWorks'])->name('front.work');
+
+    Route::get('/guidelines', [FrontController::class, 'guidelines'])->name('front.guidelines');
+
+    Route::get('/faq', [FrontController::class, 'faq'])->name('front.faq');
+
+    Route::get('/privacy-statement', [FrontController::class, 'privacy_statement'])->name('front.privacy-statement');
+
+    Route::get('/contact-us', [FrontController::class, 'contact'])->name('front.contact-us');
+
+    Route::get('/gifting-forms', [FrontController::class, 'gifting_forms'])->name('front.gifting-forms');
+
 });
 
 // Admin Routes
