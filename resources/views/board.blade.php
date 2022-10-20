@@ -70,6 +70,13 @@
                                         @php $x = $y = 1 @endphp
 
                                         @foreach($grad->boardChildren(Request::segment(2)) as $key => $pregrad)
+                                            @if($key == 1)
+                                            <li class="heading">
+                                                <h4>Pregrad</h4>
+                                                <h4>Undergrad</h4>
+                                                <h4>Newbies</h4>
+                                            </li>
+                                            @endif
                                             <li>
                                                 <div>
                                                     <div class="inviterCard invitees">
@@ -80,9 +87,9 @@
                                                         <p>{{ ($key + 1) }}</p>
                                                     </div>
                                                 </div>
-                                                <h4>Pregrads</h4>
+{{--                                                <h4>Pregrads</h4>--}}
                                                 <ul>
-                                                    @foreach($pregrad->boardChildren(Request::segment(2)) as $undergrad)
+                                                    @foreach($pregrad->boardChildren(Request::segment(2)) as $key => $undergrad)
                                                         <li>
                                                             <div>
                                                                 <div class="inviterCard invitees">
@@ -94,7 +101,7 @@
                                                                     <p>{{ ($x++) }}</p>
                                                                 </div>
                                                             </div>
-                                                            <h4>undergrads</h4>
+{{--                                                            <h4>undergrads</h4>--}}
                                                             <ul>
                                                                 @forelse($undergrad->boardChildren(Request::segment(2)) as $key => $newbie)
                                                                     @if($undergrad->boardChildren(Request::segment(2))->count() == 1 && $newbie->position == 'right')
@@ -105,7 +112,7 @@
                                                                                     <p>{{ ($y++) }}</p>
                                                                                 </div>
                                                                             </div>
-                                                                            <h4>Newbies</h4>
+{{--                                                                            <h4>Newbies</h4>--}}
                                                                         </li>
                                                                     @endif
                                                                     <li>
@@ -118,7 +125,7 @@
                                                                                 <p>{{ ($y++) }}</p>
                                                                             </div>
                                                                         </div>
-                                                                        <h4>Newbies</h4>
+{{--                                                                        <h4>Newbies</h4>--}}
                                                                     </li>
                                                                     @if($undergrad->boardChildren(Request::segment(2))->count() == 1 && $newbie->position == 'left')
                                                                         <li>
@@ -128,7 +135,7 @@
                                                                                     <p>{{ ($y++) }}</p>
                                                                                 </div>
                                                                             </div>
-                                                                            <h4>Newbies</h4>
+{{--                                                                            <h4>Newbies</h4>--}}
                                                                         </li>
                                                                     @endif
                                                                 @empty
@@ -139,7 +146,7 @@
                                                                                 <p>{{ ($y++) }}</p>
                                                                             </div>
                                                                         </div>
-                                                                        <h4>Newbies</h4>
+{{--                                                                        <h4>Newbies</h4>--}}
                                                                     </li>
                                                                     <li>
                                                                         <div>
@@ -148,7 +155,7 @@
                                                                                 <p>{{ ($y++) }}</p>
                                                                             </div>
                                                                         </div>
-                                                                        <h4>Newbies</h4>
+{{--                                                                        <h4>Newbies</h4>--}}
                                                                     </li>
                                                                 @endforelse
                                                             </ul>
