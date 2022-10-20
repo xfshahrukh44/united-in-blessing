@@ -143,43 +143,72 @@ class GiftController extends Controller
                 $response = $this->giftFromOtherMembersOfSameMatrix($newbies[0]);
 
                 if ($response) {
+//                    Set board status to retired
+                    $board = Boards::where('id', $sibling->board_id)->update([
+                        'status' => 'retired',
+                    ]);
+
                     // Get grad to move in the new board.
                     $grad = UserBoards::where('board_id', $sibling->board_id)->where('user_board_roles', 'grad')->first();
+                    $gradInvitedBy = $grad->user->invitedBy;
 
-                    $newBoard = UserBoards::where('user_id', $grad->user->invitedBy->id)
-                        ->where('user_board_roles', '!=', 'newbie')
-//                        ->where('board_id', '!=', $grad->board_id)
-                        ->whereHas('board', function ($q) use ($grad){
-                            $q->where('amount', $grad->board->amount);
-                        })
-                        ->has('newbies', '<', 9)
-                        ->first();
+                    $boardValues = array('100', '400', '1000', '2000');
+                    $arrayPosition = array_search($grad->board->amount, $boardValues);
 
-                    $userPlacement = RegisterController::getPositionToPlaceUserInBoard($newBoard);
+                    for ($y = 1; $y < 3; $y++) {
+                        if (array_key_exists($arrayPosition, $boardValues)) {
+                            for ($x = 1; $x < 8; $x++) {
+                                $sameLevelBoard = UserBoards::where('user_id', $gradInvitedBy->id)
+                                    ->where('user_board_roles', '!=', 'newbie')
+                                    ->where('board_id', '!=', $grad->board_id)
+                                    ->whereHas('board', function ($q) use ($grad, $boardValues, $arrayPosition) {
+                                        $q->where('amount', $boardValues[$arrayPosition]);
+                                    })
+                                    ->has('newbies', '<', 8)
+                                    ->first();
 
-                    // Add User to the board
-                    UserBoards::create([
-                        'user_id' => $grad->user_id,
-                        'board_id' => $newBoard->board_id,
-                        'parent_id' => $userPlacement['parent_id'],
-                        'user_board_roles' => $userPlacement['role'] != '' ? $userPlacement['role'] : 'newbie',
-                        'position' => $userPlacement['position']
-                    ]);
+                                if (is_null($sameLevelBoard)) {
+                                    $gradInvitedBy = $gradInvitedBy->invitedBy;
 
-                    // Get grad of the board to send the gift
-                    $boardGrad = UserBoards::where('board_id', $newBoard->board_id)
-                        ->where('user_board_roles', 'grad')
-                        ->with('user', 'board')
-                        ->first();
+                                    if (is_null($gradInvitedBy)){
+                                        break;
+                                    }
+                                } else {
+                                    break;
+                                }
+                            }
 
-                    // Create gift log
-                    GiftLogs::create([
-                        'sent_by' => $grad->user_id,
-                        'sent_to' => $boardGrad->user_id,
-                        'board_id' => $newBoard->board_id,
-                        'amount' => $newBoard->board->amount,
-                        'status' => 'pending',
-                    ]);
+                            if ($sameLevelBoard) {
+                                $userPlacement = RegisterController::getPositionToPlaceUserInBoard($sameLevelBoard);
+
+                                // Add User to the board
+                                UserBoards::create([
+                                    'user_id' => $grad->user_id,
+                                    'board_id' => $sameLevelBoard->board_id,
+                                    'parent_id' => $userPlacement['parent_id'],
+                                    'user_board_roles' => $userPlacement['role'] != '' ? $userPlacement['role'] : 'newbie',
+                                    'position' => $userPlacement['position']
+                                ]);
+
+                                // Get grad of the board to send the gift
+                                $boardGrad = UserBoards::where('board_id', $sameLevelBoard->board_id)
+                                    ->where('user_board_roles', 'grad')
+                                    ->with('user', 'board')
+                                    ->first();
+
+                                // Create gift log
+                                GiftLogs::create([
+                                    'sent_by' => $grad->user_id,
+                                    'sent_to' => $boardGrad->user_id,
+                                    'board_id' => $sameLevelBoard->board_id,
+                                    'amount' => $sameLevelBoard->board->amount,
+                                    'status' => 'pending',
+                                ]);
+                            }
+                        }
+
+                        $arrayPosition++;
+                    }
                 }
             }
         }

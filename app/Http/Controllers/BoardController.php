@@ -69,15 +69,17 @@ class BoardController extends Controller
                 'amount' => ($request) ? ($request->amount ?? '') : (string)((int)$amount),
             ]);
 
-            $grad = UserBoards::create([
-                'user_id' => $request->grad,
-                'board_id' => $board->id,
-                'user_board_roles' => 'grad',
-                'position' => 'left',
-            ]);
-
             if ($request) {
-                DB::commit();
+                $grad = UserBoards::create([
+                    'user_id' => $request->grad,
+                    'board_id' => $board->id,
+                    'user_board_roles' => 'grad',
+                    'position' => 'left',
+                ]);
+            }
+
+            DB::commit();
+            if ($request) {
                 return redirect()->back()->with('success', 'New board created successfully');
             } else {
                 return $board;
