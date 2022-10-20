@@ -126,7 +126,7 @@ h4 {
 /* Begin: Access Page CSS */
 
 .loginWrap {
-    background: url(../images/body-bg.jpg) center/cover no-repeat;
+    background: linear-gradient(to bottom left, #461c02, #f66001);
     height: 100%;
     display: flex;
     align-items: center;
