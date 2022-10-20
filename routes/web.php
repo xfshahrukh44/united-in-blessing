@@ -29,6 +29,7 @@ use App\Http\Controllers\BoardController;
 use App\Http\Controllers\GiftController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RemoveUserRequestController;
 use App\Http\Controllers\UserBoardsController;
 use App\Http\Controllers\UsernameController;
 use Illuminate\Support\Facades\Auth;
@@ -124,6 +125,10 @@ Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function
     Route::get('gift/edit/{id}', [GiftController::class, 'edit'])->name('admin.gift.edit');
     Route::post('gift/update/{id}', [GiftController::class, 'update'])->name('admin.gift.update');
     Route::delete('gift/destroy/{id}', [GiftController::class, 'destroy'])->name('admin.gift.destroy');
+
+    // Remove User Request
+    Route::get('remove-user-request', [RemoveUserRequestController::class, 'index'])->name('admin.remove-user-request.index');
+    Route::post('remove-user-request/update/{id}', [RemoveUserRequestController::class, 'update'])->name('admin.remove-user-request.update');
 
     //category
     Route::get('category', [Categories::class, 'index'])->name('category');

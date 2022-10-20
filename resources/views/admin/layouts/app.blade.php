@@ -201,6 +201,23 @@
                         </ul>
                     </li>
 
+                    <li class="nav-item has-treeview {{ request()->IS('admin/remove-user-request') }}">
+                        <a href="#" class="nav-link ">
+                            <i class="nav-icon fas fa-user fw"></i>
+                            <p>Remove User Request</p>
+                        </a>
+                        <ul class="nav nav-treeview"
+                            style="{{ request()->IS('admin/remove-user-request.index') ? 'display:block;' : '' }}">
+                            <li class="nav-item">
+                                <a href="{{route('admin.remove-user-request.index')}}"
+                                   class="nav-link {{ request()->IS('admin/remove-user-request.index') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-user"></i>
+                                    <p>All Requests</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     {{--                    <li class="nav-item has-treeview {{ request()->IS('admin/settings') ? 'menu-is-opening menu-open' : '' }}">--}}
                     {{--                        <a href="#" class="nav-link ">--}}
                     {{--                            <i class="nav-icon fas fa-tags fw"></i>--}}

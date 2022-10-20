@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Models\Boards;
 use App\Models\GiftLogs;
+use App\Models\RemoveUserRequest;
 use App\Models\UserBoards;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GiftController extends Controller
 {
@@ -170,7 +172,7 @@ class GiftController extends Controller
                                 if (is_null($sameLevelBoard)) {
                                     $gradInvitedBy = $gradInvitedBy->invitedBy;
 
-                                    if (is_null($gradInvitedBy)){
+                                    if (is_null($gradInvitedBy)) {
                                         break;
                                     }
                                 } else {
@@ -211,9 +213,29 @@ class GiftController extends Controller
                     }
                 }
             }
+
+            $msg = 'Status Updated Successfully';
+        } else {
+            RemoveUserRequest::updateOrCreate(
+                [
+                    'user_id' => $gift->sent_by,
+                    'board_id' => $gift->board_id,
+                    'requested_by' => Auth::user()->id,
+                ],
+                [
+                    'status' => 'pending',
+                ]
+            );
+
+//            $msg = 'Your Request  to Remove "' . $gift->sender->username . '" from "' . $gift->board->board_number . '" has been submitted to the Admin.';
+            $msg = 'Your Request has been submitted to the Admin.';
         }
 
-        return redirect()->route('admin.gift.index')->with('success', 'Status Updated Successfully');
+        if (Auth::user()->role == 'admin') {
+            return redirect()->route('admin.gift.index')->with('success', 'Status Updated Successfully');
+        } else {
+            return redirect()->back()->with('success', $msg);
+        }
 
     }
 
@@ -250,33 +272,35 @@ class GiftController extends Controller
                 ->where('board_id', $sibling->board_id)
                 ->first();
 
-            if ($siblingGift->status == 'accepted') {
-                // Get parent and then sibling of parent to check if cousins have gifted
-                $parent = $sibling->board_parent($sibling->board_id);
-                $sibling = $this->siblings($parent);
+            if (!is_null($siblingGift)) {
+                if ($siblingGift->status == 'accepted') {
+                    // Get parent and then sibling of parent to check if cousins have gifted
+                    $parent = $sibling->board_parent($sibling->board_id);
+                    $sibling = $this->siblings($parent);
 
-                // Get it's children
-                foreach ($sibling->boardChildren($sibling->board_id) as $newbie) {
-                    $siblingGift = GiftLogs::where('sent_by', $newbie->user_id)
-                        ->where('board_id', $newbie->board_id)
-                        ->first();
+                    // Get it's children
+                    foreach ($sibling->boardChildren($sibling->board_id) as $newbie) {
+                        $siblingGift = GiftLogs::where('sent_by', $newbie->user_id)
+                            ->where('board_id', $newbie->board_id)
+                            ->first();
 
-                    if ($siblingGift->status == 'accepted') {
-                        $sibling = $this->siblings($newbie);
+                        if ($siblingGift->status == 'accepted') {
+                            $sibling = $this->siblings($newbie);
 
-                        if (!is_null($sibling)) {
-                            $siblingGift = GiftLogs::where('sent_by', $sibling->user_id)
-                                ->where('board_id', $sibling->board_id)
-                                ->first();
+                            if (!is_null($sibling)) {
+                                $siblingGift = GiftLogs::where('sent_by', $sibling->user_id)
+                                    ->where('board_id', $sibling->board_id)
+                                    ->first();
 
-                            if ($siblingGift->status == 'accepted') {
-                                return true;
-                            } else {
-                                return false;
+                                if ($siblingGift->status == 'accepted') {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
                             }
+                        } else {
+                            return false;
                         }
-                    } else {
-                        return false;
                     }
                 }
             }
