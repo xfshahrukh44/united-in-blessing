@@ -2,7 +2,6 @@
 @section('keywords', '')
 @section('description', '')
 <style>
-
     .menu-toggler{
         display: none !important;
     }
