@@ -133,8 +133,8 @@
                                                class="themeBtn w-100"><span style="left: -8px; top: 1705px;"></span>
                                                 <text>Confirm</text>
                                             </a>
-                                            <a href="{{ route('update-gift-status', [$gift->id, 'not_sent']) }}"
-                                               class="tableIconBtn" title="Delete"><i class="fa fa-trash"></i></a>
+                                            <a href="javascript:void(0)" data-href="{{ route('update-gift-status', [$gift->id, 'not_sent']) }}"
+                                               class="tableIconBtn giftDeleteButton" title="Delete"><i class="fa fa-trash"></i></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -174,8 +174,8 @@
                                     <td>{{ $gift->receiver->phone }}</td>
                                     <td>{{ $gift->receiver->email }}</td>
                                     <td>
-                                        <a href="{{ route('update-gift-status', [$gift->id, ($gift->status != 'pending') ? 'pending' : 'not_sent']) }}"
-                                           class="themeBtn w-100"><span></span>
+                                        <a href="javascript:void(0)" data-href="{{ route('update-gift-status', [$gift->id, ($gift->status != 'pending') ? 'pending' : 'not_sent']) }}"
+                                           class="themeBtn w-100 newbieGiftDeleteButton"><span></span>
                                             <text>{{ ($gift->status == 'pending') ? 'cancel' : 'send' }}</text>
                                         </a>
                                     </td>
@@ -192,73 +192,23 @@
             </div>
         </div>
     </section>
-    {{--    MODAL--}}
-    <div class="modal fade" id="inactivity" tabindex="-1" role="dialog" aria-labelledby="inactivity" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Inactivity</h5>
-                </div>
-                <div class="modal-body">
-                    You have been logged out due to inactivity for 15 minutes.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="reload()">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
-@section('page_script')
+@section('js')
     <script>
-        let global = 10;
-
-        function noMovement() {
-            if (global == 0) {
-                userLogout();
-                resetGlobal();
-                $('#inactivity').modal('show');
-            } else {
-                global--;
+        $('.giftDeleteButton').on('click', function (){
+            let link = $(this).attr('data-href');
+            if (confirm('Are you sure you want to Remove this Member from your board?')){
+                window.location.href = link;
             }
-        }
-
-        function reload() {
-            location.reload();
-        }
-
-        function resetGlobal() {
-            global = 10;
-        }
-
-        function userLogout() {
-            $.ajax({
-                url: '{{route('logout')}}',
-                type: 'POST',
-                data: {
-                    "_token": "{{ csrf_token() }}"
-                },
-                success: function (res) {
-                    console.log(res);
-                },
-                error: function () {
-
-                }
-            })
-        }
-
-        $(document).ready(function () {
-            $('html').mousemove(function (event) {
-                resetGlobal();
-            });
-
         });
 
-        setInterval(function () {
-            noMovement()
-        }, 900000); //900000
-
+        $('.newbieGiftDeleteButton').on('click', function (){
+            let link = $(this).attr('data-href');
+            if (confirm('Are you sure you want to Cancel your position on this board?')){
+                window.location.href = link;
+            }
+        })
     </script>
 @endsection
 
