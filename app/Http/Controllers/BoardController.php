@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\UserBoards;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class BoardController extends Controller
@@ -29,7 +30,9 @@ class BoardController extends Controller
 
     public function createForm()
     {
-        return view('admin.boards.create');
+        $input['boards'] = Boards::all();
+        $input['users'] = User::all();
+        return view('admin.boards.create', $input);
     }
 
     public static function create($amount = null, $previous_board_number = null)
@@ -54,10 +57,11 @@ class BoardController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->getMessageBag())->withInput();
             }
-        } else{
+        } else {
             $request = null;
         }
 
+        DB::beginTransaction();
         try {
             $board = Boards::create([
                 'board_number' => ($request) ? ($request->board_number ?? $request->board_number) : 'board-' . ($latest_board->count() + 1),
@@ -66,11 +70,23 @@ class BoardController extends Controller
             ]);
 
             if ($request) {
+                $grad = UserBoards::create([
+                    'user_id' => $request->grad,
+                    'board_id' => $board->id,
+                    'user_board_roles' => 'grad',
+                    'position' => 'left',
+                ]);
+            }
+
+            DB::commit();
+            if ($request) {
                 return redirect()->back()->with('success', 'New board created successfully');
             } else {
                 return $board;
             }
+
         } catch (\Exception $exception) {
+            DB::rollBack();
             return $exception;
         }
     }
@@ -168,5 +184,13 @@ class BoardController extends Controller
         } catch (\Exception $exception) {
             return back()->with('error', $exception->getMessage());
         }
+    }
+
+    public function previousBoardGrad(Request $request)
+    {
+        $board = Boards::where('board_number', $request->previous_board_number)->first();
+        $grad = UserBoards::where('board_id', $board->id)->where('user_board_roles', 'grad')->first();
+
+        return $grad->user->username;
     }
 }

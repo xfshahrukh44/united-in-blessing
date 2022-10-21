@@ -34,10 +34,10 @@
                                 <table id="users-table" class="table table-bordered table-striped">
                                     <thead>
                                     <tr style="text-align: center">
-                                        <th>S.No</th>
+                                        <th>No</th>
                                         <th>Board Number</th>
                                         <th>Previous Board Number</th>
-                                        <th>Amount</th>
+                                        <th>Value</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>

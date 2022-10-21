@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AttributeGroupController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\Categories;
+use App\Http\Controllers\FrontController;
 use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\CollectionProductController;
 use App\Http\Controllers\Admin\CouponController;
@@ -28,6 +29,7 @@ use App\Http\Controllers\BoardController;
 use App\Http\Controllers\GiftController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RemoveUserRequestController;
 use App\Http\Controllers\UserBoardsController;
 use App\Http\Controllers\UsernameController;
 use Illuminate\Support\Facades\Auth;
@@ -69,6 +71,20 @@ Route::prefix('/')->middleware('auth')->group(function (){
 
     // Gifts
     Route::get('update-gift-status/{id}/{status}', [GiftController::class, 'update'])->name('update-gift-status');
+
+    //Menu Pages
+    Route::get('/how-it-works', [FrontController::class, 'howItWorks'])->name('front.work');
+
+    Route::get('/guidelines', [FrontController::class, 'guidelines'])->name('front.guidelines');
+
+    Route::get('/faq', [FrontController::class, 'faq'])->name('front.faq');
+
+    Route::get('/privacy-statement', [FrontController::class, 'privacy_statement'])->name('front.privacy-statement');
+
+    Route::get('/contact-us', [FrontController::class, 'contact'])->name('front.contact-us');
+
+    Route::get('/gifting-forms', [FrontController::class, 'gifting_forms'])->name('front.gifting-forms');
+
 });
 
 // Admin Routes
@@ -91,6 +107,7 @@ Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function
     //Boards
     Route::get('boards', [BoardController::class, 'boards'])->name('admin.boards.index');
     Route::get('board/create/form', [BoardController::class, 'createForm'])->name('admin.board.create.view');
+    Route::get('board/previous-board-grad', [BoardController::class, 'previousBoardGrad'])->name('admin.board.previous-board-grad');
     Route::post('board/store/{amount?}/{previous_board_number?}', [BoardController::class, 'create'])->name('admin.board.store');
     Route::get('board/edit/{id}', [BoardController::class, 'edit'])->name('admin.board.edit');
     Route::post('board/update/{id}', [BoardController::class, 'update'])->name('admin.board.update');
@@ -108,6 +125,10 @@ Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function
     Route::get('gift/edit/{id}', [GiftController::class, 'edit'])->name('admin.gift.edit');
     Route::post('gift/update/{id}', [GiftController::class, 'update'])->name('admin.gift.update');
     Route::delete('gift/destroy/{id}', [GiftController::class, 'destroy'])->name('admin.gift.destroy');
+
+    // Remove User Request
+    Route::get('remove-user-request', [RemoveUserRequestController::class, 'index'])->name('admin.remove-user-request.index');
+    Route::post('remove-user-request/update/{id}', [RemoveUserRequestController::class, 'update'])->name('admin.remove-user-request.update');
 
     //category
     Route::get('category', [Categories::class, 'index'])->name('category');

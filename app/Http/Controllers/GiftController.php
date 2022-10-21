@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\RegisterController;
 use App\Models\Boards;
 use App\Models\GiftLogs;
+use App\Models\RemoveUserRequest;
 use App\Models\UserBoards;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GiftController extends Controller
 {
@@ -114,7 +117,12 @@ class GiftController extends Controller
         $gift = GiftLogs::where('id', $id)->first();
 
         if ($status == 'accepted') {
-            $response = $this->giftFromOtherMembersOfSameMatrix($id);
+            $boardUser = UserBoards::where('user_id', $gift->sent_by)
+                ->where('board_id', $gift->board_id)
+                ->first();
+            $response = $this->giftFromOtherMembersOfSameMatrix($boardUser);
+
+//            $response = true;
             if ($response) {
                 $createBoard = BoardController::create($gift->amount, $gift->board->board_number);
                 if ($createBoard instanceof \Exception) {
@@ -126,10 +134,108 @@ class GiftController extends Controller
                 if ($addUserToBoard instanceof \Exception) {
                     return redirect()->back()->with('error', $addUserToBoard->getMessage());
                 }
+
+                // If all the newbies in the same matrix has gifted then take there grad parent and find it's sibling
+                // to check if newbies in other matrix have gifted.
+                $grandParent = $boardUser->board_parent($boardUser->board_id)->board_parent($boardUser->board_id);
+                $sibling = $this->siblings($grandParent);
+                $undergrads = $sibling->boardChildren($sibling->board_id);
+                $newbies = $undergrads[0]->boardChildren($sibling->board_id);
+
+                $response = $this->giftFromOtherMembersOfSameMatrix($newbies[0]);
+
+                if ($response) {
+//                    Set board status to retired
+                    $board = Boards::where('id', $sibling->board_id)->update([
+                        'status' => 'retired',
+                    ]);
+
+                    // Get grad to move in the new board.
+                    $grad = UserBoards::where('board_id', $sibling->board_id)->where('user_board_roles', 'grad')->first();
+                    $gradInvitedBy = $grad->user->invitedBy;
+
+                    $boardValues = array('100', '400', '1000', '2000');
+                    $arrayPosition = array_search($grad->board->amount, $boardValues);
+
+                    for ($y = 1; $y < 3; $y++) {
+                        if (array_key_exists($arrayPosition, $boardValues)) {
+                            for ($x = 1; $x < 8; $x++) {
+                                $sameLevelBoard = UserBoards::where('user_id', $gradInvitedBy->id)
+                                    ->where('user_board_roles', '!=', 'newbie')
+                                    ->where('board_id', '!=', $grad->board_id)
+                                    ->whereHas('board', function ($q) use ($grad, $boardValues, $arrayPosition) {
+                                        $q->where('amount', $boardValues[$arrayPosition]);
+                                    })
+                                    ->has('newbies', '<', 8)
+                                    ->first();
+
+                                if (is_null($sameLevelBoard)) {
+                                    $gradInvitedBy = $gradInvitedBy->invitedBy;
+
+                                    if (is_null($gradInvitedBy)) {
+                                        break;
+                                    }
+                                } else {
+                                    break;
+                                }
+                            }
+
+                            if ($sameLevelBoard) {
+                                $userPlacement = RegisterController::getPositionToPlaceUserInBoard($sameLevelBoard);
+
+                                // Add User to the board
+                                UserBoards::create([
+                                    'user_id' => $grad->user_id,
+                                    'board_id' => $sameLevelBoard->board_id,
+                                    'parent_id' => $userPlacement['parent_id'],
+                                    'user_board_roles' => $userPlacement['role'] != '' ? $userPlacement['role'] : 'newbie',
+                                    'position' => $userPlacement['position']
+                                ]);
+
+                                // Get grad of the board to send the gift
+                                $boardGrad = UserBoards::where('board_id', $sameLevelBoard->board_id)
+                                    ->where('user_board_roles', 'grad')
+                                    ->with('user', 'board')
+                                    ->first();
+
+                                // Create gift log
+                                GiftLogs::create([
+                                    'sent_by' => $grad->user_id,
+                                    'sent_to' => $boardGrad->user_id,
+                                    'board_id' => $sameLevelBoard->board_id,
+                                    'amount' => $sameLevelBoard->board->amount,
+                                    'status' => 'pending',
+                                ]);
+                            }
+                        }
+
+                        $arrayPosition++;
+                    }
+                }
             }
+
+            $msg = 'Status Updated Successfully';
+        } else {
+            RemoveUserRequest::updateOrCreate(
+                [
+                    'user_id' => $gift->sent_by,
+                    'board_id' => $gift->board_id,
+                    'requested_by' => Auth::user()->id,
+                ],
+                [
+                    'status' => 'pending',
+                ]
+            );
+
+//            $msg = 'Your Request  to Remove "' . $gift->sender->username . '" from "' . $gift->board->board_number . '" has been submitted to the Admin.';
+            $msg = 'Your Request has been submitted to the Admin.';
         }
 
-        return redirect()->route('admin.gift.index')->with('success', 'Status Updated Successfully');
+        if (Auth::user()->role == 'admin') {
+            return redirect()->route('admin.gift.index')->with('success', 'Status Updated Successfully');
+        } else {
+            return redirect()->back()->with('success', $msg);
+        }
 
     }
 
@@ -155,15 +261,10 @@ class GiftController extends Controller
     }
 
     // Check if other members of the same matrix have gifted
-    public function giftFromOtherMembersOfSameMatrix($id)
+    public function giftFromOtherMembersOfSameMatrix($boardUser)
     {
-        $gift = GiftLogs::where('id', $id)->first();
-        $board = UserBoards::where('user_id', $gift->sent_by)
-            ->where('board_id', $gift->board_id)
-            ->first();
-
         // Get Sibling
-        $sibling = $this->siblings($board);
+        $sibling = $this->siblings($boardUser);
 
         if (!is_null($sibling)) {
             // check if sibling has already gifted
@@ -171,33 +272,35 @@ class GiftController extends Controller
                 ->where('board_id', $sibling->board_id)
                 ->first();
 
-            if ($siblingGift->status == 'accepted') {
-                // Get parent and then sibling of parent to check if cousins have gifted
-                $parent = $sibling->board_parent($gift->board_id);
-                $sibling = $this->siblings($parent);
+            if (!is_null($siblingGift)) {
+                if ($siblingGift->status == 'accepted') {
+                    // Get parent and then sibling of parent to check if cousins have gifted
+                    $parent = $sibling->board_parent($sibling->board_id);
+                    $sibling = $this->siblings($parent);
 
-                // Get it's children
-                foreach ($sibling->boardChildren($gift->board_id) as $newbie) {
-                    $siblingGift = GiftLogs::where('sent_by', $newbie->user_id)
-                        ->where('board_id', $newbie->board_id)
-                        ->first();
+                    // Get it's children
+                    foreach ($sibling->boardChildren($sibling->board_id) as $newbie) {
+                        $siblingGift = GiftLogs::where('sent_by', $newbie->user_id)
+                            ->where('board_id', $newbie->board_id)
+                            ->first();
 
-                    if ($siblingGift->status == 'accepted') {
-                        $sibling = $this->siblings($newbie);
+                        if ($siblingGift->status == 'accepted') {
+                            $sibling = $this->siblings($newbie);
 
-                        if (!is_null($sibling)) {
-                            $siblingGift = GiftLogs::where('sent_by', $sibling->user_id)
-                                ->where('board_id', $sibling->board_id)
-                                ->first();
+                            if (!is_null($sibling)) {
+                                $siblingGift = GiftLogs::where('sent_by', $sibling->user_id)
+                                    ->where('board_id', $sibling->board_id)
+                                    ->first();
 
-                            if ($siblingGift->status == 'accepted') {
-                                return true;
-                            } else {
-                                return false;
+                                if ($siblingGift->status == 'accepted') {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
                             }
+                        } else {
+                            return false;
                         }
-                    } else {
-                        return false;
                     }
                 }
             }

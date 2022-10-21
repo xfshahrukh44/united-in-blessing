@@ -92,22 +92,6 @@
             </div>
         </div>
     </main>
-{{--    MODAL--}}
-    <div class="modal fade" id="inactivity" tabindex="-1" role="dialog" aria-labelledby="inactivity" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Inactivity</h5>
-                </div>
-                <div class="modal-body">
-                    You have been logged out due to inactivity for 15 minutes.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="reload()">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 
