@@ -33,25 +33,28 @@
                 the recipient by Email.</p>
             <div class="text-center mt-5">
                 <form>
-                    <div class="row">
-                        <div class="col">
-                            <h4>RECIPIENT&#39;S USERNAME</h4>
+                    <div class="row align-items-center">
+                        <div class="col-3">
+                            <h4>RECIPIENT&#39;S EMAIL</h4>
                         </div>
-                        <div class="col">
+                        <div class="col-6">
                             <input type="text" class="form-control" name="text">
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                        </div>
-                        <div class="col">
+                        <div class="col-auto">
                             <input type="submit" class="themeBtn" value="Submit" name="submit">
                         </div>
                     </div>
+{{--                    <div class="row">--}}
+{{--                        <div class="col">--}}
+{{--                        </div>--}}
+{{--                        <div class="col">--}}
+
+{{--                        </div>--}}
+{{--                    </div>--}}
                 </form>
             </div>
 
-            <div style="margin-top: 25%">
+            <div style="margin-top: 10%">
                 <h3 class="text-center">NON-SOLICITATION</h3><br><br>
                 <p>I, the undersigned, hereby confirm with full personal and legal responsibility, that I
                     have requested this information of my own free will and accord, and that I am not
@@ -90,7 +93,7 @@
                 </p>
             </div>
 
-            <div style="margin-top: 25%">
+            <div style="margin-top: 10%">
                 <div class="text-center">
                     <h3>GIFTING STATEMENT</h3>
                     <h5>Gifting Statement Title 26, United States<br>

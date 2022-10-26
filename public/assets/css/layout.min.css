@@ -90,7 +90,7 @@ header img {
     z-index: 10;
     transition: all 0.4s ease;
     width: 350px;
-    background-color: var(--black);
+    background-color: var(--brown);
 }
 
 .navigation-menu .navigation-bg {

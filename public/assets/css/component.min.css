@@ -39,7 +39,7 @@
     width: 0;
     height: 0;
     border-radius: 100%;
-    background: var(--black);
+    background: var(--brown);
     transform: translate(-50%, -50%);
     transition: width var(--time), padding-top var(--time);
 }
