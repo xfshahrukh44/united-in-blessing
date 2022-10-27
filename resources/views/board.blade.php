@@ -14,7 +14,8 @@
 
     <section class="treeSec">
         <a href="{{ url()->previous() }}" class="backBtn">
-            <i class="fas fa-arrow-to-left"></i>
+{{--            <i class="fas fa-arrow-to-left"></i>--}}
+            Back
         </a>
         <div class="container">
             <div class="row my-5 justify-content-center">
@@ -72,8 +73,8 @@
                                         @foreach($grad->boardChildren(Request::segment(2)) as $key => $pregrad)
                                             @if($key == 1)
                                             <li class="heading">
-                                                <h4>Pregrad</h4>
-                                                <h4>Undergrad</h4>
+                                                <h4>Pre-grad</h4>
+                                                <h4>Undergrads</h4>
                                                 <h4>Newbies</h4>
                                             </li>
                                             @endif

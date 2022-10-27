@@ -94,7 +94,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td>No Records Found</td>
+{{--                                    <td>No Records Found</td>--}}
                                 </tr>
                             @endforelse
                             </tbody>
@@ -140,7 +140,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7">No records found</td>
+{{--                                    <td colspan="7">No records found</td>--}}
                                 </tr>
                             @endforelse
                             </tbody>
@@ -182,7 +182,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7">No records found</td>
+{{--                                    <td colspan="7">No records found</td>--}}
                                 </tr>
                             @endforelse
                             </tbody>
