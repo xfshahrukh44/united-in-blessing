@@ -222,7 +222,7 @@ h3 {
 }
 
 .tree.vertical .inviterCard {
-    background: #fff;
+    background: rgba(255,255,255,0.15);
     margin: 3rem 0 0;
     padding: 1rem;
 }
