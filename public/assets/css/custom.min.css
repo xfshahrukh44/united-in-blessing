@@ -44,7 +44,7 @@ html {
 }
 
 body {
-    background: var(--white);
+    background: #fcfdb6;
     color: #030303;
     font-family: "Poppins", sans-serif;
     font-size: 1rem;
@@ -102,6 +102,10 @@ ul {
     list-style-type: none;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    color: var(--black);
+}
+
 h1 {
 }
 
@@ -109,7 +113,7 @@ h2 {
     font-size: 2.5rem;
     text-transform: uppercase;
     margin-bottom: 1.5rem;
-    color: var(--black);
+    color: #fff;
 }
 
 h3 {
@@ -127,7 +131,7 @@ h4 {
 /* Begin: Access Page CSS */
 
 .loginWrap {
-    background: linear-gradient(to bottom left, #461c02, #f66001);
+    background: #cb5f1b;
     height: 100%;
     display: flex;
     align-items: center;
@@ -136,11 +140,13 @@ h4 {
 }
 
 .loginWrap .whitebg {
-    background: #fff url(../images/logo-shadow.jpg) bottom right/contain no-repeat;
+    /*background: #cb5f1b url(../images/logo-shadow.png) bottom right/contain no-repeat;*/
+    background-color: #cb5f1b;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.5);
 }
 
 .formStyle a {
-    color: var(--primary);
+    color: #fff;
 }
 
 .formStyle a.themeBtn {
@@ -158,6 +164,9 @@ h4 {
     padding: 2rem;
     background: url(../images/gold-bg.jpg) center/cover no-repeat;
     border-radius: 2rem 0 0 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .landingWrap .themeBtn {
@@ -201,7 +210,7 @@ h4 {
 }
 
 .landingWrap .whiteSide .center a {
-    color: var(--primary);
+    color: #fff;
 }
 
 .landingWrap .whiteSide .botom {
@@ -253,9 +262,8 @@ h4 {
 }
 
 .inviterCard {
-    background: var(--white);
-    box-shadow: var(--box-shadow);
-    border: 1px solid #dfdfdf;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     padding: 0 1rem 2.5rem;
     margin: 4rem 0 0;
@@ -266,6 +274,7 @@ h4 {
     flex-direction: column;
     position: relative;
     z-index: 1;
+    backdrop-filter: blur(5px);
 }
 
 .inviterCard img {
@@ -330,7 +339,7 @@ h4 {
     font-size: 1.125rem;
     font-weight: 500;
     text-align: center;
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
 
 .tableStyle thead th {
@@ -341,6 +350,7 @@ h4 {
 
 .tableStyle tbody tr td {
     /* padding: 1rem; */
+    background: #fcfdb6;
 }
 
 .tableStyle .themeBtn {
@@ -385,6 +395,10 @@ h4 {
 .landingWrap .whiteSide .center .wlcm {
     font-style: italic;
     text-transform: inherit;
+}
+
+.landingWrap .whiteSide .center .wlcm + img {
+    filter: drop-shadow(0 2px 15px black);
 }
 
 .invalid-feedback {
@@ -457,11 +471,13 @@ h4 {
     padding: 1.5rem;
     background: #fafafb;
 }
-.faqSec p{
+
+.faqSec p {
     margin: 0;
     line-height: 1.8;
 }
-.faqSec p+p{
+
+.faqSec p + p {
     margin-top: 1rem;
 }
 
@@ -515,6 +531,7 @@ h4 {
     transform: rotate(180deg);
     transition: 0.5s;
 }
+
 .faqSec .list {
     list-style: none;
     margin-left: 40px;
@@ -529,4 +546,8 @@ h4 {
     width: 1em;
     margin-left: -1em;
 }
+
 /* end faqSec */
+.main-slider * {
+    color: #000;
+}

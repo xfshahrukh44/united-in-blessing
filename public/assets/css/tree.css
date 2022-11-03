@@ -117,15 +117,16 @@ h3 {
 }
 
 .tree.vertical > li > ul > li:first-child:before {
-    transform: rotate(-20deg);
-    right: -120px;
-    width: 70%;
+    transform: rotate(-22deg);
+    right: -100px;
+    width: 60%;
 }
 
 .tree.vertical > li > ul > li:last-child:before {
-    transform: rotate(20deg);
-    left: -40px;
+    transform: rotate(22deg);
+    left: -100px;
     width: 60%;
+    top: 0;
 }
 
 .tree.vertical > li > ul > li > ul > li:first-child:before {
@@ -139,18 +140,17 @@ h3 {
     transform: rotate(45deg);
     left: 0;
     width: 50%;
-    top: -5%;
 }
 
 .tree.vertical > li > ul > li > ul > li > ul > li:first-child:before {
     transform: rotate(-45deg) translateX(-50%);
-    top: -40%;
+    top: -20%;
     left: 50%;
 }
 
 .tree.vertical > li > ul > li > ul > li > ul > li:last-child:before {
     transform: rotate(45deg) translateX(50%);
-    top: -40%;
+    top: -20%;
     right: 50%;
 }
 
@@ -222,6 +222,7 @@ h3 {
 }
 
 .tree.vertical .inviterCard {
+    background: rgba(255,255,255,0.15);
     margin: 3rem 0 0;
     padding: 1rem;
 }
@@ -232,7 +233,6 @@ h3 {
     text-transform: uppercase;
     position: relative;
     z-index: 11;
-    background: #fff;
     padding: 0.25rem 0.75rem;
 }
 
@@ -247,10 +247,11 @@ h3 {
 }
 
 .treeSec .row .row {
-    background: #fff;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     padding: 2rem 3.5rem;
     border-radius: 10px;
+    backdrop-filter: blur(5px);
 }
 
 .treeSec .row .row > * {
@@ -300,4 +301,20 @@ li.heading {
 
 .tree.vertical li ul li.heading:before {
     content: none;
+}
+
+.inviterCard.invitees.pregrad {
+    width: 180px;
+}
+
+.inviterCard.invitees.undergrad {
+    width: 200px;
+}
+
+.inviterCard.invitees.newbie {
+    width: 130px;
+}
+
+.tree.vertical .inviterCard * {
+    color: #000;
 }
