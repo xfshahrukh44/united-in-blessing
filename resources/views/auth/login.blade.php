@@ -40,8 +40,14 @@
                                 @enderror
                             </div>
                             <div class="mb-4">
-                                <input type="password" class="form-control" placeholder="Password" name="password"
+                                <div class="passwordWrap">
+                                    <input type="password" class="form-control" placeholder="Password" name="password"
                                        required>
+                                    <button type="button" class="revealPassword">
+                                        <i class="fas fa-eye"></i>
+                                        <i class="fas fa-eye-slash"></i>
+                                    </button>
+                                </div>
                                 <div class="text-end">
                                     @if (Route::has('password.request'))
                                         <a class="" href="{{ route('password.request') }}">

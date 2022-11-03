@@ -8,6 +8,7 @@
     --black: #000;
     --white: #fff;
     --text: #a2a2a2;
+    --brown: #6e3d25;
     --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
 }
 
@@ -126,7 +127,7 @@ h4 {
 /* Begin: Access Page CSS */
 
 .loginWrap {
-    background: url(../images/body-bg.jpg) center/cover no-repeat;
+    background: linear-gradient(to bottom left, #461c02, #f66001);
     height: 100%;
     display: flex;
     align-items: center;
@@ -230,7 +231,7 @@ h4 {
 }
 
 .inviterSec,
-.boardSec {
+.boardSec, .faqSec {
     padding: 3rem 0;
     position: relative;
     overflow: hidden;
@@ -407,9 +408,9 @@ h4 {
     transform: translate(-10%, -5%);
     background-color: var(--primary);
     border-radius: 30px;
-    padding: 0.5rem 3rem;
+    padding: 0.75em 2em;
     color: #fff;
-    font-size: 2rem;
+    font-size: 1.25rem;
     z-index: 1;
     border: 1px solid var(--primary);
     transition: all 0.3s ease-in-out;
@@ -419,3 +420,113 @@ h4 {
     background-color: #fff;
     color: var(--primary);
 }
+
+
+.passwordWrap {
+    position: relative;
+}
+
+.passwordWrap .revealPassword {
+    background: transparent;
+    border: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    color: #919191;
+}
+
+
+/* faqSec*/
+.faqSec .accordion {
+    margin: 4rem 0 0;
+}
+
+.faqSec .accordion .item {
+    border: none;
+    margin-bottom: 3rem;
+    background: none;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.faqSec .t-p {
+    padding: 1.5rem;
+    background: #fafafb;
+}
+.faqSec p{
+    margin: 0;
+    line-height: 1.8;
+}
+.faqSec p+p{
+    margin-top: 1rem;
+}
+
+.faqSec .accordion .item .item-header h2 button.btn.btn-link {
+    background-color: transparent;
+    color: var(--black);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    border: 0;
+    text-decoration: none;
+}
+
+.faqSec .accordion .item .item-header h2 button.btn.btn-link.active {
+    color: var(--secondary);
+}
+
+.faqSec .accordion .item .item-header {
+    border-bottom: none;
+    background: transparent;
+    padding: 0px;
+}
+
+.faqSec .accordion .item .item-header h2 button {
+    color: white;
+    font-size: 20px;
+    padding: 0;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+
+.faqSec .accordion .item .item-header h2 i {
+    float: right;
+    font-size: 27px;
+    color: var(--white);
+    background-color: var(--primary);
+    width: 42px;
+    height: 41px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.faqSec button.btn.btn-link.collapsed i {
+    transform: rotate(0deg);
+}
+
+.faqSec button.btn.btn-link i {
+    transform: rotate(180deg);
+    transition: 0.5s;
+}
+.faqSec .list {
+    list-style: none;
+    margin-left: 40px;
+    margin-top: 1rem;
+}
+
+.faqSec .list li::before {
+    content: "\2022";
+    color: black;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+/* end faqSec */
