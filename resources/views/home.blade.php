@@ -17,7 +17,7 @@
     <section class="inviterSec">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-12 text-center mb-5">
+                <div class="col-lg-12 text-center mb-3">
                     <h3>My Inviter</h3>
                 </div>
                 <div class="col-lg-5">
@@ -63,7 +63,7 @@
     <section class="boardSec">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-12 text-center mb-5">
+                <div class="col-lg-12 text-center mb-3">
                     <h3>My Boards</h3>
                 </div>
                 <div class="col-lg-7">

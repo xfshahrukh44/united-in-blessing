@@ -44,7 +44,7 @@ html {
 }
 
 body {
-    background: var(--white);
+    background: #742e02;
     color: #030303;
     font-family: "Poppins", sans-serif;
     font-size: 1rem;
@@ -65,7 +65,7 @@ button:hover {
 
 p {
     font-size: 1rem;
-    color: var(--black);
+    color: #fff;
 }
 
 label {
@@ -102,6 +102,10 @@ ul {
     list-style-type: none;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    color: #fff;
+}
+
 h1 {
 }
 
@@ -109,7 +113,7 @@ h2 {
     font-size: 2.5rem;
     text-transform: uppercase;
     margin-bottom: 1.5rem;
-    color: var(--black);
+    color: #fff;
 }
 
 h3 {
@@ -127,7 +131,7 @@ h4 {
 /* Begin: Access Page CSS */
 
 .loginWrap {
-    background: linear-gradient(to bottom left, #461c02, #f66001);
+    background: #742e02;
     height: 100%;
     display: flex;
     align-items: center;
@@ -253,9 +257,8 @@ h4 {
 }
 
 .inviterCard {
-    background: var(--white);
-    box-shadow: var(--box-shadow);
-    border: 1px solid #dfdfdf;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     padding: 0 1rem 2.5rem;
     margin: 4rem 0 0;
@@ -266,6 +269,7 @@ h4 {
     flex-direction: column;
     position: relative;
     z-index: 1;
+    backdrop-filter: blur(5px);
 }
 
 .inviterCard img {
@@ -278,7 +282,7 @@ h4 {
 
 .inviterCard * {
     margin: 0;
-    color: var(--black);
+    color: var(--white);
 }
 
 .inviterCard i {
@@ -457,11 +461,13 @@ h4 {
     padding: 1.5rem;
     background: #fafafb;
 }
-.faqSec p{
+
+.faqSec p {
     margin: 0;
     line-height: 1.8;
 }
-.faqSec p+p{
+
+.faqSec p + p {
     margin-top: 1rem;
 }
 
@@ -515,6 +521,7 @@ h4 {
     transform: rotate(180deg);
     transition: 0.5s;
 }
+
 .faqSec .list {
     list-style: none;
     margin-left: 40px;
@@ -529,4 +536,8 @@ h4 {
     width: 1em;
     margin-left: -1em;
 }
+
 /* end faqSec */
+.main-slider * {
+    color: #000;
+}
