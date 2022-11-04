@@ -28,11 +28,11 @@ return [
     //    'header_string'       => '', // PDF_HEADER_STRING
     //    'page_units'          => '', // PDF_UNIT
     //    'margin_header'       => '', // PDF_MARGIN_HEADER
-    //    'margin_footer'       => '', // PDF_MARGIN_FOOTER
+//        'margin_footer'       => '', // PDF_MARGIN_FOOTER
     //    'margin_top'          => '', // PDF_MARGIN_TOP
-    //    'margin_bottom'       => '', // PDF_MARGIN_BOTTOM
-    //    'margin_left'         => '', // PDF_MARGIN_LEFT
-    //    'margin_right'        => '', // PDF_MARGIN_RIGHT
+        'margin_bottom'       => '12', // PDF_MARGIN_BOTTOM
+        'margin_left'         => '10', // PDF_MARGIN_LEFT
+        'margin_right'        => '10', // PDF_MARGIN_RIGHT
     //    'font_name_main'      => '', // PDF_FONT_NAME_MAIN
     //    'font_size_main'      => '', // PDF_FONT_SIZE_MAIN
     //    'font_name_data'      => '', // PDF_FONT_NAME_DATA
