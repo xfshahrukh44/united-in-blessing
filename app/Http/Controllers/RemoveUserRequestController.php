@@ -29,7 +29,7 @@ class RemoveUserRequestController extends Controller
                     })
                     ->addColumn('requested_by', function ($data) {
                         $userPosition = UserBoards::where('board_id', $data->board_id)->where('user_id', $data->requested_by)->first();
-                        return $userPosition->user_board_roles;
+                        return $userPosition->user_board_roles ?? '';
                     })
                     ->addColumn('status', function ($data) {
                         return '<select class="form-control requestStatus"><option value="pending" data-id="' . $data->id . '">pending</option><option value="accepted" data-id="' . $data->id . '">accepted</option><option value="rejected" data-id="' . $data->id . '">rejected</option></select>';
