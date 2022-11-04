@@ -60,7 +60,7 @@
                 <div class="nav-inner">
                     <ul class="list-inline">
                         <li class="nav-item">
-                            <a href="{{ url('home') }}" class="nav-link">HOME</a>
+                            <a href="{{ url('home') }}" class="nav-link"><i class="fas fa-home"></i> HOME</a>
                         </li>
 
                         @if(Auth::check())
@@ -70,29 +70,29 @@
                                 </li>
                             @endif
                             <li class="nav-item">
-                                <a href="{{ url('profile') }}" class="nav-link">My PROFILE</a>
+                                <a href="{{ url('profile') }}" class="nav-link"><i class="fas fa-user"></i>My PROFILE</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('front.work')}}" class="nav-link">How it works</a>
+                                <a href="{{route('front.work')}}" class="nav-link"><i class="fas fa-tasks-alt"></i>How it works</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('front.guidelines')}}" class="nav-link">Guidelines</a>
+                                <a href="{{route('front.guidelines')}}" class="nav-link"><i class="fas fa-file-alt"></i>Guidelines</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('front.faq')}}" class="nav-link">FAQs</a>
+                                <a href="{{route('front.faq')}}" class="nav-link"><i class="fas fa-question"></i>FAQs</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('front.gifting-forms')}}" class="nav-link">Gifting Forms</a>
+                                <a href="{{route('front.gifting-forms')}}" class="nav-link"><i class="fas fa-gifts"></i>Gifting Forms</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('front.privacy-statement')}}" class="nav-link">Privacy Statement</a>
+                                <a href="{{route('front.privacy-statement')}}" class="nav-link"><i class="fas fa-user-secret"></i>Privacy Statement</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('front.contact-us')}}" class="nav-link">Contact Us</a>
+                                <a href="{{route('front.contact-us')}}" class="nav-link"><i class="fas fa-envelope"></i>Contact Us</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ url('logout') }}" class="nav-link" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">LOGOUT</a>
+                                                     document.getElementById('logout-form').submit();"><i class="fas fa-sign-out-alt"></i>LOGOUT</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>

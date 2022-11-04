@@ -1,5 +1,16 @@
 @extends('layouts.app')
 
+<style>
+    .invalid-feedback {
+        display: block;
+    }
+    .menu-toggler{
+        display: none !important;
+    }
+    .navigation-menu{
+        right: -400px;
+    }
+</style>
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

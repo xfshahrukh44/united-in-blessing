@@ -5,6 +5,9 @@
     .menu-toggler{
         display: none !important;
     }
+    .navigation-menu{
+        right: -400px !important;
+    }
 </style>
 @section('content')
     <main class="loginWrap landingWrap">
