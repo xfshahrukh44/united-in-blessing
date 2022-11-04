@@ -218,7 +218,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item has-treeview {{ request()->IS('admin/generate-new-report') }}">
+                    <li class="nav-item has-treeview {{ request()->IS('admin/generate-new-report') || request()->IS('admin/all-reports') ? 'menu-is-opening menu-open' : ''}}">
                         <a href="#" class="nav-link ">
                             <i class="nav-icon fas fa-file-pdf fw"></i>
                             <p>Reports</p>
@@ -233,8 +233,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#"
-                                   class="nav-link">
+                                <a href="{{ route('admin.all-reports') }}"
+                                   class="nav-link {{ request()->IS('admin/all-reports') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-file-pdf"></i>
                                     <p>All Reports</p>
                                 </a>

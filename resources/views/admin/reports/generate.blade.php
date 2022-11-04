@@ -87,7 +87,7 @@
                                         </div>
                                     </div>
                                     <div class="row float-right">
-                                        <button type="submit" class="btn btn-outline-primary">Generate Report</button>
+                                        <button type="submit" class="btn btn-outline-primary">Show Data</button>
                                         <button type="button" class="btn btn-primary ml-3" id="generate-pdf-button">Generate PDF</button>
                                     </div>
                                 </div>
@@ -176,7 +176,11 @@
                     url: '{{ route('admin.generate-pdf-report') }}',
                     data: $('.report-generating-form').serialize(),
                     success: function (msg){
-                        console.log(msg);
+                        if (msg['class'] === 'success'){
+                            toastr.success(msg['message']);
+                        } else{
+                            toastr.error(msg['message']);
+                        }
                     }
                 })
             })

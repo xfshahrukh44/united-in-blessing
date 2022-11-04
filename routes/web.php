@@ -134,6 +134,7 @@ Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function
     // Reports
     Route::match(['get', 'post'],'generate-new-report', [ReportController::class, 'index'])->name('admin.report.index');
     Route::post('generatepdf', [ReportController::class, 'generatePDF'])->name('admin.generate-pdf-report');
+    Route::get('all-reports', [ReportController::class, 'allReports'])->name('admin.all-reports');
 
     //category
     Route::get('category', [Categories::class, 'index'])->name('category');
