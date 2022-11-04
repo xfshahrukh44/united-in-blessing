@@ -61,17 +61,6 @@ class ReportController extends Controller
 
             // print colored table
             $pdf->ColoredTable($header, $data);
-            $pdf->ColoredTable($header, $data);
-            $pdf->ColoredTable($header, $data);
-            $pdf->ColoredTable($header, $data);
-            $pdf->ColoredTable($header, $data);
-            $pdf->ColoredTable($header, $data);
-            $pdf->ColoredTable($header, $data);
-            $pdf->ColoredTable($header, $data);
-            $pdf->ColoredTable($header, $data);
-            $pdf->ColoredTable($header, $data);
-            $pdf->ColoredTable($header, $data);
-            $pdf->ColoredTable($header, $data);
 
             $totalAmount = $gift->sum('amount');
             $pdf->cell('180', '10', 'Total: $' . number_format($totalAmount, '2', '.', ','), 0, true, 'R', false, '', 0, false, "T", 'C');
