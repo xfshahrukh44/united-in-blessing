@@ -3,6 +3,22 @@
 @section('description', '')
 
 @section('content')
+    <style>
+        .backBtn {
+            position: absolute;
+            top: 5%;
+            left: 10%;
+            transform: translate(-10%, -5%);
+            background-color: var(--primary);
+            border-radius: 30px;
+            padding: 0.75em 2em;
+            color: #fff;
+            font-size: 1.25rem;
+            z-index: 1;
+            border: 1px solid var(--primary);
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
     <!-- Begin: Main Slider -->
     <div class="main-slider">
         <img class="w-100" src="{{ asset('assets/images/ban1.jpg') }}" alt="First slide">

@@ -20,6 +20,10 @@
 
     <section class="inviterSec">
         <div class="container">
+            <a href="{{route('home')}}" class="backBtn">
+                {{--            <i class="fas fa-arrow-to-left"></i>--}}
+                Back
+            </a>
             <div class="text-center mt-5">
                 <h3>PLEASE SEE OUR</h3>
                 <br><br><br><br><br><br>

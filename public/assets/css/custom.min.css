@@ -69,8 +69,7 @@ p {
 }
 
 label {
-    color: var(--text);
-    margin-bottom: 0.5rem;
+    color: var(--white);
 }
 
 .form-control {
@@ -220,7 +219,7 @@ h4 {
 }
 
 .landingWrap .whiteSide .botom :is(p, a) {
-    color: var(--black);
+    color: var(--white);
     margin: 0;
 }
 
@@ -339,7 +338,7 @@ h4 {
     font-size: 1.125rem;
     font-weight: 500;
     text-align: center;
-    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 .tableStyle thead th {
@@ -416,18 +415,15 @@ h4 {
 }
 
 .backBtn {
-    position: absolute;
-    top: 5%;
-    left: 10%;
-    transform: translate(-10%, -5%);
     background-color: var(--primary);
     border-radius: 30px;
     padding: 0.75em 2em;
     color: #fff;
     font-size: 1.25rem;
-    z-index: 1;
     border: 1px solid var(--primary);
     transition: all 0.3s ease-in-out;
+    margin: 0 0 1rem;
+    display: inline-block;
 }
 
 .backBtn:hover {
@@ -469,7 +465,8 @@ h4 {
 
 .faqSec .t-p {
     padding: 1.5rem;
-    background: #fafafb;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    border-radius: 10px;
 }
 
 .faqSec p {
@@ -550,4 +547,10 @@ h4 {
 /* end faqSec */
 .main-slider * {
     color: #000;
+}
+
+.loginWrap .whitebg .form-check {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
