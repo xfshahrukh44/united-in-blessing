@@ -30,6 +30,10 @@
 
     <section class="inviterSec">
         <div class="container">
+            <a href="{{route('home')}}" class="backBtn">
+                {{--            <i class="fas fa-arrow-to-left"></i>--}}
+                Back
+            </a>
             <p>These Guidelines have been established to maintain the integrity and high
                 standards of this activity and to encourage respect for Members and the law as it
                 pertains to gifting. Members are prohibited from representing the activity of
