@@ -218,6 +218,30 @@
                         </ul>
                     </li>
 
+                    <li class="nav-item has-treeview {{ request()->IS('admin/generate-new-report') || request()->IS('admin/all-reports') ? 'menu-is-opening menu-open' : ''}}">
+                        <a href="#" class="nav-link ">
+                            <i class="nav-icon fas fa-file-pdf fw"></i>
+                            <p>Reports</p>
+                        </a>
+                        <ul class="nav nav-treeview"
+                            style="{{ request()->IS('admin/generate-new-report') ? 'display:block;' : '' }}">
+                            <li class="nav-item">
+                                <a href="{{route('admin.report.index')}}"
+                                   class="nav-link {{ request()->IS('admin/generate-new-report') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-file-pdf"></i>
+                                    <p>New Report</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.all-reports') }}"
+                                   class="nav-link {{ request()->IS('admin/all-reports') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-file-pdf"></i>
+                                    <p>All Reports</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     {{--                    <li class="nav-item has-treeview {{ request()->IS('admin/settings') ? 'menu-is-opening menu-open' : '' }}">--}}
                     {{--                        <a href="#" class="nav-link ">--}}
                     {{--                            <i class="nav-icon fas fa-tags fw"></i>--}}

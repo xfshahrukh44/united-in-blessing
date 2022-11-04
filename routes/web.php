@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AttributeGroupController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\Categories;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\CollectionProductController;
@@ -129,6 +130,11 @@ Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function
     // Remove User Request
     Route::get('remove-user-request', [RemoveUserRequestController::class, 'index'])->name('admin.remove-user-request.index');
     Route::post('remove-user-request/update/{id}', [RemoveUserRequestController::class, 'update'])->name('admin.remove-user-request.update');
+
+    // Reports
+    Route::match(['get', 'post'],'generate-new-report', [ReportController::class, 'index'])->name('admin.report.index');
+    Route::post('generatepdf', [ReportController::class, 'generatePDF'])->name('admin.generate-pdf-report');
+    Route::get('all-reports', [ReportController::class, 'allReports'])->name('admin.all-reports');
 
     //category
     Route::get('category', [Categories::class, 'index'])->name('category');

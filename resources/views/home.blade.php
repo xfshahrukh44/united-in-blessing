@@ -82,10 +82,7 @@
                                 <tr>
                                     <td>${{ $uboard->board->amount ?? '' }}</td>
                                     <td><span>{{ $uboard->board->board_number ?? '' }}</span></td>
-                                    <td>{{ $uboard->boardGrad->user->username ?? '' }}
-                                        ({{ $uboard->boardGrad->user->first_name . ' ' . $uboard->boardGrad->user->last_name }}
-                                        )
-                                    </td>
+                                    <td>{{ $uboard->boardGrad->user->username ?? '' }}</td>
                                     <td>
                                         <a href="{{ route('board.index', $uboard->board->id) }}" class="themeBtn w-100"><span></span>
                                             <text>{{ $uboard->board->status }}</text>
@@ -124,7 +121,7 @@
                                     <td>${{ round($gift->amount) }}</td>
                                     <td>{{ $gift->board->board_number }}</td>
                                     <td>Newbie</td>
-                                    <td>{{ $gift->sender->username }} ({{ $gift->sender->first_name . ' ' . $gift->sender->last_name }})</td>
+                                    <td>{{ $gift->sender->username }}</td>
                                     <td>{{ $gift->sender->phone }}</td>
                                     <td>{{ $gift->sender->email }}</td>
                                     <td>
@@ -170,7 +167,7 @@
                                     <td>${{ round($gift->amount) }}</td>
                                     <td>{{ $gift->board->board_number }}</td>
                                     <td>Newbie</td>
-                                    <td>{{ $gift->receiver->username }} ({{ $gift->receiver->first_name . ' ' . $gift->receiver->last_name }})</td>
+                                    <td>{{ $gift->receiver->username }}</td>
                                     <td>{{ $gift->receiver->phone }}</td>
                                     <td>{{ $gift->receiver->email }}</td>
                                     <td>
