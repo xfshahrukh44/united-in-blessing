@@ -4,15 +4,16 @@
 
 @section('css')
     <style>
-        .invalid-feedback{
+        .invalid-feedback {
             display: block;
             color: #fff;
         }
 
-        .menu-toggler{
+        .menu-toggler {
             display: none !important;
         }
-        .navigation-menu{
+
+        .navigation-menu {
             right: -400px;
         }
 
@@ -50,7 +51,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-4">
-                                <input type="text" class="form-control" placeholder="UserName" name="username" value="{{ old('username') }}" required>
+                                <input type="text" class="form-control" placeholder="UserName" name="username"
+                                       value="{{ old('username') }}" required>
                                 @error('username')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -58,7 +60,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-4">
-                                <input type="text" class="form-control" placeholder="Please Enter Your First Name" name="first_name" value="{{ old('first_name') }}"
+                                <input type="text" class="form-control" placeholder="Please Enter Your First Name"
+                                       name="first_name" value="{{ old('first_name') }}"
                                        required>
                                 @error('first_name')
                                 <span class="invalid-feedback" role="alert">
@@ -67,7 +70,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-4">
-                                <input type="text" class="form-control" placeholder="Please Enter Your Last Name" name="last_name" value="{{ old('last_name') }}"
+                                <input type="text" class="form-control" placeholder="Please Enter Your Last Name"
+                                       name="last_name" value="{{ old('last_name') }}"
                                        required>
                                 @error('last_name')
                                 <span class="invalid-feedback" role="alert">
@@ -76,7 +80,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-4">
-                                <input type="email" class="form-control" placeholder="Email Address" name="email" value="{{ old('email') }}"
+                                <input type="email" class="form-control" placeholder="Email Address" name="email"
+                                       value="{{ old('email') }}"
                                        required>
                                 @error('email')
                                 <span class="invalid-feedback" role="alert">
@@ -85,7 +90,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-4">
-                                <input type="tel" class="form-control" placeholder="123-456-7890" name="phone" value="{{ old('phone') }}" required>
+                                <input type="tel" class="form-control" placeholder="123-456-7890" name="phone"
+                                       value="{{ old('phone') }}" required>
                                 @error('phone')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -93,8 +99,14 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-4">
-                                <input type="password" class="form-control" placeholder="Password" name="password"
-                                       required>
+                                <div class="passwordWrap">
+                                    <input type="password" class="form-control" placeholder="Password" name="password"
+                                           required>
+                                    <button type="button" class="revealPassword">
+                                        <i class="fas fa-eye"></i>
+                                        <i class="fas fa-eye-slash" style="display: none"></i>
+                                    </button>
+                                </div>
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -102,8 +114,14 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-4">
-                                <input type="password" class="form-control" placeholder="Confirm Password"
-                                       name="password_confirmation" required>
+                                <div class="passwordWrap">
+                                    <input type="password" class="form-control" placeholder="Confirm Password"
+                                           name="password_confirmation" required>
+                                    <button type="button" class="revealPassword">
+                                        <i class="fas fa-eye"></i>
+                                        <i class="fas fa-eye-slash" style="display: none"></i>
+                                    </button>
+                                </div>
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -114,7 +132,10 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault"
                                            name="accept" required>
-                                    <label class="form-check-label" for="flexCheckDefault">Please confirm that you are a US resident in order to proceed. Only CLICK HERE if you choose to place yourself on a $100 board to begin the voluntary gifting activity and  acknowledge that you have read and consent to the Guidelines.</label>
+                                    <label class="form-check-label" for="flexCheckDefault">Please confirm that you are a
+                                        US resident in order to proceed. Only CLICK HERE if you choose to place yourself
+                                        on a $100 board to begin the voluntary gifting activity and acknowledge that you
+                                        have read and consent to the Guidelines.</label>
                                 </div>
                             </div>
                             <div class="mb-4">
@@ -128,4 +149,21 @@
             </div>
         </div>
     </main>
+@endsection
+
+@section('js')
+    <script>
+        $('button.revealPassword').click(function () {
+            // Show hide password
+            if ($(this).siblings('input').prop('type') === 'password') {
+                $(this).siblings('input').attr('type', 'text');
+                $(this).parent().find('.fa-eye-slash').show();
+                $(this).parent().find('.fa-eye').hide();
+            } else {
+                $(this).siblings('input').attr('type', 'password');
+                $(this).parent().find('.fa-eye-slash').hide();
+                $(this).parent().find('.fa-eye').show();
+            }
+        })
+    </script>
 @endsection

@@ -3,6 +3,22 @@
 @section('description', '')
 
 @section('content')
+    <style>
+        .backBtn {
+            position: absolute;
+            top: 5%;
+            left: 10%;
+            transform: translate(-10%, -5%);
+            background-color: var(--primary);
+            border-radius: 30px;
+            padding: 0.75em 2em;
+            color: #fff;
+            font-size: 1.25rem;
+            z-index: 1;
+            border: 1px solid var(--primary);
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
     <!-- Begin: Main Slider -->
     <div class="main-slider">
         <img class="w-100" src="{{ asset('assets/images/ban1.jpg') }}" alt="First slide">
@@ -74,6 +90,13 @@
                                             @php $x = $y = 1 @endphp
 
                                             @forelse($grad->boardChildren($board->id) as $key => $pregrad)
+                                                @if($key == 1)
+                                                    <li class="heading">
+                                                        <h4>Pre-grads</h4>
+                                                        <h4>Undergrads</h4>
+                                                        <h4>Newbies</h4>
+                                                    </li>
+                                                @endif
                                                 @if($grad->boardChildren($board->id)->count() == 1 && $pregrad->position == 'right')
                                                     <li>
                                                         <div>
@@ -88,7 +111,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <h4>Pregrads</h4>
+{{--                                                        <h4>Pregrads</h4>--}}
                                                     </li>
                                                 @endif
                                                 <li>
@@ -108,7 +131,7 @@
 {{--                                                            <p>{{ ($key + 1) }}</p>--}}
                                                         </div>
                                                     </div>
-                                                    <h4>Pregrads</h4>
+{{--                                                    <h4>Pregrads</h4>--}}
                                                     <ul>
                                                         @forelse($pregrad->boardChildren($board->id) as $key => $undergrad)
                                                             @if($pregrad->boardChildren($board->id)->count() == 1 && $undergrad->position == 'right')
@@ -124,7 +147,7 @@
                                                                             </select>
                                                                         </div>
                                                                     </div>
-                                                                    <h4>Undergrads</h4>
+{{--                                                                    <h4>Undergrads</h4>--}}
                                                                 </li>
                                                             @endif
                                                             <li>
@@ -145,7 +168,7 @@
 {{--                                                                        <p>{{ ($x++) }}</p>--}}
                                                                     </div>
                                                                 </div>
-                                                                <h4>undergrads</h4>
+{{--                                                                <h4>undergrads</h4>--}}
                                                                 <ul>
                                                                     @forelse($undergrad->boardChildren($board->id) as $key => $newbie)
                                                                         @if($undergrad->boardChildren($board->id)->count() == 1 && $newbie->position == 'right')
@@ -167,7 +190,7 @@
                                                                                         <p>{{ ($y++) }}</p>
                                                                                     </div>
                                                                                 </div>
-                                                                                <h4>Newbies</h4>
+{{--                                                                                <h4>Newbies</h4>--}}
                                                                             </li>
                                                                         @endif
                                                                         <li>
@@ -189,7 +212,7 @@
 {{--                                                                                    <p>{{ ($y++) }}</p>--}}
                                                                                 </div>
                                                                             </div>
-                                                                            <h4>Newbies</h4>
+{{--                                                                            <h4>Newbies</h4>--}}
                                                                         </li>
                                                                         @if($undergrad->boardChildren($board->id)->count() == 1 && $newbie->position == 'left')
                                                                             <li>
@@ -210,7 +233,7 @@
 {{--                                                                                        <p>{{ ($y++) }}</p>--}}
                                                                                     </div>
                                                                                 </div>
-                                                                                <h4>Newbies</h4>
+{{--                                                                                <h4>Newbies</h4>--}}
                                                                             </li>
                                                                         @endif
                                                                     @empty
@@ -231,7 +254,7 @@
 {{--                                                                                    <p>{{ ($y++) }}</p>--}}
                                                                                 </div>
                                                                             </div>
-                                                                            <h4>Newbies</h4>
+{{--                                                                            <h4>Newbies</h4>--}}
                                                                         </li>
                                                                         <li>
                                                                             <div>
@@ -250,7 +273,7 @@
 {{--                                                                                    <p>{{ ($y++) }}</p>--}}
                                                                                 </div>
                                                                             </div>
-                                                                            <h4>Newbies</h4>
+{{--                                                                            <h4>Newbies</h4>--}}
                                                                         </li>
                                                                     @endforelse
                                                                 </ul>
@@ -268,7 +291,7 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                        <h4>Undergrads</h4>
+{{--                                                                        <h4>Undergrads</h4>--}}
                                                                     </li>
                                                                 @endif
                                                         @empty
@@ -284,7 +307,7 @@
                                                                         </select>
                                                                     </div>
                                                                 </div>
-                                                                <h4>Undergrads</h4>
+{{--                                                                <h4>Undergrads</h4>--}}
                                                             </li>
                                                             <li>
                                                                 <div>
@@ -298,7 +321,7 @@
                                                                         </select>
                                                                     </div>
                                                                 </div>
-                                                                <h4>Undergrads</h4>
+{{--                                                                <h4>Undergrads</h4>--}}
                                                             </li>
                                                         @endforelse
                                                     </ul>
@@ -317,7 +340,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <h4>Pregrads</h4>
+{{--                                                        <h4>Pregrads</h4>--}}
                                                     </li>
                                                 @endif
                                             @empty
@@ -333,7 +356,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <h4>Pregrads</h4>
+{{--                                                    <h4>Pregrads</h4>--}}
                                                 </li>
                                                 <li>
                                                     <div>
@@ -347,7 +370,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <h4>Pregrads</h4>
+{{--                                                    <h4>Pregrads</h4>--}}
                                                 </li>
                                             @endforelse
                                         </ul>
