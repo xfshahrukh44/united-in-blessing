@@ -7,11 +7,19 @@
         .invalid-feedback {
             display: block;
         }
-        .menu-toggler{
+
+        .menu-toggler {
             display: none !important;
         }
-        .navigation-menu{
+
+        .navigation-menu {
             right: -400px;
+        }
+
+        .backBtn {
+            position: absolute;
+            top: 26%;
+            transform: translateY(-25%);
         }
     </style>
 @endsection
@@ -19,6 +27,10 @@
 @section('content')
     <main class="loginWrap">
         <div class="container">
+            <a href="{{url('/')}}" class="backBtn">
+                {{--            <i class="fas fa-arrow-to-left"></i>--}}
+                Back
+            </a>
             <div class="row justify-content-center">
                 <div class="col-lg-6">
                     <div class="whitebg">
@@ -52,7 +64,8 @@
                                 @enderror
                             </div>
                             <div class="mb-4">
-                                <input type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation"
+                                <input type="password" class="form-control" placeholder="Confirm Password"
+                                       name="password_confirmation"
                                        required>
                             </div>
                             <div class="mb-4">
