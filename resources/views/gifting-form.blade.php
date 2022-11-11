@@ -27,7 +27,7 @@
             </a>
             <div class="text-center mt-5">
                 <h4>Send Gifting Forms by Email</h4><br>
-                <h4>Or <a href="#">CLICK HERE</a> to download PDF printable forms</h4>
+                <h4>Or <a href="{{ asset('assets/pdf/gifting-form-statement-and-non-solicitation.pdf') }}" download>CLICK HERE</a> to download PDF printable forms</h4>
             </div>
             <br><br>
             <p>Enter the USERNAME of the member who you are gifting and CLICK SUBMIT.
@@ -36,13 +36,14 @@
                 SIGNATURE at the bottom of the form. The forms will automatically be sent to
                 the recipient by Email.</p>
             <div class="text-center mt-5">
-                <form>
+                <form action="{{ route('send-gifting-form') }}" method="POST">
+                    @csrf
                     <div class="row align-items-center">
                         <div class="col-3">
-                            <h4>RECIPIENT&#39;S EMAIL</h4>
+                            <h4>RECIPIENT&#39;S USERNAME</h4>
                         </div>
                         <div class="col-6">
-                            <input type="text" class="form-control" name="text">
+                            <input type="text" class="form-control" name="username">
                         </div>
                         <div class="col-auto">
                             <input type="submit" class="themeBtn" value="Submit" name="submit">
