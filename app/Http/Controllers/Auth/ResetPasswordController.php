@@ -27,6 +27,7 @@ class ResetPasswordController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
+    protected $min = 1;
 
     /**
      * Get the password reset validation rules.
@@ -38,7 +39,7 @@ class ResetPasswordController extends Controller
         return [
             'token' => 'required',
             'email' => 'required|email',
-            'password' => ['required', 'confirmed'],
+            'password' => ['required', 'confirmed', 'min:1'],
         ];
     }
 }
