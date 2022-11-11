@@ -28,7 +28,7 @@
                                     <button class="btn btn-link " type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseOne" aria-expanded="true"
                                             aria-controls="collapseOne">
-                                        <span>01.</span>
+                                        <span>1.</span>
                                         <span> Who are we?</span>
                                         <i class="fas fa-caret-down"></i>
                                     </button>
@@ -92,7 +92,7 @@
                                     <button class="btn btn-link collapsed" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseTwo" aria-expanded="false"
                                             aria-controls="collapseTwo">
-                                        <span>02.</span>
+                                        <span>2.</span>
                                         <span> What is our private gifting community?</span>
                                         <i class="fas fa-caret-down"></i>
                                     </button>
@@ -114,7 +114,7 @@
                                     <button class="btn btn-link collapsed" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseThree" aria-expanded="false"
                                             aria-controls="collapseThree">
-                                        <span>03.</span>
+                                        <span>3.</span>
                                         <span>Is a gifting community a pyramid?</span>
                                         <i class="fas fa-caret-down"></i>
                                     </button>
@@ -139,7 +139,7 @@
                                     <button class="btn btn-link collapsed" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseFour" aria-expanded="false"
                                             aria-controls="collapseFour">
-                                        <span>04.</span>
+                                        <span>4.</span>
                                         <span> Is the gifting community a company?</span>
                                         <i class="fas fa-caret-down"></i>
                                     </button>
@@ -161,7 +161,7 @@
                                     <button class="btn btn-link " type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseFive" aria-expanded="true"
                                             aria-controls="collapseFive">
-                                        <span>05.</span>
+                                        <span>5.</span>
                                         <span> Is the gifting community an MLM or Network Marketing?</span>
                                         <i class="fas fa-caret-down"></i>
                                     </button>
@@ -183,7 +183,7 @@
                                     <button class="btn btn-link collapsed" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseSix" aria-expanded="false"
                                             aria-controls="collapseSix">
-                                        <span>06.</span>
+                                        <span>6.</span>
                                         <span> Is this type of gifting legal?</span>
                                         <i class="fas fa-caret-down"></i>
                                     </button>
@@ -212,7 +212,7 @@
                                     <button class="btn btn-link collapsed" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseSeven" aria-expanded="false"
                                             aria-controls="collapseSeven">
-                                        <span>07.</span>
+                                        <span>7.</span>
                                         <span>Who can participate?</span>
                                         <i class="fas fa-caret-down"></i>
                                     </button>
@@ -235,7 +235,7 @@
                                     <button class="btn btn-link collapsed" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseEight" aria-expanded="false"
                                             aria-controls="collapseEight">
-                                        <span>08.</span>
+                                        <span>8.</span>
                                         <span>Why should I participate?</span>
                                         <i class="fas fa-caret-down"></i>
                                     </button>
@@ -259,7 +259,7 @@
                                     <button class="btn btn-link " type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseNine" aria-expanded="true"
                                             aria-controls="collapseNine">
-                                        <span>09.</span>
+                                        <span>9.</span>
                                         <span> What is the gifting activity process?</span>
                                         <i class="fas fa-caret-down"></i>
                                     </button>
