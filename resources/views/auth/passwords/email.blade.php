@@ -33,10 +33,10 @@
                                 </div>
                             @endif
                             <div class="mb-4">
-                                <input type="email" class="form-control" placeholder="john@domain.com" name="email"
-                                       value="{{ old('email') }}" required autofocus>
-                                @error('email')
-                                <span class="invalid-feedback" role="alert">
+                                <input type="text" class="form-control" placeholder="johndoe" name="username"
+                                       value="{{ old('username') }}" required autofocus>
+                                @error('username')
+                                <span class="invalid-feedback text-white" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror

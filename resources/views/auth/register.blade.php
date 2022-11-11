@@ -6,6 +6,7 @@
     <style>
         .invalid-feedback{
             display: block;
+            color: #fff;
         }
 
         .menu-toggler{

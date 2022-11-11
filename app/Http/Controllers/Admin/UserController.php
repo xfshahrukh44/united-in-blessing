@@ -119,7 +119,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $data['user'] = User::where('id', $id)->with('invitedBy')->firstOrFail();
+        $data['user'] = User::where('id', $id)->firstOrFail();
+
         return view('admin.users.edit', $data);
     }
 

@@ -38,15 +38,16 @@
                                         <div class="col-md-6">
                                             <label for="name">First Name</label>
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="first_name" id="first_name"
-                                                       value="{{ $user->first_name }}" required>
+                                                <input type="text" class="form-control" name="first_name"
+                                                       id="first_name"
+                                                       value="{{ $user->first_name ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="name">Last Name</label>
                                             <div class="form-group">
                                                 <input type="text" class="form-control" name="last_name" id="last_name"
-                                                       value="{{ $user->last_name }}" required>
+                                                       value="{{ $user->last_name ?? '' }}" required>
                                             </div>
                                         </div>
                                     </div>
@@ -55,14 +56,14 @@
                                             <label for="name">Email</label>
                                             <div class="form-group">
                                                 <input type="email" class="form-control" name="email" id="email"
-                                                       value="{{ $user->email }}" required>
+                                                       value="{{ $user->email ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="name">Phone</label>
                                             <div class="form-group">
                                                 <input type="tel" class="form-control" name="phone" id="phone"
-                                                       value="{{ $user->phone }}" required>
+                                                       value="{{ $user->phone ?? '' }}" required>
                                             </div>
                                         </div>
                                     </div>
@@ -71,22 +72,29 @@
                                             <label for="name">Username</label>
                                             <div class="form-group">
                                                 <input type="text" class="form-control" name="username" id="username"
-                                                       value="{{ $user->username }}" required>
+                                                       value="{{ $user->username ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="name">Invited By</label>
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="invited_by" id="invited_by"
-                                                       value="{{ $user->invitedBy->username }}" required>
+                                                <input type="text" class="form-control" name="invited_by"
+                                                       id="invited_by"
+                                                       value="{{ $user->invitedBy->username ?? '' }}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="block">Blocked</label>
+                                            <label for="block">Active/Inactive</label>
                                             <div class="form-group">
                                                 <select name="is_blocked" id="block" class="form-control">
-                                                    <option value="yes" {{ $user->is_blocked == 'yes' ? 'selected' : '' }}>Yes</option>
-                                                    <option value="no" {{ $user->is_blocked == 'no' ? 'selected' : '' }}>No</option>
+                                                    <option
+                                                        value="yes" {{ $user->is_blocked == 'yes' ? 'selected' : '' }}>
+                                                        Inactive
+                                                    </option>
+                                                    <option
+                                                        value="no" {{ $user->is_blocked == 'no' ? 'selected' : '' }}>
+                                                        Active
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -95,10 +103,45 @@
                                 <!-- /.card-body -->
 
                                 <div class="card-footer text-right">
-                                    <button type="submit" id="submit" class="btn btn-primary btn-md">Update User</button>
+                                    <button type="submit" id="submit" class="btn btn-primary btn-md">Update User
+                                    </button>
                                     <a href="{{route('users.index')}}" class="btn btn-warning btn-md">Cancel</a>
                                 </div>
                             </form>
+                        </div>
+                        <!-- /.card -->
+
+                        <!-- /.card -->
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Invitees</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="invitees-table" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr style="text-align: center">
+                                        <th>No</th>
+                                        <th>Username</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($user->inviters as $key => $invitee)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $invitee->username }}</td>
+                                                <td>{{ $invitee->first_name }} {{ $invitee->last_name }}</td>
+                                                <td>{{ $invitee->email }}</td>
+                                                <td>{{ $invitee->phone }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
                         </div>
                         <!-- /.card -->
                     </div>
@@ -106,4 +149,17 @@
             </div>
         </section>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function (){
+            // Invitees DataTable
+            $('#invitees-table').DataTable({
+                responsive: true,
+                processing: true,
+                pageLength: 10,
+            });
+        });
+    </script>
 @endsection

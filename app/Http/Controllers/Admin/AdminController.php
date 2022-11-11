@@ -10,9 +10,22 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductReview;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+    public function login(){
+        if (Auth::check()){
+            if (Auth::user()->role == 'admin'){
+                return redirect()->route('dashboard');
+            } else{
+                return redirect()->route('home');
+            }
+        }
+
+        return view('admin.auth.login');
+    }
+
     public function dashboard()
     {
         $data['orders'] = Order::where([

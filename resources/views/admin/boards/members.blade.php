@@ -13,7 +13,8 @@
 
     <section class="treeSec">
         <a href="{{ url()->previous() }}" class="backBtn">
-            <i class="fas fa-arrow-to-left"></i>
+            {{--            <i class="fas fa-arrow-to-left"></i>--}}
+            Back
         </a>
         <div class="container">
             <div class="row my-5 justify-content-center">
@@ -65,7 +66,7 @@
                                                     @endforeach
                                                 </select>
                                                 {{--                                            <h4 style="color: {{ ($grad->user->inviters->count() == 0) ? '' : (($grad->user->inviters->count() == 1) ? 'red' : 'green') }}">{{$grad['user']->username}}</h4>--}}
-                                                <p>{{ ($key + 1) }}</p>
+{{--                                                <p>{{ ($key + 1) }}</p>--}}
                                             </div>
                                         </div>
                                         <h4>Grad</h4>
@@ -104,7 +105,7 @@
                                                                         value="{{ $user->id }}" {{ $pregrad->user_id == $user->id ? 'selected' : '' }}>{{ $user->username }}</option>
                                                                 @endforeach
                                                             </select>
-                                                            <p>{{ ($key + 1) }}</p>
+{{--                                                            <p>{{ ($key + 1) }}</p>--}}
                                                         </div>
                                                     </div>
                                                     <h4>Pregrads</h4>
@@ -141,7 +142,7 @@
                                                                             @endforeach
                                                                         </select>
                                                                         {{--                                                                        <h4 style="color: {{ ($undergrad->user->inviters->count() == 0) ? 'black' : (($undergrad->user->inviters->count() == 1) ? 'red' : 'green') }}">{{$undergrad['user']->username}}</h4>--}}
-                                                                        <p>{{ ($x++) }}</p>
+{{--                                                                        <p>{{ ($x++) }}</p>--}}
                                                                     </div>
                                                                 </div>
                                                                 <h4>undergrads</h4>
@@ -185,7 +186,7 @@
                                                                                                 value="{{ $user->id }}" {{ $newbie->user_id == $user->id ? 'selected' : '' }}>{{ $user->username }}</option>
                                                                                         @endforeach
                                                                                     </select>
-                                                                                    <p>{{ ($y++) }}</p>
+{{--                                                                                    <p>{{ ($y++) }}</p>--}}
                                                                                 </div>
                                                                             </div>
                                                                             <h4>Newbies</h4>
@@ -206,7 +207,7 @@
                                                                                             @endforeach
                                                                                         </select>
                                                                                         {{--                                                                                        <h4>No Invitee</h4>--}}
-                                                                                        <p>{{ ($y++) }}</p>
+{{--                                                                                        <p>{{ ($y++) }}</p>--}}
                                                                                     </div>
                                                                                 </div>
                                                                                 <h4>Newbies</h4>
@@ -227,7 +228,7 @@
                                                                                         @endforeach
                                                                                     </select>
                                                                                     {{--                                                                                    <h4>No Invitee</h4>--}}
-                                                                                    <p>{{ ($y++) }}</p>
+{{--                                                                                    <p>{{ ($y++) }}</p>--}}
                                                                                 </div>
                                                                             </div>
                                                                             <h4>Newbies</h4>
@@ -246,7 +247,7 @@
                                                                                         @endforeach
                                                                                     </select>
                                                                                     {{--                                                                                    <h4>No Invitee</h4>--}}
-                                                                                    <p>{{ ($y++) }}</p>
+{{--                                                                                    <p>{{ ($y++) }}</p>--}}
                                                                                 </div>
                                                                             </div>
                                                                             <h4>Newbies</h4>

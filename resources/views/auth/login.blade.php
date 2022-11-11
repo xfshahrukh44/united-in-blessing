@@ -48,7 +48,7 @@
                                        required>
                                     <button type="button" class="revealPassword">
                                         <i class="fas fa-eye"></i>
-                                        <i class="fas fa-eye-slash"></i>
+                                        <i class="fas fa-eye-slash" style="display: none"></i>
                                     </button>
                                 </div>
                                 <div class="text-end">
@@ -83,4 +83,21 @@
             </div>
         </div>
     </main>
+@endsection
+
+@section('js')
+    <script>
+        $('button.revealPassword').click(function (){
+            // Show hide password
+            if($('input[name="password"]').prop('type') === 'password'){
+                $('input[name="password"]').attr('type', 'text');
+                $('.fa-eye-slash').show();
+                $('.fa-eye').hide();
+            } else{
+                $('input[name="password"]').attr('type', 'password');
+                $('.fa-eye-slash').hide();
+                $('.fa-eye').show();
+            }
+        })
+    </script>
 @endsection

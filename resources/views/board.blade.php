@@ -14,7 +14,7 @@
 
     <section class="treeSec">
         <a href="{{ url()->previous() }}" class="backBtn">
-{{--            <i class="fas fa-arrow-to-left"></i>--}}
+            {{--            <i class="fas fa-arrow-to-left"></i>--}}
             Back
         </a>
         <div class="container">
@@ -47,6 +47,22 @@
                                     <p>{{ $board->status }}</p>
                                 </div>
                             </div>
+
+                            <div class="invitees-color mt-4 text-center">
+                                <div class="col-3">
+                                    <p class="text-uppercase" style="color: red">gift pending</p>
+                                </div>
+                                <div class="col-3">
+                                    <p class="text-uppercase">0 Invitees</p>
+                                </div>
+                                <div class="col-3">
+                                    <p class="text-uppercase" style="color: #ffc107">1 Invitee</p>
+                                </div>
+                                <div class="col-3">
+                                    <p class="text-uppercase" style="color: green">2 Invitees</p>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -63,7 +79,7 @@
                                                 src="{{ $grad['user']->user_image ? asset('upload/user/' . $grad['user']->user_image) : asset('assets/images/user.png') }}"
                                                 alt="">
                                             <h4 style="color: {{ ($grad->user->inviters->count() == 0) ? '' : (($grad->user->inviters->count() == 1) ? '#ffc107' : 'green') }}">{{$grad['user']->username}}</h4>
-{{--                                            <p>{{ ($key + 1) }}</p>--}}
+                                            {{--                                            <p>{{ ($key + 1) }}</p>--}}
                                         </div>
                                     </div>
                                     <h4>Grad</h4>
@@ -72,11 +88,11 @@
 
                                         @foreach($grad->boardChildren(Request::segment(2)) as $key => $pregrad)
                                             @if($key == 1)
-                                            <li class="heading">
-                                                <h4>Pre-grads</h4>
-                                                <h4>Undergrads</h4>
-                                                <h4>Newbies</h4>
-                                            </li>
+                                                <li class="heading">
+                                                    <h4>Pre-grads</h4>
+                                                    <h4>Undergrads</h4>
+                                                    <h4>Newbies</h4>
+                                                </li>
                                             @endif
                                             <li>
                                                 <div>
@@ -85,10 +101,10 @@
                                                             src="{{ $pregrad['user']->user_image ? asset('upload/user/' . $pregrad['user']->user_image) : asset('assets/images/user.png') }}"
                                                             alt="">
                                                         <h4 style="color: {{ ($pregrad->user->inviters->count() == 0) ? '' : (($pregrad->user->inviters->count() == 1) ? '#ffc107' : 'green') }}">{{$pregrad['user']->username}}</h4>
-{{--                                                        <p>{{ ($key + 1) }}</p>--}}
+                                                        {{--                                                        <p>{{ ($key + 1) }}</p>--}}
                                                     </div>
                                                 </div>
-{{--                                                <h4>Pregrads</h4>--}}
+                                                {{--                                                <h4>Pregrads</h4>--}}
                                                 <ul>
                                                     @foreach($pregrad->boardChildren(Request::segment(2)) as $key => $undergrad)
                                                         <li>
@@ -99,21 +115,22 @@
                                                                         alt="">
                                                                     <h4 style="color: {{ ($undergrad->user->inviters->count() == 0) ? 'black' : (($undergrad->user->inviters->count() == 1) ? '#ffc107' : 'green') }}">{{$undergrad['user']->username}}</h4>
 
-{{--                                                                    <p>{{ ($x++) }}</p>--}}
+                                                                    {{--                                                                    <p>{{ ($x++) }}</p>--}}
                                                                 </div>
                                                             </div>
-{{--                                                            <h4>undergrads</h4>--}}
+                                                            {{--                                                            <h4>undergrads</h4>--}}
                                                             <ul>
                                                                 @forelse($undergrad->boardChildren(Request::segment(2)) as $key => $newbie)
                                                                     @if($undergrad->boardChildren(Request::segment(2))->count() == 1 && $newbie->position == 'right')
                                                                         <li>
                                                                             <div>
-                                                                                <div class="inviterCard invitees newbie">
+                                                                                <div
+                                                                                    class="inviterCard invitees newbie">
                                                                                     <h4>No Invitee</h4>
-{{--                                                                                    <p>{{ ($y++) }}</p>--}}
+                                                                                    {{--                                                                                    <p>{{ ($y++) }}</p>--}}
                                                                                 </div>
                                                                             </div>
-{{--                                                                            <h4>Newbies</h4>--}}
+                                                                            {{--                                                                            <h4>Newbies</h4>--}}
                                                                         </li>
                                                                     @endif
                                                                     <li>
@@ -123,20 +140,21 @@
                                                                                     src="{{ $newbie['user']->user_image ? asset('upload/user/' . $newbie['user']->user_image) : asset('assets/images/user.png') }}"
                                                                                     alt="">
                                                                                 <h4 style="color: {{ ($newbie->board->user_gift($newbie->user->id)->status == 'not_sent' || $newbie->board->user_gift($newbie->user->id)->status == 'pending') ? 'red' : '' }}">{{$newbie['user']->username}}</h4>
-{{--                                                                                <p>{{ ($y++) }}</p>--}}
+                                                                                {{--                                                                                <p>{{ ($y++) }}</p>--}}
                                                                             </div>
                                                                         </div>
-{{--                                                                        <h4>Newbies</h4>--}}
+                                                                        {{--                                                                        <h4>Newbies</h4>--}}
                                                                     </li>
                                                                     @if($undergrad->boardChildren(Request::segment(2))->count() == 1 && $newbie->position == 'left')
                                                                         <li>
                                                                             <div>
-                                                                                <div class="inviterCard invitees newbie">
+                                                                                <div
+                                                                                    class="inviterCard invitees newbie">
                                                                                     <h4>No Invitee</h4>
-{{--                                                                                    <p>{{ ($y++) }}</p>--}}
+                                                                                    {{--                                                                                    <p>{{ ($y++) }}</p>--}}
                                                                                 </div>
                                                                             </div>
-{{--                                                                            <h4>Newbies</h4>--}}
+                                                                            {{--                                                                            <h4>Newbies</h4>--}}
                                                                         </li>
                                                                     @endif
                                                                 @empty
@@ -147,10 +165,10 @@
                                                                                     src="{{asset('assets/images/user.png') }}"
                                                                                     alt="">
                                                                                 <h4>No Invitee</h4>
-{{--                                                                                <p>{{ ($y++) }}</p>--}}
+                                                                                {{--                                                                                <p>{{ ($y++) }}</p>--}}
                                                                             </div>
                                                                         </div>
-{{--                                                                        <h4>Newbies</h4>--}}
+                                                                        {{--                                                                        <h4>Newbies</h4>--}}
                                                                     </li>
                                                                     <li>
                                                                         <div>
@@ -159,10 +177,10 @@
                                                                                     src="{{asset('assets/images/user.png') }}"
                                                                                     alt="">
                                                                                 <h4>No Invitee</h4>
-{{--                                                                                <p>{{ ($y++) }}</p>--}}
+                                                                                {{--                                                                                <p>{{ ($y++) }}</p>--}}
                                                                             </div>
                                                                         </div>
-{{--                                                                        <h4>Newbies</h4>--}}
+                                                                        {{--                                                                        <h4>Newbies</h4>--}}
                                                                     </li>
                                                                 @endforelse
                                                             </ul>

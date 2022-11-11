@@ -54,7 +54,7 @@
                         </div>
                     </div>
                 @empty
-                    <p class="text-center font-weight-bold">No Invitee Found</p>
+{{--                    <p class="text-center font-weight-bold">No Invitee Found</p>--}}
                 @endforelse
             </div>
         </div>

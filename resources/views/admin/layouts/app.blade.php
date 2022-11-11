@@ -61,7 +61,7 @@
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
         <img class="animation__shake"
-             src="{{isset($setting->logo) ? URL::asset('uploads/settings/'.$setting->logo) : URL::asset('admin/dist/img/AdminLTELogo.png')}}"
+             src="{{isset($setting->logo) ? URL::asset('uploads/settings/'.$setting->logo) : asset('assets/images/logo.png') }}"
              alt="AdminLTELogo" height="60" width="60">
     </div>
     <!-- Navbar -->
@@ -102,23 +102,23 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="{{url('admin/dashboard')}}" class="brand-link" style="text-align: center">
-            <img class="animation__shake"
-                 src="{{isset($setting->logo) ? URL::asset('uploads/settings/'.$setting->logo) : URL::asset('admin/dist/img/AdminLTELogo.png')}}"
+            <img class="animation__shake w-50"
+                 src="{{isset($setting->logo) ? URL::asset('uploads/settings/'.$setting->logo) : asset('assets/images/logo.png') }}"
                  alt="Viva Unlimited LLC" style="max-width: 155px;width: 100%;height: auto;">
             {{--            <span class="brand-text font-weight-light">Dashboard</span>--}}
         </a>
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="{{URL::asset('admin/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2"
-                         alt="User Image">
-                </div>
-                <div class="info">
-                    <a href="#" class="d-block">{{\Illuminate\Support\Facades\Auth::user()->name}}</a>
-                </div>
-            </div>
+{{--            <div class="user-panel mt-3 pb-3 mb-3 d-flex">--}}
+{{--                <div class="image">--}}
+{{--                    <img src="{{URL::asset('admin/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2"--}}
+{{--                         alt="User Image">--}}
+{{--                </div>--}}
+{{--                <div class="info">--}}
+{{--                    <a href="#" class="d-block">{{\Illuminate\Support\Facades\Auth::user()->name}}</a>--}}
+{{--                </div>--}}
+{{--            </div>--}}
             <!-- SidebarSearch Form -->
             <!-- Sidebar Menu -->
             <nav class="mt-2">
