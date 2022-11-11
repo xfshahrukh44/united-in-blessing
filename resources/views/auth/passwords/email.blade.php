@@ -13,12 +13,22 @@
         .navigation-menu{
             right: -400px;
         }
+
+        .backBtn {
+            position: absolute;
+            top: 26%;
+            transform: translateY(-25%);
+        }
     </style>
 @endsection
 
 @section('content')
     <main class="loginWrap">
         <div class="container">
+            <a href="{{url('/')}}" class="backBtn">
+                {{--            <i class="fas fa-arrow-to-left"></i>--}}
+                Back
+            </a>
             <div class="row justify-content-center">
                 <div class="col-lg-6">
                     <div class="whitebg">
@@ -33,10 +43,10 @@
                                 </div>
                             @endif
                             <div class="mb-4">
-                                <input type="email" class="form-control" placeholder="john@domain.com" name="email"
-                                       value="{{ old('email') }}" required autofocus>
-                                @error('email')
-                                <span class="invalid-feedback" role="alert">
+                                <input type="text" class="form-control" placeholder="johndoe" name="username"
+                                       value="{{ old('username') }}" required autofocus>
+                                @error('username')
+                                <span class="invalid-feedback text-white" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror

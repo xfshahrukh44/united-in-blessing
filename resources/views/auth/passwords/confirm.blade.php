@@ -10,9 +10,19 @@
     .navigation-menu{
         right: -400px;
     }
+
+    .backBtn {
+        position: absolute;
+        top: 26%;
+        transform: translateY(-25%);
+    }
 </style>
 @section('content')
 <div class="container">
+    <a href="{{url('/')}}" class="backBtn">
+        {{--            <i class="fas fa-arrow-to-left"></i>--}}
+        Back
+    </a>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
