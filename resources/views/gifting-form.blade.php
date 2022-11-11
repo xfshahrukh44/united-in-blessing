@@ -21,6 +21,10 @@
 
     <section class="inviterSec">
         <div class="container">
+            <a href="{{route('home')}}" class="backBtn">
+                {{--            <i class="fas fa-arrow-to-left"></i>--}}
+                Back
+            </a>
             <div class="text-center mt-5">
                 <h4>Send Gifting Forms by Email</h4><br>
                 <h4>Or <a href="#">CLICK HERE</a> to download PDF printable forms</h4>

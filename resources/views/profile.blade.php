@@ -1,10 +1,21 @@
 @extends('layouts.app')
 @section('keywords', '')
 @section('description', '')
-
 @section('content')
+    <style>
+        .navigation-menu .nav-inner .nav-link{
+            color: #fff;
+        }
+        .backBtn{
+            margin: 5rem 0 1rem;
+        }
+    </style>
     <main class="loginWrap">
         <div class="container">
+            <a href="{{route('home')}}" class="backBtn">
+                {{--            <i class="fas fa-arrow-to-left"></i>--}}
+                Back
+            </a>
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="whitebg">

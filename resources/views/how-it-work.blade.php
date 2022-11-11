@@ -19,6 +19,10 @@
 
     <section class="inviterSec">
         <div class="container">
+            <a href="{{route('home')}}" class="backBtn">
+                {{--            <i class="fas fa-arrow-to-left"></i>--}}
+                Back
+            </a>
             <p>We only have FOUR (4) <u>2x3 matrix boards:</u> <strong>$100, $400, $1000, and $2,000</strong>.</p><br>
 
             <p>When you become a <b>GRAD on your 1 st $100 board</b>, you <b>receive $800 in GIFTS</b> from

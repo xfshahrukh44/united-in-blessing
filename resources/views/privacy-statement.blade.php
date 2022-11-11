@@ -33,6 +33,10 @@
 
     <section class="inviterSec">
         <div class="container">
+            <a href="{{route('home')}}" class="backBtn">
+                {{--            <i class="fas fa-arrow-to-left"></i>--}}
+                Back
+            </a>
             <h5>What information do we collect?</h5><br>
             <p>
                 We collect information from you when you complete the Membership Info/Form

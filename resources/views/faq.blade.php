@@ -15,6 +15,10 @@
 
     <section class="faqSec">
         <div class="container">
+            <a href="{{route('home')}}" class="backBtn">
+                {{--            <i class="fas fa-arrow-to-left"></i>--}}
+                Back
+            </a>
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="accordion" id="accordionExample">
