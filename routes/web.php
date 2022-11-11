@@ -73,18 +73,16 @@ Route::prefix('/')->middleware('auth')->group(function (){
     // Gifts
     Route::get('update-gift-status/{id}/{status}', [GiftController::class, 'update'])->name('update-gift-status');
 
+    // Gifting Form
+    Route::get('/gifting-forms', [FrontController::class, 'gifting_forms'])->name('front.gifting-forms');
+    Route::post('/send-gifting-form', [FrontController::class, 'sendGiftingForm'])->name('send-gifting-form');
+
     //Menu Pages
     Route::get('/how-it-works', [FrontController::class, 'howItWorks'])->name('front.work');
-
     Route::get('/guidelines', [FrontController::class, 'guidelines'])->name('front.guidelines');
-
     Route::get('/faq', [FrontController::class, 'faq'])->name('front.faq');
-
     Route::get('/privacy-statement', [FrontController::class, 'privacy_statement'])->name('front.privacy-statement');
-
     Route::get('/contact-us', [FrontController::class, 'contact'])->name('front.contact-us');
-
-    Route::get('/gifting-forms', [FrontController::class, 'gifting_forms'])->name('front.gifting-forms');
 
 });
 

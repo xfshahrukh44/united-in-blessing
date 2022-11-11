@@ -47,7 +47,7 @@ class ForgotPasswordController extends Controller
                 ])->render();
 
                 if ($this->customMail(
-                    'no-reply@unitedinblessings.com',
+                    'no-reply@uib.com',
                     strtolower($user->email),
                     'Reset Password Link',
                     $html
