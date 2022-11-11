@@ -15,14 +15,6 @@ use Illuminate\Support\Facades\Auth;
 class AdminController extends Controller
 {
     public function login(){
-        if (Auth::check()){
-            if (Auth::user()->role == 'admin'){
-                return redirect()->route('dashboard');
-            } else{
-                return redirect()->route('home');
-            }
-        }
-
         return view('admin.auth.login');
     }
 

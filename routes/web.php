@@ -49,7 +49,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index');
-})->name('index');
+})->name('index')->middleware('guest');
 
 // username
 Route::prefix('username')->group(function(){
@@ -87,7 +87,7 @@ Route::prefix('/')->middleware('auth')->group(function (){
 });
 
 // Admin Routes
-Route::get('admin/login', [AdminController::class, 'login'])->name('admin.login');
+Route::get('admin/login', [AdminController::class, 'login'])->middleware('guest')->name('admin.login');
 
 Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function () {
     //Dashboard

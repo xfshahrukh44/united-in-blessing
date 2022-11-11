@@ -55,8 +55,14 @@
                                 @enderror
                             </div>
                             <div class="mb-4">
-                                <input type="password" class="form-control" placeholder="Password" name="password"
-                                       required autofocus>
+                                <div class="passwordWrap">
+                                    <input type="password" class="form-control" placeholder="Password" name="password"
+                                           required autofocus>
+                                     <button type="button" class="revealPassword">
+                                        <i class="fas fa-eye"></i>
+                                        <i class="fas fa-eye-slash" style="display: none"></i>
+                                    </button>
+                                </div>
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -64,9 +70,20 @@
                                 @enderror
                             </div>
                             <div class="mb-4">
-                                <input type="password" class="form-control" placeholder="Confirm Password"
-                                       name="password_confirmation"
-                                       required>
+                                <div class="passwordWrap">
+                                    <input type="password" class="form-control" placeholder="Confirm Password"
+                                           name="password_confirmation"
+                                           required>
+                                     <button type="button" class="revealPassword">
+                                        <i class="fas fa-eye"></i>
+                                        <i class="fas fa-eye-slash" style="display: none"></i>
+                                    </button>
+                                </div>
+                                @error('password_confirmation')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                             <div class="mb-4">
                                 <button class="themeBtn w-100"><span></span>
@@ -79,4 +96,21 @@
             </div>
         </div>
     </main>
+@endsection
+
+@section('js')
+    <script>
+        $('button.revealPassword').click(function () {
+            // Show hide password
+            if ($(this).siblings('input').prop('type') === 'password') {
+                $(this).siblings('input').attr('type', 'text');
+                $(this).parent().find('.fa-eye-slash').show();
+                $(this).parent().find('.fa-eye').hide();
+            } else {
+                $(this).siblings('input').attr('type', 'password');
+                $(this).parent().find('.fa-eye-slash').hide();
+                $(this).parent().find('.fa-eye').show();
+            }
+        })
+    </script>
 @endsection

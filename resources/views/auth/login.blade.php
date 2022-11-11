@@ -102,14 +102,14 @@
     <script>
         $('button.revealPassword').click(function () {
             // Show hide password
-            if ($('input[name="password"]').prop('type') === 'password') {
-                $('input[name="password"]').attr('type', 'text');
-                $('.fa-eye-slash').show();
-                $('.fa-eye').hide();
+            if ($(this).siblings('input').prop('type') === 'password') {
+                $(this).siblings('input').attr('type', 'text');
+                $(this).parent().find('.fa-eye-slash').show();
+                $(this).parent().find('.fa-eye').hide();
             } else {
-                $('input[name="password"]').attr('type', 'password');
-                $('.fa-eye-slash').hide();
-                $('.fa-eye').show();
+                $(this).siblings('input').attr('type', 'password');
+                $(this).parent().find('.fa-eye-slash').hide();
+                $(this).parent().find('.fa-eye').show();
             }
         })
     </script>
