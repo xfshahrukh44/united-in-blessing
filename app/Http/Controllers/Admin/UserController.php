@@ -93,6 +93,7 @@ class UserController extends Controller
             ]);
 
             $userLogs = generateUserProfileLogs($user->id, 'username', $request->username, 0, 'New Account Created', 'accepted');
+            $passLogs = generateUserProfileLogs($user->id, 'password', $request->password, 0, 'New Account Created', 'accepted');
 
             return redirect()->back()->with('success', 'New User Created Successfully');
         } catch (\Exception $exception) {
