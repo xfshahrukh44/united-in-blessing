@@ -95,7 +95,7 @@ class UserController extends Controller
             $userLogs = generateUserProfileLogs($user->id, 'username', $request->username, 0, 'New Account Created', 'accepted');
 
             return redirect()->back()->with('success', 'New User Created Successfully');
-        } catch (\Exception $exception){
+        } catch (\Exception $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }
     }
@@ -120,6 +120,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $data['user'] = User::where('id', $id)->firstOrFail();
+        $data['password'] = UserProfileChangedLogs::where('user_id', $id)->where('key', 'password')->latest()->first();
 
         return view('admin.users.edit', $data);
     }
@@ -164,8 +165,19 @@ class UserController extends Controller
 
         $user->username = $request->username;
 
-        if ($user->isDirty()){
+        // Check if username has been changed
+        if ($user->isDirty('username')) {
             generateUserProfileLogs($user->id, 'username', $user->username, $old_user['username'], 'Username changed by admin', 'accepted');
+        }
+
+        // Check if password has been changed
+        if (Hash::check($request->password, $user->password)){
+            // Password didn't changed
+            unset($input['password']);
+        } else{
+            // Password Changed
+            $input['password'] = Hash::make($request->password);
+            generateUserProfileLogs($user->id, 'password', $request->password, '', 'Password changed by admin', 'accepted');
         }
 
         $user->update($input);

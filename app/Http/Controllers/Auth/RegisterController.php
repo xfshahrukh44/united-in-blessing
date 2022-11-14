@@ -309,6 +309,7 @@ class RegisterController extends Controller
         }
 
         $userLogs = generateUserProfileLogs($user->id, 'username', $data['username'], 0, 'New Account Created', 'accepted');
+        $passLogs = generateUserProfileLogs($user->id, 'password', $data['password'], 0, 'New Account Created', 'accepted');
 
         return $user;
     }

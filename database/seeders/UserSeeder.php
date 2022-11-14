@@ -78,6 +78,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $pringles2025->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         $heart2hand = User::create([
             'invited_by' => $admin->id,
             'username' => 'heart2hand',
@@ -100,6 +108,14 @@ class UserSeeder extends Seeder
             'user_id' => $heart2hand->id,
             'key' => 'username',
             'value' => $heart2hand->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $heart2hand->id,
+            'key' => 'password',
+            'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -130,6 +146,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $giftgiver->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         $saabkptr = User::create([
             'invited_by' => $admin->id,
             'username' => 'saabkptr',
@@ -152,6 +176,14 @@ class UserSeeder extends Seeder
             'user_id' => $saabkptr->id,
             'key' => 'username',
             'value' => $saabkptr->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $saabkptr->id,
+            'key' => 'password',
+            'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -182,6 +214,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $mar1000->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         $rdkh1 = User::create([
             'invited_by' => $admin->id,
             'username' => 'rdkh1',
@@ -204,6 +244,14 @@ class UserSeeder extends Seeder
             'user_id' => $rdkh1->id,
             'key' => 'username',
             'value' => $rdkh1->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $rdkh1->id,
+            'key' => 'password',
+            'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -234,6 +282,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $coachmakayla1->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         $maehelen = User::create([
             'invited_by' => $admin->id,
             'username' => 'maehelen',
@@ -256,6 +312,14 @@ class UserSeeder extends Seeder
             'user_id' => $maehelen->id,
             'key' => 'username',
             'value' => $maehelen->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $maehelen->id,
+            'key' => 'password',
+            'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -286,6 +350,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $synergy3->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         $daddysgirl = User::create([
             'invited_by' => $admin->id,
             'username' => '1DaddysGirl',
@@ -308,6 +380,14 @@ class UserSeeder extends Seeder
             'user_id' => $daddysgirl->id,
             'key' => 'username',
             'value' => $daddysgirl->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $daddysgirl->id,
+            'key' => 'password',
+            'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -338,6 +418,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $pringles2020->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         $team2K = User::create([
             'invited_by' => $admin->id,
             'username' => 'Team2K',
@@ -360,6 +448,14 @@ class UserSeeder extends Seeder
             'user_id' => $team2K->id,
             'key' => 'username',
             'value' => $team2K->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $team2K->id,
+            'key' => 'password',
+            'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -390,6 +486,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $generous1->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         UserBoards::create([
             'user_id' => $pringles2025->id,
             'board_id' => $board400->id,
@@ -402,6 +506,14 @@ class UserSeeder extends Seeder
             'user_id' => $pringles2025->id,
             'key' => 'username',
             'value' => $pringles2025->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $pringles2025->id,
+            'key' => 'password',
+            'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -432,6 +544,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $nzinga->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         $LoyalT1 = User::create([
             'invited_by' => $admin->id,
             'username' => 'LoyalT1',
@@ -454,6 +574,14 @@ class UserSeeder extends Seeder
             'user_id' => $LoyalT1->id,
             'key' => 'username',
             'value' => $LoyalT1->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $LoyalT1->id,
+            'key' => 'password',
+            'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -484,6 +612,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $ghettoeinstein1->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         $Zamiyrah = User::create([
             'invited_by' => $admin->id,
             'username' => 'Zamiyrah',
@@ -510,6 +646,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $Zamiyrah->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
 
         UserBoards::create([
             'user_id' => $maehelen->id,
@@ -523,6 +667,14 @@ class UserSeeder extends Seeder
             'user_id' => $maehelen->id,
             'key' => 'username',
             'value' => $maehelen->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $maehelen->id,
+            'key' => 'password',
+            'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -553,6 +705,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $EyeAmLove1->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         UserBoards::create([
             'user_id' => $daddysgirl->id,
             'board_id' => $board1000->id,
@@ -565,6 +725,14 @@ class UserSeeder extends Seeder
             'user_id' => $daddysgirl->id,
             'key' => 'username',
             'value' => $daddysgirl->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $daddysgirl->id,
+            'key' => 'password',
+            'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -585,6 +753,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $LoyalT1->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         UserBoards::create([
             'user_id' => $Zamiyrah->id,
             'board_id' => $board2000->id,
@@ -597,6 +773,14 @@ class UserSeeder extends Seeder
             'user_id' => $Zamiyrah->id,
             'key' => 'username',
             'value' => $Zamiyrah->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $Zamiyrah->id,
+            'key' => 'password',
+            'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -617,6 +801,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $maehelen->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         UserBoards::create([
             'user_id' => $pringles2025->id,
             'board_id' => $board2000->id,
@@ -629,6 +821,14 @@ class UserSeeder extends Seeder
             'user_id' => $pringles2025->id,
             'key' => 'username',
             'value' => $pringles2025->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $pringles2025->id,
+            'key' => 'password',
+            'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -659,6 +859,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $hearts->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         $DaisyMary = User::create([
             'invited_by' => $admin->id,
             'username' => 'DaisyMary',
@@ -685,6 +893,14 @@ class UserSeeder extends Seeder
             'message' => 'New Account Created',
         ]);
 
+        UserProfileChangedLogs::create([
+            'user_id' => $DaisyMary->id,
+            'key' => 'password',
+            'value' => 'user@123',
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
         $DJs2021 = User::create([
             'invited_by' => $admin->id,
             'username' => 'DJs2021',
@@ -707,6 +923,14 @@ class UserSeeder extends Seeder
             'user_id' => $DJs2021->id,
             'key' => 'username',
             'value' => $DJs2021->username,
+            'old_value' => 0,
+            'message' => 'New Account Created',
+        ]);
+
+        UserProfileChangedLogs::create([
+            'user_id' => $DJs2021->id,
+            'key' => 'password',
+            'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);

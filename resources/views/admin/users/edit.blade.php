@@ -76,6 +76,13 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
+                                            <label for="password">Password</label>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="password" id="password"
+                                                       value="{{ $password->value ?? '' }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
                                             <label for="name">Invited By</label>
                                             <div class="form-group">
                                                 <input type="text" class="form-control" name="invited_by"
