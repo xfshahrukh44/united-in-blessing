@@ -18,21 +18,21 @@
     </div>
     <!-- END: Main Slider -->
 
-    <section class="inviterSec">
+    <section class="contactSec">
         <div class="container">
             <a href="{{route('home')}}" class="backBtn">
                 {{--            <i class="fas fa-arrow-to-left"></i>--}}
                 Back
             </a>
-            <div class="text-center mt-5">
-                <h3>PLEASE SEE OUR</h3>
-                <br><br><br><br><br><br>
-                <h1>“UNITED IN BLESSING”</h1>
-                <br><br><br><br><br><br>
-                <h3><a href="#">TELEGRAM GROUP</a></h3>
-
-                <p class="mt-5"><i class="fab fa-telegram-plane" aria-hidden="true" style="font-size: 30px"  ></i></p>
-
+            <div class="content">
+                <h2>Contact US</h2>
+                <h3>Hello Username</h3>
+                <h3>Please Contact An ADMIN</h3>
+                <h3>(Chris, Dee OR Elliot)</h3>
+                <h2>VIA</h2>
+                <h3>TELEGRAM <a href=""><i class="fab fa-telegram-plane" aria-hidden="true"></i></a> Message</h3>
+                <h3>for</h3>
+                <h3>Assistance with Locating Your Username</h3>
             </div>
         </div>
     </section>
