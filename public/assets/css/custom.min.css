@@ -566,3 +566,11 @@ h4 {
 .contactSec .content * {
     color: #000;
 }
+
+header img {
+    display: none;
+}
+
+.menu-toggler span {
+    background: #f66001 !important;
+}
