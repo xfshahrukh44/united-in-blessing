@@ -20,12 +20,12 @@
         }
     </style>
     <!-- Begin: Main Slider -->
-    <div class="main-slider">
-        <img class="w-100" src="{{ asset('assets/images/ban1.jpg') }}" alt="First slide">
-        <div class="overlay">
-            <!--            <h2>Lorem Ipsum</h2>-->
-        </div>
-    </div>
+{{--    <div class="main-slider">--}}
+{{--        <img class="w-100" src="{{ asset('assets/images/ban1.jpg') }}" alt="First slide">--}}
+{{--        <div class="overlay">--}}
+{{--            <!--            <h2>Lorem Ipsum</h2>-->--}}
+{{--        </div>--}}
+{{--    </div>--}}
     <!-- END: Main Slider -->
 
     <section class="treeSec">
@@ -34,7 +34,7 @@
             Back
         </a>
         <div class="container">
-            <div class="row my-5 justify-content-center">
+            <div class="row m-0 justify-content-center">
                 <div class="col-md-8">
                     <div class="container-fluid">
                         <div class="row justify-content-between">
