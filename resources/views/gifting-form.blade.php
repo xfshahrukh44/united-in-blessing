@@ -27,7 +27,7 @@
             </a>
             <div class="content">
                 <h4>GIFTING FORMS</h4>
-                <h4>HELLO USERNAME</h4>
+                <h4>HELLO {{ Auth::user()->first_name . ' ' . Auth::user()->last_name }} ({{ Auth::user()->username }})</h4>
                 <h4>Send Gifting Forms by Email</h4>
                 <h4>Or <a href="{{ asset('assets/pdf/gifting-form-statement-and-non-solicitation.pdf') }}" download>CLICK
                         HERE</a> to download PDF printable forms</h4>

@@ -128,7 +128,7 @@ header img {
 }
 
 .navigation-menu .nav-inner .nav-link {
-    font-size: 1.5rem;
+    font-size: 1.125rem;
     font-weight: 300;
     color: var(--primary);
     text-transform: uppercase;
