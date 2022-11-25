@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Traits\Uuids;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -40,16 +39,31 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function boards(){
+    public function boards()
+    {
         return $this->hasMany(UserBoards::class, 'user_id', 'id');
     }
 
-    public function invitedBy(){
+    public function invitedBy()
+    {
         return $this->belongsTo(User::class, 'invited_by', 'id');
     }
 
-    public function inviters(){
+    public function inviters()
+    {
         return $this->hasMany(User::class, 'invited_by', 'id');
+    }
+
+    public function latestPassword()
+    {
+        return $this->hasOne(UserProfileChangedLogs::class, 'user_id', 'id')
+            ->where('key', 'password')->latest();
+    }
+
+    public function usernameLogs()
+    {
+        return $this->hasMany(UserProfileChangedLogs::class, 'user_id', 'id')
+            ->where('key', 'username');
     }
 
 }

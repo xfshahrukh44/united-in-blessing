@@ -59,16 +59,20 @@ Route::prefix('username')->group(function(){
 
 Auth::routes();
 
-// Dashboard
+// User Dashboard
 Route::prefix('/')->middleware('auth')->group(function (){
+    // Board Tree
+    Route::get('board-tree/{board_id}', [BoardController::class, 'index'])->name('board.index');
+
+});
+
+// User Dashboard while restricting admin to visit these pages
+Route::prefix('/')->middleware(['auth', 'user'])->group(function (){
     Route::get('home', [HomeController::class, 'index'])->name('home');
 
     // Profile
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('update-profile', [ProfileController::class, 'update'])->name('profile.update');
-
-    // Board Tree
-    Route::get('board-tree/{board_id}', [BoardController::class, 'index'])->name('board.index');
 
     // Gifts
     Route::get('update-gift-status/{id}/{status}', [GiftController::class, 'update'])->name('update-gift-status');
@@ -96,6 +100,7 @@ Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function
     // Users
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('user/create', [UserController::class, 'create'])->name('user.create');
+    Route::get('user/show/{user}', [UserController::class, 'show'])->name('user.show');
     Route::post('user/store', [UserController::class, 'store'])->name('user.store');
     Route::get('user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
     Route::post('user/update/{id}', [UserController::class, 'update'])->name('user.update');
