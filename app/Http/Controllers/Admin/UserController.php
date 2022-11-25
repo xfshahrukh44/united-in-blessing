@@ -20,14 +20,14 @@ class UserController extends Controller
     {
         try {
             if (request()->ajax()) {
-                return datatables()->of(User::orderByDesc('created_at')->get())
+                return datatables()->of(User::whereRole('user')->orderByDesc('created_at')->get())
                     ->addIndexColumn()
                     ->addColumn('name', function ($data) {
                         return $data->first_name . ' ' . $data->last_name;
                     })
                     ->addColumn('action', function ($data) {
 //                        return '<a title="Edit" href="user/edit/' . $data->id . '" class="btn btn-dark btn-sm"><i class="fas fa-pencil-alt"></i></a>&nbsp;<button title="Delete" type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>';
-                        return '<a title="Edit" href="user/edit/' . $data->id . '" class="btn btn-dark btn-sm"><i class="fas fa-pencil-alt"></i></a>';
+                        return '<a title="Edit" href="user/edit/' . $data->id . '" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a><a title="View" href="user/show/' . $data->id . '" class="ml-2 btn btn-secondary btn-sm"><i class="fas fa-eye"></i></a>';
                     })
                     ->rawColumns(['name', 'action'])
                     ->make(true);
@@ -41,7 +41,7 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function create()
     {
@@ -105,11 +105,10 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -172,10 +171,10 @@ class UserController extends Controller
         }
 
         // Check if password has been changed
-        if (Hash::check($request->password, $user->password)){
+        if (Hash::check($request->password, $user->password)) {
             // Password didn't changed
             unset($input['password']);
-        } else{
+        } else {
             // Password Changed
             $input['password'] = Hash::make($request->password);
             generateUserProfileLogs($user->id, 'password', $request->password, '', 'Password changed by admin', 'accepted');

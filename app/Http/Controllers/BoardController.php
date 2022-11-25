@@ -172,7 +172,7 @@ class BoardController extends Controller
 //        return view('admin.boards.members', compact('board', 'users'));
 
         try {
-            $users = User::all();
+            $users = User::whereRole('user')->get();
             $board = Boards::find($id);
             $gifts = $board->gifts->keyBy('sent_by');
             $boardGrad = UserBoards::where('board_id', $id)

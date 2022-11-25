@@ -28,7 +28,7 @@ class AdminController extends Controller
         $data['customers'] = Customers::count();
         $data['latestOrders'] = Order::with('customer')->orderBy('created_at', 'desc')->take(7)->get();
         $data['latestReviews'] = ProductReview::with('product', 'customer')->orderBy('created_at', 'desc')->take(7)->get();
-        $data['users'] = User::count();
+        $data['users'] = User::whereRole('user')->count();
         $data['boards'] = Boards::count();
         $data['gifts'] = GiftLogs::where('status', '!=', 'accepted')->count();
 
