@@ -51,7 +51,7 @@ header img {
 .menu-toggler .navbar-icon span {
     height: 2px;
     width: 22px;
-    background-color: var(--white);
+    background-color: var(--black);
     display: flex;
     position: relative;
     transition: all ease 0.5s;
@@ -86,11 +86,11 @@ header img {
     backdrop-filter: blur(5px);
     position: fixed;
     top: 0;
-    right: -300px;
+    right: -250px;
     height: 100%;
     z-index: 10;
     transition: all 0.4s ease;
-    width: 350px;
+    width: 300px;
     background-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.5);
 }
@@ -128,7 +128,7 @@ header img {
 }
 
 .navigation-menu .nav-inner .nav-link {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 300;
     color: var(--primary);
     text-transform: uppercase;
@@ -142,6 +142,7 @@ header img {
 
 /* END: Header */
 
-.navigation-menu.active {
+.navigation-menu.active ,
+.navigation-menu:hover{
     right: 0;
 }
