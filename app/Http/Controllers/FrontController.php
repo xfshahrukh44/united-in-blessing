@@ -38,7 +38,7 @@ class FrontController extends Controller
         try {
             $user = User::where('username', $request->username)->first();
             if (!$user){
-                return back()->with('error', 'No user exist with this username');
+                return back()->with('error', 'No user exists with this username');
             }
 
             $filename = 'gifting-form-statement-and-non-solicitation.pdf';
