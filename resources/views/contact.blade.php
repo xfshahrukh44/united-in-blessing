@@ -29,7 +29,7 @@
                 <h3>Hello {{ Auth::user()->username }}</h3>
                 <h3>Please Contact An ADMIN</h3>
                 <h3>(Chris, Dee or Elliott)</h3>
-                <h2>VIA</h2>
+                <h3>VIA</h3>
                 <h3>TELEGRAM <a href=""><i class="fab fa-telegram-plane" aria-hidden="true"></i></a> Message</h3>
                 <h3>for</h3>
                 <h3>Assistance with Locating Your Username</h3>
