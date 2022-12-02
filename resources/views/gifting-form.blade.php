@@ -26,21 +26,21 @@
                 Back
             </a>
             <div class="content">
-                <h4>HELLO {{ Auth::user()->username }}</h4>
-                <h4>Send Gifting Forms by Email</h4>
-                <h4>Or <a href="{{ asset('assets/pdf/gifting-form-statement-and-non-solicitation.pdf') }}" download>CLICK
+{{--                <h4>HELLO {{ Auth::user()->username }}</h4>--}}
+{{--                <h4>Send Gifting Forms by Email</h4>--}}
+                <h4><a href="{{ asset('assets/pdf/gifting-form-statement-and-non-solicitation.pdf') }}" download>CLICK
                         HERE</a> to download PDF printable forms</h4>
                 <p>
-                    Enter the Email address of the member who you are gifting and CLICK SUBMIT.
+                    Enter the Username of the member who you are gifting and CLICK SUBMIT.
                     A new window will open that displays your Gifting Statement and Non-Solicitation
                     forms. Fill in the amount of YOUR GIFT and type YOUR SIGNATURE at the
-                    bottom of the form. The forms will automatically be sent to the recipient by Email.
+                    bottom of the form. The forms will automatically be sent to the recipient by Username.
                 </p>
                 <form action="{{ route('send-gifting-form') }}" method="POST">
                     @csrf
                     <div class="row align-items-center">
                         <div class="col-3">
-                            <h4>RECIPIENT&#39;S Email</h4>
+                            <h4>RECIPIENT&#39;S Username</h4>
                         </div>
                         <div class="col-6">
                             <input type="text" class="form-control" name="username">

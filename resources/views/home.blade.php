@@ -17,7 +17,7 @@
     <section class="inviterSec">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-12 text-center mb-3">
+                <div class="col-lg-12 text-center">
                     <h3>My Inviter</h3>
                 </div>
                 <div class="col-lg-5">
@@ -36,7 +36,7 @@
                         </div>
                     @endif
                 </div>
-                <div class="col-lg-12 text-center my-5">
+                <div class="col-lg-12 text-center mt-3">
                     <h3>My Invitees</h3>
                 </div>
 
@@ -63,7 +63,7 @@
     <section class="boardSec">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-12 text-center mb-3">
+                <div class="col-lg-12 text-center">
                     <h3>My Boards</h3>
                 </div>
                 <div class="col-lg-7">
@@ -98,7 +98,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-lg-12 text-center my-5">
+                <div class="col-lg-12 text-center mt-3">
                     <h3>Pending Incoming Gifts</h3>
                 </div>
                 <div class="col-lg-9">
@@ -144,7 +144,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-lg-12 text-center my-5">
+                <div class="col-lg-12 text-center mt-3">
                     <h3>Pending Outgoing Gifts</h3>
                 </div>
                 <div class="col-lg-9">

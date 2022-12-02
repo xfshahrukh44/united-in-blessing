@@ -82,7 +82,7 @@
                                 <a href="{{route('front.faq')}}" class="nav-link"><i class="fas fa-question"></i>FAQs</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('front.gifting-forms')}}" class="nav-link"><i class="fas fa-gifts"></i>Gifting Forms</a>
+                                <a href="{{route('front.gifting-forms')}}" class="nav-link"><i class="fas fa-gift"></i>Gifting Forms</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{route('front.privacy-statement')}}" class="nav-link"><i class="fas fa-user-secret"></i>Privacy Statement</a>
@@ -92,7 +92,7 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ url('logout') }}" class="nav-link" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();"><i class="fas fa-sign-out-alt"></i>LOGOUT</a>
+                                                     document.getElementById('logout-form').submit();"><i class="fas fa-lock"></i>LOGOUT</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>

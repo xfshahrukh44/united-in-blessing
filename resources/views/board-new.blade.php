@@ -7,7 +7,7 @@
 {{--    <div class="main-slider">--}}
 {{--        <img class="w-100" src="{{ asset('assets/images/ban1.jpg') }}" alt="First slide">--}}
 {{--        <div class="overlay">--}}
-{{--            <!--            <h2>Lorem Ipsum</h2>-->--}}
+{{--            <h2>Hello {{ Auth::user()->username }}</h2>--}}
 {{--        </div>--}}
 {{--    </div>--}}
     <!-- END: Main Slider -->
@@ -18,10 +18,13 @@
         </a>
         <div class="container">
             <div class="row m-0 justify-content-center">
-                <div class="col-md-8">
+                <div class="col-12">
+                    <h2 class="text-black text-center">Hello {{ Auth::user()->first_name . ' ' . Auth::user()->last_name }} ({{ Auth::user()->username }})</h2>
+                </div>
+                <div class="col-md-6">
                     <div class="container-fluid">
                         <div class="row justify-content-between">
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <div class="titles">
                                     <p>Board: </p>
                                     <p>Previous Board No:</p>
@@ -31,7 +34,7 @@
                                     <p>{{ $board->previous_board_number }}</p>
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <div class="titles">
                                     <p>Previous GRAD: </p>
                                     <p>Board Status: </p>
