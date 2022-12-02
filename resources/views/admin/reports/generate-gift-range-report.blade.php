@@ -1,5 +1,27 @@
 @extends('admin.layouts.app')
-@section('title', 'Generate New Report')
+@section('title', 'Generate New Gift Range Report')
+@section('page_css')
+    <style>
+        .boxes {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .boxes input {
+            width: 160px;
+            height: 45px;
+            padding: 0 1rem;
+            border: 1px solid #ccc;
+        }
+
+        .slider.slider-horizontal {
+            width: 43%;
+            display: table;
+            margin: 0 0 1rem;
+        }
+    </style>
+@endsection
 @section('section')
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -7,12 +29,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Generate New Report</h1>
+                        <h1>Generate New Range Report</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Generate New Report</li>
+                            <li class="breadcrumb-item active">Generate New Gift Range Report</li>
                         </ol>
                     </div>
                 </div>
@@ -28,78 +50,30 @@
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Generate New Report</h3>
+                                <h3 class="card-title">Generate New Gift Range Report</h3>
                             </div>
-                            <form class="report-generating-form" method="get" action="{{ route('admin.report.index') }}"
+                            <form class="report-generating-form" method="get"
+                                  action="{{ route('admin.gift.range.report') }}"
                                   enctype="multipart/form-data">
                                 @csrf
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="sent_by">Gift Sent By</label>
-                                                <select name="sent_by" id="sent_by" class="form-control">
-                                                    <option value="">Please Select User</option>
-                                                    @foreach($users as $user)
-                                                        <option
-                                                            value="{{ $user->id }}" {{ (request()->get('sent_by') == $user->id) ? 'selected' : '' }}>{{ $user->username }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="received_by">Gift Received By</label>
-                                                <select name="received_by" id="received_by" class="form-control">
-                                                    <option value="">Please Select User</option>
-                                                    @foreach($users as $user)
-                                                        <option
-                                                            value="{{ $user->id }}" {{ (request()->get('received_by') == $user->id) ? 'selected' : '' }}>{{ $user->username }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="board_id">Board Number</label>
-                                                <select name="board_id" id="board_id" class="form-control">
-                                                    <option value="">Please Select Board</option>
-                                                    @foreach($boards as $board)
-                                                        <option
-                                                            value="{{ $board->id }}" {{ (request()->get('board_id') == $board->id) ? 'selected' : '' }}>{{ $board->board_number }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="amount">Value</label>
-                                                <select name="amount" id="amount" class="form-control">
-                                                    <option value="">Please Select Value</option>
-                                                    <option
-                                                        value="100" {{ (request()->get('amount') == '100') ? 'selected' : '' }}>
-                                                        $100
-                                                    </option>
-                                                    <option
-                                                        value="400" {{ (request()->get('amount') == '400') ? 'selected' : '' }}>
-                                                        $400
-                                                    </option>
-                                                    <option
-                                                        value="1000" {{ (request()->get('amount') == '1000') ? 'selected' : '' }}>
-                                                        $1000
-                                                    </option>
-                                                    <option
-                                                        value="2000" {{ (request()->get('amount') == '2000') ? 'selected' : '' }}>
-                                                        $2000
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
                                                 <label for="date_range">Date Range</label>
                                                 <input type="text" name="date_range" id="date_range"
                                                        class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="gift_range">Gift Range</label>
+                                                <input type="text" name="gift_range" id="gift_range"
+                                                       class="form-control">
+                                                <div class="boxes">
+                                                    <input type="text" id="min_gift_range">
+                                                    <input type="text" id="max_gift_range">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -128,22 +102,18 @@
                                     <thead>
                                     <tr style="text-align: center">
                                         <th>No</th>
-                                        <th>Sent By</th>
-                                        <th>Received By</th>
-                                        <th>Board Number</th>
-                                        <th>Value</th>
-                                        <th>Date</th>
+                                        <th>username</th>
+                                        <th>Total Gift Sent</th>
+                                        <th>Total Gift Received</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($gifts as $key => $gift)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
-                                            <td>{{ $gift->sender->username }}</td>
-                                            <td>{{ $gift->receiver->username }}</td>
-                                            <td>{{ $gift->board->board_number }}</td>
-                                            <td>{{ $gift->amount }}</td>
-                                            <td>{{ $gift->updated_at->format('F d, Y') }}</td>
+                                            <td>{{ $gift->username }}</td>
+                                            <td>$ {{ $gift->sentByGifts->sum('amount') }}</td>
+                                            <td>$ {{ $gift->sentToGifts->sum('amount') }}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -193,7 +163,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route('admin.generate-pdf-report') }}',
+                    url: '{{ route('admin.generate-range-pdf-report') }}',
                     data: $('.report-generating-form').serialize(),
                     success: function (msg) {
                         if (msg['class'] === 'success') {
@@ -203,6 +173,45 @@
                         }
                     }
                 })
+            })
+
+            @php
+                if (\Illuminate\Support\Facades\Request::has('gift_range')){
+                    $giftRange = explode(',', \Illuminate\Support\Facades\Request::get('gift_range'));
+                    $minGiftSum = $giftRange[0];
+                    $maxGiftSum = $giftRange[1];
+                }
+            @endphp
+            // bootstrap range slider
+            slider = new Slider('#gift_range', {
+                min: 0,
+                max: 20000,
+                value: [{{$minGiftSum ?? 1000}}, {{ $maxGiftSum ?? 15000 }}],
+                range: true,
+                tooltip: 'show',
+            });
+
+            // get slider value
+            function getSliderVal() {
+                let sliderVal = $('#gift_range').slider().val();
+                let sliderValArray = sliderVal.split(',');
+
+                $('#min_gift_range').val(sliderValArray[0]);
+                $('#max_gift_range').val(sliderValArray[1]);
+            }
+
+            // Initialize slider values on load
+            // setInterval(getSliderVal, 1000);
+            getSliderVal();
+
+            // change slider values on change
+            $('#gift_range').slider().on('change', function () {
+                getSliderVal();
+            })
+
+            // set entered value to range slider
+            $('.boxes input').on('change', function () {
+                slider.setValue([parseInt($('#min_gift_range').val()), parseInt($('#max_gift_range').val())]);
             })
         });
     </script>

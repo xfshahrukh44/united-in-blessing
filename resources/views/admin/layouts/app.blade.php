@@ -32,14 +32,19 @@
     <link rel="stylesheet" href="{{URL::asset('admin/plugins/daterangepicker/daterangepicker.css')}}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{URL::asset('admin/plugins/summernote/summernote-bs4.min.css')}}">
-{{--  table colors remove--}}
+    {{--  table colors remove--}}
+
 <!-- Datatables -->
     <link href="{{ asset('admin/datatables/datatables.net-bs/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 
-{{--    searchable select--}}
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    {{-- searchable select--}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
+    {{-- Bootstrap range slider--}}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.min.css">
 
     <style>
         table.dataTable thead th, table.dataTable thead td {
@@ -110,16 +115,16 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
-{{--            <div class="user-panel mt-3 pb-3 mb-3 d-flex">--}}
-{{--                <div class="image">--}}
-{{--                    <img src="{{URL::asset('admin/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2"--}}
-{{--                         alt="User Image">--}}
-{{--                </div>--}}
-{{--                <div class="info">--}}
-{{--                    <a href="#" class="d-block">{{\Illuminate\Support\Facades\Auth::user()->name}}</a>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-            <!-- SidebarSearch Form -->
+        {{--            <div class="user-panel mt-3 pb-3 mb-3 d-flex">--}}
+        {{--                <div class="image">--}}
+        {{--                    <img src="{{URL::asset('admin/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2"--}}
+        {{--                         alt="User Image">--}}
+        {{--                </div>--}}
+        {{--                <div class="info">--}}
+        {{--                    <a href="#" class="d-block">{{\Illuminate\Support\Facades\Auth::user()->name}}</a>--}}
+        {{--                </div>--}}
+        {{--            </div>--}}
+        <!-- SidebarSearch Form -->
             <!-- Sidebar Menu -->
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu"
@@ -218,7 +223,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item has-treeview {{ request()->IS('admin/generate-new-report') || request()->IS('admin/all-reports') ? 'menu-is-opening menu-open' : ''}}">
+                    <li class="nav-item has-treeview {{ request()->IS('admin/generate-new-report') || request()->IS('admin/all-reports') || request()->IS('admin/gift-range-report') ? 'menu-is-opening menu-open' : ''}}">
                         <a href="#" class="nav-link ">
                             <i class="nav-icon fas fa-file-pdf fw"></i>
                             <p>Reports</p>
@@ -230,6 +235,13 @@
                                    class="nav-link {{ request()->IS('admin/generate-new-report') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-file-pdf"></i>
                                     <p>New Report</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('admin.gift.range.report')}}"
+                                   class="nav-link {{ request()->IS('admin/gift-range-report') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-file-pdf"></i>
+                                    <p>Gift Range Report</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -519,6 +531,9 @@
 <script src="{{asset('admin/datatables/datatables.net/js/jquery.dataTables.min.js')}}"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script src="{{asset('admin/datatables/datatables.net/js/jquery.dataTables.min.js')}}"></script>
+
+{{--Bootstrap range slider--}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js"></script>
 
 @yield('script')
 </body>
