@@ -31,6 +31,15 @@ class ReportController extends Controller
         return view('admin.reports.generate', $data);
     }
 
+    public function giftRangeReport(Request $request)
+    {
+        $gift = $this->giftRangeData($request);
+
+        $data['gifts'] = $gift;
+
+        return view('admin.reports.generate-gift-range-report', $data);
+    }
+
     public function generatePDF(Request $request)
     {
         $gift = $this->getRequestedData($request);
@@ -77,6 +86,54 @@ class ReportController extends Controller
         }
     }
 
+    public function generateRangePDF(Request $request)
+    {
+        $gift = $this->giftRangeData($request);
+
+        try {
+            $pdf = new TcpdfController(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+            // set document information
+            $pdf->SetTitle('Report - United In Blessing');
+
+            // set margins
+            $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+            $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+            $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+            // set auto page breaks
+            $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+            // Add a page
+            // This method has several options, check the source code documentation for more information.
+            $pdf->AddPage();
+
+            // column titles
+            $header = array('No', 'Username', 'Total Gift Sent', 'Total Gift Received');
+
+            // data loading
+            $data = $pdf->LoadData($gift);
+
+            // print colored table
+            $pdf->ColoredRangeTable($header, $data);
+
+//            $totalAmount = $gift->sum('amount');
+//            $pdf->cell('180', '10', 'Total: $' . number_format($totalAmount, '2', '.', ','), 0, true, 'R', false, '', 0, false, "T", 'C');
+
+            // ---------------------------------------------------------
+
+            // Close and output PDF document
+            // This method has several options, check the source code documentation for more information.
+            $pdf->Output(public_path('upload/reports/') . 'uib-report-' . time() . '.pdf', 'F');
+
+            return array('class' => 'success', 'message' => 'Report Created Successfully');
+        } catch (\Exception $exception) {
+            return array('class' => 'error', 'message' => $exception->getMessage());
+        }
+    }
+
+
+
     private function getRequestedData($request)
     {
         $gift = $this->gift;
@@ -109,11 +166,50 @@ class ReportController extends Controller
         return $gift->with(['sender', 'receiver', 'board'])->get();
     }
 
-    public function allReports(){
+    public function giftRangeData($request)
+    {
+        $gift = $this->gift;
+        $final_users = [];
+
+        if (!empty($request->date_range)) {
+            $dateRange = explode('-', $request->date_range);
+            $startDate = date('Y-m-d', strtotime(trim($dateRange[0])));
+            $endDate = date('Y-m-d', strtotime(trim($dateRange[1])));
+
+            $gift = $gift->whereBetween('updated_at', [$startDate, $endDate]);
+        }
+
+        if (!empty($request->gift_range)) {
+            $giftRange = explode(',', $request->gift_range);
+            $minGiftSum = $giftRange[0];
+            $maxGiftSum = $giftRange[1];
+        } else{
+            $minGiftSum = 1000;
+            $maxGiftSum = 15000;
+        }
+
+        $users = User::with('sentByGifts')->whereHas('sentByGifts')->get();
+        $final_users = [];
+        foreach ($users as $user) {
+            $total = 0;
+            foreach ($user->sumAllGift() as $gift) {
+                $total += $gift->amount;
+            }
+
+            if ($total >= $minGiftSum && $total <= $maxGiftSum) {
+                $final_users[] = $user;
+            }
+        }
+
+        return $final_users;
+    }
+
+    public function allReports()
+    {
         $files = File::allFiles(public_path('upload/reports'));
         $reports = array();
 
-        foreach ($files as $file){
+        foreach ($files as $file) {
             $reports[] = array('filename' => $file->getRelativePathname());
         }
 
