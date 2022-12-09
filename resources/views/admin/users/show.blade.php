@@ -59,7 +59,7 @@
                                         <th>Invited By</th>
                                         <td>{{ $user->invitedBy->username ?? '' }}</td>
                                         <th>Active/Inactive</th>
-                                        <td>{{ $user->is_blocked ?? '' }}</td>
+                                        <td>{{ $user->is_blocked == 'no' ? 'Active' : 'Inactive' }}</td>
                                     </tr>
                                     </tbody>
                                 </table>

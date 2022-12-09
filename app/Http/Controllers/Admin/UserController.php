@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\GiftLogs;
 use App\Models\User;
+use App\Models\UserBoards;
 use App\Models\UserProfileChangedLogs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,7 +30,7 @@ class UserController extends Controller
                     })
                     ->addColumn('action', function ($data) {
 //                        return '<a title="Edit" href="user/edit/' . $data->id . '" class="btn btn-dark btn-sm"><i class="fas fa-pencil-alt"></i></a>&nbsp;<button title="Delete" type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>';
-                        return '<a title="Edit" href="user/edit/' . $data->id . '" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a><a title="View" href="user/show/' . $data->id . '" class="ml-2 btn btn-secondary btn-sm"><i class="fas fa-eye"></i></a>';
+                        return '<a title="Edit" href="user/edit/' . $data->id . '" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a><a title="View" href="user/show/' . $data->id . '" class="ml-2 btn btn-secondary btn-sm"><i class="fas fa-eye"></i></a><button title="Delete" type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm ml-2"><i class="fa fa-trash"></i></button>';
                     })
                     ->rawColumns(['name', 'action'])
                     ->make(true);
@@ -35,7 +38,9 @@ class UserController extends Controller
         } catch (\Exception $ex) {
             return redirect('/')->with('error', $ex->getMessage());
         }
-        return view('admin.users.index');
+
+        $users = User::where('role', '!=', 'admin')->get();
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -190,10 +195,41 @@ class UserController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        $user = User::find($id);
-        $user->delete();
-        echo 1;
+        DB::beginTransaction();
+        if (!empty($request['new_user_id'])) {
+            try {
+                // Replace deleting user invitees with the selected user.
+                $this->replaceUserInvitees($request);
+                $this->replaceUserInBoards($request);
+                $this->replaceGiftLogs($request);
+
+                $user = User::find($id);
+                $user->delete();
+                DB::commit();
+                echo 1;
+            } catch (\Exception $exception){
+                DB::rollBack();
+                echo $exception->getMessage();
+            }
+        } else {
+            DB::rollBack();
+            echo 'Please Select a User to Replace With';
+        }
+    }
+
+    private function replaceUserInvitees($request){
+        User::where('invited_by', $request['delete_user_id'])->update(['invited_by' => $request['new_user_id']]);
+    }
+
+    private function replaceUserInBoards($request){
+        UserBoards::where('parent_id', $request['delete_user_id'])->update(['parent_id' => $request['new_user_id']]);
+        UserBoards::where('user_id', $request['delete_user_id'])->update(['user_id' => $request['new_user_id']]);
+    }
+
+    private function replaceGiftLogs($request){
+        GiftLogs::where('sent_by', $request['delete_user_id'])->update(['sent_by' => $request['new_user_id']]);
+        GiftLogs::where('sent_to', $request['delete_user_id'])->update(['sent_to' => $request['new_user_id']]);
     }
 }
