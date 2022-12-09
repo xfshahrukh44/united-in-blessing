@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\PHPCustomMail;
+use Illuminate\Support\Facades\Storage;
 
 class FrontController extends Controller
 {
@@ -44,25 +45,9 @@ class FrontController extends Controller
             $filename = 'gifting-form-statement-and-non-solicitation.pdf';
             $file = public_path('assets/pdf/') . $filename;
 
-            $content = file_get_contents($file);
-            $content = chunk_split(base64_encode($content));
-
-            // a random hash will be necessary to send mixed content
-            $separator = md5(time());
-
-            // carriage return type (RFC)
-            $eol = "\r\n";
-
             $html = 'New Gift form received please check the attachment';
 
-            // attachment
-            $html .= "Content-Type: application/octet-stream; name=\"" . $filename . "\"" . $eol;
-            $html .= "Content-Transfer-Encoding: base64" . $eol;
-            $html .= "Content-Disposition: attachment" . $eol;
-            $html .= $content . $eol;
-            $html .= "--" . $separator . "--";
-
-            $this->customMail('no-reply@uib.com', $user->email, 'Gift Form Received', $html);
+            $this->customMailerWithAttachment('no-reply@uib.com', $user->email, 'Gift Form Received', $html, $file);
 
             return back()->with('success', 'Email sent successfully');
         } catch (\Exception $exception){

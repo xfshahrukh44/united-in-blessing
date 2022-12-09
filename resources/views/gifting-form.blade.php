@@ -40,7 +40,7 @@
                     @csrf
                     <div class="row align-items-center">
                         <div class="col-3">
-                            <h4>RECIPIENT&#39;S Email</h4>
+                            <h4>RECIPIENT&#39;S Username</h4>
                         </div>
                         <div class="col-6">
                             <input type="text" class="form-control" name="username">

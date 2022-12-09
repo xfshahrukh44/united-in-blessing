@@ -2,6 +2,9 @@
 
 namespace App\Traits;
 
+use File;
+use PHPMailer\PHPMailer\PHPMailer;
+
 trait PHPCustomMail
 {
     /**
@@ -29,6 +32,31 @@ trait PHPCustomMail
 
         // Sending email
         if (mail($to, $subject, $message, $headers)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function customMailerWithAttachment($from, $to, $subject, $html, $file = null)
+    {
+        $email = new PHPMailer();
+
+        $email->isHTML(true);
+        $email->isMail();
+        $email->setFrom($from);
+        $email->addAddress($to);
+        $email->addCustomHeader('From', $from);
+        $email->addCustomHeader('Reply-To', $from);
+        $email->addCustomHeader('X-Mailer', 'PHP/' . phpversion());
+        $email->Subject = $subject;
+        $email->Body = $html;
+
+        if (!empty($file)){
+            $email->addAttachment($file, File::name($file));
+        }
+
+        if ($email->send()) {
             return true;
         } else {
             return false;
