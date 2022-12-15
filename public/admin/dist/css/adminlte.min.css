@@ -48815,7 +48815,7 @@ a.text-muted:hover {
 
 
 .layout-fixed .main-sidebar {
-    background: #fcfdb6 !important;
+    background: #FFFFE0 !important;
 }
 
 .nav-sidebar .nav-item > .nav-link {
@@ -48827,16 +48827,10 @@ a.text-muted:hover {
     background: #f66001 !important;
 }
 
+.main-footer,
+.navbar-white,
 .content-wrapper {
-    background: #fcfdb6 !important;
-}
-
-.navbar-white {
-    background: #fcfdb6 !important;
-}
-
-.main-footer {
-    background: #fcfdb6 !important;
+    background: #FFFFE0 !important;
 }
 
 .small-box {
