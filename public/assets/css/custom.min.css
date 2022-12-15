@@ -44,7 +44,7 @@ html {
 }
 
 body {
-    background: #fcfdb6;
+    background: #FFFFE0;
     color: #030303;
     font-family: "Poppins", sans-serif;
     font-size: 1rem;
@@ -130,7 +130,7 @@ h4 {
 /* Begin: Access Page CSS */
 
 .loginWrap {
-    background: #cb5f1b;
+    background: #FFFFE0;
     height: 100%;
     display: flex;
     align-items: center;
@@ -349,7 +349,7 @@ h4 {
 
 .tableStyle tbody tr td {
     /* padding: 1rem; */
-    background: #fcfdb6;
+    background: #FFFFE0;
 }
 
 .tableStyle .themeBtn {
@@ -569,4 +569,13 @@ h4 {
 
 header img {
     display: none;
+}
+
+.loginWrap .whitebg .form-check input {
+    width: 15px;
+    height: 15px;
+}
+
+.loginWrap .whitebg .form-check label {
+    width: calc(100% - 50px);
 }
