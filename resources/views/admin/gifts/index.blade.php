@@ -82,7 +82,6 @@
     <script>
         $(document).ready(function () {
             var DataTable = $("#users-table").DataTable({
-                dom: "Blfrtip",
                 responsive: true,
                 processing: true,
                 serverSide: true,
@@ -94,7 +93,7 @@
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'sent_by', name: 'sent_by'},
                     {data: 'sent_to', name: 'sent_to'},
-                    {data: 'board_id', name: 'board_number'},
+                    {data: 'board_number', name: 'board_number', searchable: true},
                     {data: 'amount', name: 'amount'},
                     {data: 'status', name: 'status'},
                     {data: 'action', name: 'action', orderable: false}
