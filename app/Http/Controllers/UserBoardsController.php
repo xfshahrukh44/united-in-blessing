@@ -84,11 +84,12 @@ class UserBoardsController extends Controller
 //        dd($request->all());
         $board = Boards::find($id);
         $input = $request->all();
+        
 
         try {
             // Check if grad has changed
             $grad = UserBoards::where('board_id', $id)->where('user_board_roles', 'grad')->first();
-
+            
             if (!$grad) {
                 $grad = new UserBoards();
 

@@ -22,6 +22,10 @@
         .treeSec form button.cancelBtn{
             right: 200px;
         }
+        
+        select[readonly]{
+            pointer-events: none;
+        }
     </style>
     <!-- Begin: Main Slider -->
     <div class="main-slider">
@@ -415,11 +419,11 @@
         })
 
         $('select').change(function () {
-            $('select').prop('disabled', true);
+            $('select').attr('readonly', true);
             $('.cancelBtn').show()
-            $(this).prop('disabled', false);
+            $(this).attr('readonly', false);
             
-            /*$('select').each(function () {
+           /* $('select').each(function () {
                 $('select').find('option').removeAttr('disabled');
             });
             $('select').each(function () {
