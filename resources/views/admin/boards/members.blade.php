@@ -18,6 +18,10 @@
             border: 1px solid var(--primary);
             transition: all 0.3s ease-in-out;
         }
+        
+        .treeSec form button.cancelBtn{
+            right: 200px;
+        }
     </style>
     <!-- Begin: Main Slider -->
     <div class="main-slider">
@@ -32,6 +36,7 @@
             {{--            <i class="fas fa-arrow-to-left"></i>--}}
             Back
         </a>
+        
         <div class="container">
             <div class="row my-5 justify-content-center">
                 <div class="col-md-8">
@@ -67,6 +72,7 @@
                         <form action="{{ route('admin.update.board.members', $board->id) }}" method="POST">
                             @csrf
                             <button class="themeBtn" type="submit">Update Board</button>
+                            <button class="themeBtn cancelBtn" type="button" onClick="window.location.reload();" style="display:none">Cancel Selection</button>
                             <ul class="tree vertical">
                                 @forelse($boardGrad as $key => $grad)
                                     <li>
@@ -409,7 +415,11 @@
         })
 
         $('select').change(function () {
-            $('select').each(function () {
+            $('select').prop('disabled', true);
+            $('.cancelBtn').show()
+            $(this).prop('disabled', false);
+            
+            /*$('select').each(function () {
                 $('select').find('option').removeAttr('disabled');
             });
             $('select').each(function () {
@@ -417,6 +427,9 @@
                     $('select').not($(this)).find('option[value=' + $(this).val() + ']').attr('disabled', 'disabled');
                 }
             });
+            $('select').each(function () {
+                $('select').not($(this)).attr('disabled', 'disabled')
+            });*/
         })
     </script>
 @endsection
