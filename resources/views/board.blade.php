@@ -157,7 +157,7 @@
                                                                                 <img
                                                                                     src="{{ $newbie['user']->user_image ? asset('upload/user/' . $newbie['user']->user_image) : asset('assets/images/user.png') }}"
                                                                                     alt="">
-                                                                                <h4 style="color: {{ ($newbie->board->user_gift($newbie->user->id)->status == 'not_sent' || $newbie->board->user_gift($newbie->user->id)->status == 'pending') ? 'red' : '' }}">{{$newbie['user']->username}}</h4>
+                                                                                <h4 style="color: {{ ($newbie->board->user_gift($newbie->user->id)->status == 'not_sent' || $newbie->board->user_gift($newbie->user->id)->status == 'pending') ? 'red' : (($pregrad->user->inviters->count() == 0) ? '' : (($pregrad->user->inviters->count() == 1) ? '#ffc107' : 'green')) }}">{{$newbie['user']->username}}</h4>
                                                                                 {{--                                                                                <p>{{ ($y++) }}</p>--}}
                                                                             </div>
                                                                         </div>

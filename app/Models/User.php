@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,7 +52,14 @@ class User extends Authenticatable
 
     public function inviters()
     {
-        return $this->hasMany(User::class, 'invited_by', 'id');
+        return $this->hasMany(User::class, 'invited_by', 'id')
+            ->whereHas('giftLogs', function ($q){
+                $q->where('status', 'accepted');
+            });
+    }
+
+    public function giftLogs(){
+        return $this->hasMany(GiftLogs::class, 'sent_by');
     }
 
     public function latestPassword()

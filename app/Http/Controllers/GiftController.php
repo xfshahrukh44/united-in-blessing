@@ -9,6 +9,7 @@ use App\Models\RemoveUserRequest;
 use App\Models\UserBoards;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class GiftController extends Controller
 {
@@ -32,7 +33,7 @@ class GiftController extends Controller
                     ->addColumn('sent_to', function ($data) {
                         return $data->receiver->username . ' (' . $data->receiver->first_name . ' ' . $data->receiver->last_name . ')';
                     })
-                    ->addColumn('board_id', function ($data) {
+                    ->addColumn('board_number', function ($data) {
                         return $data->board->board_number;
                     })
                     ->addColumn('amount', function ($data) {
@@ -41,7 +42,7 @@ class GiftController extends Controller
                     ->addColumn('action', function ($data) {
                         return '<a title="Edit" href="' . route('admin.gift.edit', $data->id) . '" class="btn btn-dark btn-sm"><i class="fas fa-pencil-alt"></i></a>&nbsp;<button title="Delete" type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>';
                     })
-                    ->rawColumns(['sent_by', 'sent_to', 'board_id', 'amount', 'action'])
+                    ->rawColumns(['sent_by', 'sent_to', 'board_number', 'amount', 'action'])
                     ->make(true);
             }
         } catch (\Exception $ex) {
@@ -105,7 +106,8 @@ class GiftController extends Controller
      */
     public function update(Request $request, $id, $status = null)
     {
-        // if theres status in request
+        DB::beginTransaction();
+        // if there's status in request
         if ($request)
             $status = $request->status;
 
@@ -116,32 +118,39 @@ class GiftController extends Controller
 
         $gift = GiftLogs::where('id', $id)->first();
 
+        // check if gift status is accepted
         if ($status == 'accepted') {
+            // get user who's gift has been accepted
             $boardUser = UserBoards::where('user_id', $gift->sent_by)
                 ->where('board_id', $gift->board_id)
                 ->first();
+
+            // check if other newbies in the same matrix has gifted
             $response = $this->giftFromOtherMembersOfSameMatrix($boardUser);
 
-//            $response = true;
             if ($response) {
+                // create new board of same amount to move the users of the same matrix
                 $createBoard = BoardController::create($gift->amount, $gift->board->board_number);
                 if ($createBoard instanceof \Exception) {
+                    DB::rollBack();
                     return redirect()->back()->with('error', $createBoard->getMessage());
                 }
 
+                // move users of the same matrix to the new board
                 $addUserToBoard = $this->addUsersToBoard($gift, $createBoard);
-
                 if ($addUserToBoard instanceof \Exception) {
+                    DB::rollBack();
                     return redirect()->back()->with('error', $addUserToBoard->getMessage());
                 }
 
-                // If all the newbies in the same matrix has gifted then take there grad parent and find it's sibling
+                // If all the newbies in the same matrix has gifted then take there grand parent and find it's sibling
                 // to check if newbies in other matrix have gifted.
                 $grandParent = $boardUser->board_parent($boardUser->board_id)->board_parent($boardUser->board_id);
                 $sibling = $this->siblings($grandParent);
                 $undergrads = $sibling->boardChildren($sibling->board_id);
                 $newbies = $undergrads[0]->boardChildren($sibling->board_id);
 
+                // start checking from the left most newbie in the other matrix
                 $response = $this->giftFromOtherMembersOfSameMatrix($newbies[0]);
 
                 if ($response) {
@@ -154,29 +163,66 @@ class GiftController extends Controller
                     $grad = UserBoards::where('board_id', $sibling->board_id)->where('user_board_roles', 'grad')->first();
                     $gradInvitedBy = $grad->user->invitedBy;
 
+//                    dd($createBoard);
+//                    dd($grad->user->invitedBy);
+
+                    // define board values
                     $boardValues = array('100', '400', '1000', '2000');
                     $arrayPosition = array_search($grad->board->amount, $boardValues);
 
                     for ($y = 1; $y < 3; $y++) {
                         if (array_key_exists($arrayPosition, $boardValues)) {
+                            // check inviters for upto 7 positions
                             for ($x = 1; $x < 8; $x++) {
-                                $sameLevelBoard = UserBoards::where('user_id', $gradInvitedBy->id)
-                                    ->where('user_board_roles', '!=', 'newbie')
-                                    ->where('board_id', '!=', $grad->board_id)
-                                    ->whereHas('board', function ($q) use ($grad, $boardValues, $arrayPosition) {
-                                        $q->where('amount', $boardValues[$arrayPosition]);
-                                    })
-                                    ->has('newbies', '<', 8)
-                                    ->first();
+                                if (!empty($gradInvitedBy)) {
+                                    // find same level board of grad's inviter
+                                    $sameLevelBoard = UserBoards::where('user_id', $gradInvitedBy->id)
+                                        ->where('user_board_roles', '!=', 'newbie')
+                                        ->where('board_id', '!=', $grad->board_id)
+                                        ->whereHas('board', function ($q) use ($grad, $boardValues, $arrayPosition) {
+                                            $q->where('amount', $boardValues[$arrayPosition]);
+                                        })
+                                        ->has('newbies', '<', 8)
+                                        ->first();
 
-                                if (is_null($sameLevelBoard)) {
-                                    $gradInvitedBy = $gradInvitedBy->invitedBy;
+                                    // check if same level is not found
+                                    if (is_null($sameLevelBoard)) {
+                                        $gradInvitedBy = $gradInvitedBy->invitedBy;
 
-                                    if (is_null($gradInvitedBy)) {
+                                        // check if inviter not found
+                                        if (is_null($gradInvitedBy)) {
+                                            break;
+                                        }
+                                    } else {
                                         break;
                                     }
-                                } else {
-                                    break;
+                                }
+                            }
+
+
+                            if (empty($gradInvitedBy)) {
+//                                // Move grad to upper level board
+//                                if ($y == 2) {
+//                                    $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])->has('newbies', '<', 8)->first();
+//                                    dd(UserBoards::where('board_id', $upperLevelBoard->id)->get());
+//                                }
+//
+//                                // Move grad to same level board
+//                                $leftPregrad = UserBoards::where('board_id', $createBoard->id)->where('user_board_roles', 'pregrad')->where('position', 'left')->first();
+//                                $undergrads = $leftPregrad->boardChildren($createBoard->id);
+
+                                // check if inviter is admin
+                                if ($grad->user->invitedBy->username == 'admin') {
+                                    if ($y == 1) {
+                                        $sameLevelBoard = UserBoards::where('board_id', $createBoard->id)
+                                            ->has('newbies', '<', 8)
+                                            ->first();
+
+                                    } elseif($y == 2){
+                                        $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])->has('newbies', '<', 8)->first();
+                                        $sameLevelBoard = UserBoards::where('board_id', $upperLevelBoard->id)->first();
+                                    }
+//                                    UserBoardsController::create($grad->user->id, $createBoard->id, $undergrads[0]->user->id, 'newbie', 'left');
                                 }
                             }
 
@@ -214,8 +260,11 @@ class GiftController extends Controller
                 }
             }
 
+//            dd('Hello Nehal');
+            DB::commit();
             $msg = 'Status Updated Successfully';
         } else {
+            DB::beginTransaction();
             RemoveUserRequest::updateOrCreate(
                 [
                     'user_id' => $gift->sent_by,
@@ -227,6 +276,7 @@ class GiftController extends Controller
                 ]
             );
 
+            DB::commit();
 //            $msg = 'Your Request  to Remove "' . $gift->sender->username . '" from "' . $gift->board->board_number . '" has been submitted to the Admin.';
             $msg = 'Your Request has been submitted to the Admin.';
         }
@@ -338,7 +388,5 @@ class GiftController extends Controller
         } catch (\Exception $exception) {
             return $exception;
         }
-
-
     }
 }
