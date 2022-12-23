@@ -109,7 +109,7 @@
                                 <th>Value</th>
                                 <th>Board #</th>
                                 <th>Position</th>
-                                <th>GRAD</th>
+                                <th>Username</th>
                                 <th>Phone</th>
                                 <th>Email</th>
                                 <th>Option</th>
