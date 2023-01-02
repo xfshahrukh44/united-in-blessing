@@ -139,9 +139,9 @@
                                     @foreach($gifts as $key => $gift)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
-                                            <td>{{ $gift->sender->username }}</td>
-                                            <td>{{ $gift->receiver->username }}</td>
-                                            <td>{{ $gift->board->board_number }}</td>
+                                            <td>{{ $gift->sender->username ?? '' }}</td>
+                                            <td>{{ $gift->receiver->username ?? '' }}</td>
+                                            <td>{{ $gift->board->board_number ?? '' }}</td>
                                             <td>{{ $gift->amount }}</td>
                                             <td>{{ $gift->updated_at->format('F d, Y') }}</td>
                                         </tr>
