@@ -121,7 +121,7 @@ class RegisterController extends Controller
                         if ($pregrad->boardChildren($invited_user_board->board_id)->count() < 2) {
                             $parent_id = $pregrad->user_id;
                             $role = 'undergrad';
-    
+
                             foreach ($pregrad->boardChildren($invited_user_board->board_id) as $undergrad) {
                                 if ($undergrad->position == 'left')
                                     $position = 'right';
@@ -130,17 +130,17 @@ class RegisterController extends Controller
                             foreach ($pregrad->boardChildren($invited_user_board->board_id) as $undergrad) {
                                 if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
                                     $parent_id = $undergrad->user_id;
-    
+
                                     foreach ($undergrad->boardChildren($invited_user_board->board_id) as $child) {
                                         if ($child->position == 'left')
                                             $position = 'right';
                                     }
-    
+
                                     break;
                                 }
                             }
                         }
-    
+
                         if ($parent_id != '') {
                             break;
                         }
@@ -309,7 +309,7 @@ class RegisterController extends Controller
             ->first();
 
         // If role is empty so it means that the new user is newbie and create a gift log to send the gift to the admin.
-        if (empty($role)) {
+        //if (empty($role)) {
             GiftLogs::create([
                 'sent_by' => $user->id,
                 'sent_to' => $boardGrad->user_id,
@@ -317,7 +317,7 @@ class RegisterController extends Controller
                 'amount' => $boardGrad->board->amount,
                 'status' => 'pending',
             ]);
-        }
+        //}
 
         $userLogs = generateUserProfileLogs($user->id, 'username', $data['username'], 0, 'New Account Created', 'accepted');
         $passLogs = generateUserProfileLogs($user->id, 'password', $data['password'], 0, 'New Account Created', 'accepted');

@@ -14,6 +14,8 @@ class SettingsSeeder extends Seeder
      */
     public function run()
     {
+        Settings::truncate();
+
         Settings::create([
             'site_title' => 'United In Blessings',
             'company_name' => 'United In Blessings',

@@ -138,11 +138,12 @@
             });
 
             $(document).on('click', '#ok_delete', function () {
+                let deleteId = delete_id !== 'ok_delete' && delete_id !== undefined ? delete_id : $(this).data('deleting_id')
                 $.ajax({
-                    url: "{{url('admin/user/destroy')}}/" + delete_id,
+                    url: "{{url('admin/user/destroy')}}/" + deleteId,
                     type: 'post',
                     data: {
-                        delete_user_id: delete_id,
+                        delete_user_id: deleteId,
                         new_user_id: $('#replace_user').val(),
                         "_method": 'DELETE',
                     },
@@ -161,6 +162,7 @@
                         //   js_success(data);
                         if (data == 1) {
                             toastr.success('Record Delete Successfully');
+                            location.reload();
                         } else {
                             toastr.error(data);
                         }
