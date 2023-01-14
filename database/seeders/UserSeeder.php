@@ -19,6 +19,8 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        User::truncate();
+
         $board100 = Boards::create([
             'board_number' => '123455',
             'amount' => '100',

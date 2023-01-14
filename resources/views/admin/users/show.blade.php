@@ -87,6 +87,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+
                                     @foreach($user->inviters as $key => $invitee)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>

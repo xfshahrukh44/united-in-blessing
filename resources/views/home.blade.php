@@ -84,8 +84,8 @@
                                     <td><span>{{ $uboard->board->board_number ?? '' }}</span></td>
                                     <td>{{ $uboard->boardGrad->user->username ?? '' }}</td>
                                     <td>
-                                        <a href="{{ route('board.index', $uboard->board->id) }}" class="themeBtn w-100"><span></span>
-                                            <text>{{ $uboard->board->status }}</text>
+                                        <a href="{{ route('board.index', $uboard->board->id ?? $uboard->id) }}" class="themeBtn w-100"><span></span>
+                                            <text>{{ $uboard->board->status ?? 'Active' }}</text>
                                         </a>
                                     </td>
                                 </tr>
@@ -119,11 +119,11 @@
                             @forelse($pendingIncomingGifts as $gift)
                                 <tr>
                                     <td>${{ round($gift->amount) }}</td>
-                                    <td>{{ $gift->board->board_number }}</td>
+                                    <td>{{ $gift->board->board_number ?? '---' }}</td>
                                     <td>Newbie</td>
-                                    <td>{{ $gift->sender->username }}</td>
-                                    <td>{{ $gift->sender->phone }}</td>
-                                    <td>{{ $gift->sender->email }}</td>
+                                    <td>{{ $gift->sender->username ?? '---' }}</td>
+                                    <td>{{ $gift->sender->phone ?? '---' }}</td>
+                                    <td>{{ $gift->sender->email ?? '---' }}</td>
                                     <td>
                                         <div class="btnWrap">
                                             <a href="{{ route('update-gift-status', [$gift->id, 'accepted']) }}"
@@ -165,11 +165,11 @@
                             @forelse($pendingOutgoingGifts as $gift)
                                 <tr>
                                     <td>${{ round($gift->amount) }}</td>
-                                    <td>{{ $gift->board->board_number }}</td>
+                                    <td>{{ $gift->board->board_number ?? '---' }}</td>
                                     <td>Newbie</td>
-                                    <td>{{ $gift->receiver->username }}</td>
-                                    <td>{{ $gift->receiver->phone }}</td>
-                                    <td>{{ $gift->receiver->email }}</td>
+                                    <td>{{ $gift->receiver->username ?? '---' }}</td>
+                                    <td>{{ $gift->receiver->phone ?? '---' }}</td>
+                                    <td>{{ $gift->receiver->email ?? '---' }}</td>
                                     <td>
                                         <a href="javascript:void(0)" data-href="{{ route('update-gift-status', [$gift->id, ($gift->status != 'pending') ? 'pending' : 'not_sent']) }}"
                                            class="themeBtn w-100 newbieGiftDeleteButton"><span></span>

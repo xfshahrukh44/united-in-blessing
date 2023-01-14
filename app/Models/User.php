@@ -52,10 +52,10 @@ class User extends Authenticatable
 
     public function inviters()
     {
-        return $this->hasMany(User::class, 'invited_by', 'id')
-            ->whereHas('giftLogs', function ($q){
-                $q->where('status', 'accepted');
-            });
+        return $this->hasMany(User::class, 'invited_by', 'id');
+//            ->whereHas('giftLogs', function ($q){
+//                $q->where('status', 'accepted');
+//            });
     }
 
     public function giftLogs(){

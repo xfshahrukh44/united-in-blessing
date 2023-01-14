@@ -20,11 +20,11 @@
         }
     </style>
     <!-- Begin: Main Slider -->
-{{--    <div class="main-slider">--}}
-{{--        <img class="w-100" src="{{ asset('assets/images/ban1.jpg') }}" alt="First slide">--}}
-{{--        <div class="overlay">--}}
-{{--        </div>--}}
-{{--    </div>--}}
+    {{--    <div class="main-slider">--}}
+    {{--        <img class="w-100" src="{{ asset('assets/images/ban1.jpg') }}" alt="First slide">--}}
+    {{--        <div class="overlay">--}}
+    {{--        </div>--}}
+    {{--    </div>--}}
     <!-- END: Main Slider -->
 
     <section class="treeSec">
@@ -35,7 +35,9 @@
         <div class="container">
             <div class="row m-0 justify-content-center">
                 <div class="col-12">
-                    <h3 class="text-black text-center mt-3">Hello {{ Auth::user()->first_name . ' ' . Auth::user()->last_name }} ({{ Auth::user()->username }})</h3>
+                    <h3 class="text-black text-center mt-3">
+                        Hello {{ Auth::user()->first_name . ' ' . Auth::user()->last_name }}
+                        ({{ Auth::user()->username }})</h3>
                 </div>
                 <div class="col-md-6">
                     <div class="container-fluid">
@@ -97,14 +99,13 @@
                                                 src="{{ $grad['user']->user_image ? asset('upload/user/' . $grad['user']->user_image) : asset('assets/images/user.png') }}"
                                                 alt="">
                                             <h4 style="color: {{ ($grad->user->inviters->count() == 0) ? '' : (($grad->user->inviters->count() == 1) ? '#ffc107' : 'green') }}">{{$grad['user']->username}}</h4>
-                                            {{--                                            <p>{{ ($key + 1) }}</p>--}}
                                         </div>
                                     </div>
-                                    <h4>Grad</h4>
-                                    <ul>
                                         @php $x = $y = 1 @endphp
-
-                                        @foreach($grad->boardChildren(Request::segment(2)) as $key => $pregrad)
+                                        {{--                                        @foreach($grad->boardChildren(Request::segment(2)) as $key => $pregrad)--}}
+                                        {{--                                            --}}
+                                        {{--                                        @endforeach--}}
+                                        @forelse($grad->boardChildren(Request::segment(2)) as $key => $pregrad)
                                             @if($key == 1)
                                                 <li class="heading">
                                                     <h4>Pre-grads</h4>
@@ -119,12 +120,10 @@
                                                             src="{{ $pregrad['user']->user_image ? asset('upload/user/' . $pregrad['user']->user_image) : asset('assets/images/user.png') }}"
                                                             alt="">
                                                         <h4 style="color: {{ ($pregrad->user->inviters->count() == 0) ? '' : (($pregrad->user->inviters->count() == 1) ? '#ffc107' : 'green') }}">{{$pregrad['user']->username}}</h4>
-                                                        {{--                                                        <p>{{ ($key + 1) }}</p>--}}
                                                     </div>
                                                 </div>
-                                                {{--                                                <h4>Pregrads</h4>--}}
                                                 <ul>
-                                                    @foreach($pregrad->boardChildren(Request::segment(2)) as $key => $undergrad)
+                                                    @forelse($pregrad->boardChildren(Request::segment(2)) as $key => $undergrad)
                                                         <li>
                                                             <div>
                                                                 <div class="inviterCard invitees undergrad">
@@ -132,11 +131,8 @@
                                                                         src="{{ $undergrad['user']->user_image ? asset('upload/user/' . $undergrad['user']->user_image) : asset('assets/images/user.png') }}"
                                                                         alt="">
                                                                     <h4 style="color: {{ ($undergrad->user->inviters->count() == 0) ? 'black' : (($undergrad->user->inviters->count() == 1) ? '#ffc107' : 'green') }}">{{$undergrad['user']->username}}</h4>
-
-                                                                    {{--                                                                    <p>{{ ($x++) }}</p>--}}
                                                                 </div>
                                                             </div>
-                                                            {{--                                                            <h4>undergrads</h4>--}}
                                                             <ul>
                                                                 @forelse($undergrad->boardChildren(Request::segment(2)) as $key => $newbie)
                                                                     @if($undergrad->boardChildren(Request::segment(2))->count() == 1 && $newbie->position == 'right')
@@ -144,11 +140,10 @@
                                                                             <div>
                                                                                 <div
                                                                                     class="inviterCard invitees newbie">
-                                                                                    <h4>No Invitee</h4>
-                                                                                    {{--                                                                                    <p>{{ ($y++) }}</p>--}}
+                                                                                    <h4 style="font-size: 14px;">No
+                                                                                        Invitee</h4>
                                                                                 </div>
                                                                             </div>
-                                                                            {{--                                                                            <h4>Newbies</h4>--}}
                                                                         </li>
                                                                     @endif
                                                                     <li>
@@ -158,21 +153,21 @@
                                                                                     src="{{ $newbie['user']->user_image ? asset('upload/user/' . $newbie['user']->user_image) : asset('assets/images/user.png') }}"
                                                                                     alt="">
                                                                                 <h4 style="color: {{ ($newbie->board->user_gift($newbie->user->id)->status == 'not_sent' || $newbie->board->user_gift($newbie->user->id)->status == 'pending') ? 'red' : (($newbie->user->inviters->count() == 0) ? '' : (($newbie->user->inviters->count() == 1) ? '#ffc107' : 'green')) }}">{{$newbie['user']->username}}</h4>
-                                                                                {{--                                                                                <p>{{ ($y++) }}</p>--}}
                                                                             </div>
                                                                         </div>
-                                                                        {{--                                                                        <h4>Newbies</h4>--}}
                                                                     </li>
                                                                     @if($undergrad->boardChildren(Request::segment(2))->count() == 1 && $newbie->position == 'left')
                                                                         <li>
                                                                             <div>
                                                                                 <div
                                                                                     class="inviterCard invitees newbie">
-                                                                                    <h4>No Invitee</h4>
-                                                                                    {{--                                                                                    <p>{{ ($y++) }}</p>--}}
+                                                                                    <img
+                                                                                        src="{{asset('assets/images/user.png') }}"
+                                                                                        alt="">
+                                                                                    <h4 style="font-size: 14px;">No
+                                                                                        Invitee</h4>
                                                                                 </div>
                                                                             </div>
-                                                                            {{--                                                                            <h4>Newbies</h4>--}}
                                                                         </li>
                                                                     @endif
                                                                 @empty
@@ -182,11 +177,10 @@
                                                                                 <img
                                                                                     src="{{asset('assets/images/user.png') }}"
                                                                                     alt="">
-                                                                                <h4>No Invitee</h4>
-                                                                                {{--                                                                                <p>{{ ($y++) }}</p>--}}
+                                                                                <h4 style="font-size: 14px;">No
+                                                                                    Invitee</h4>
                                                                             </div>
                                                                         </div>
-                                                                        {{--                                                                        <h4>Newbies</h4>--}}
                                                                     </li>
                                                                     <li>
                                                                         <div>
@@ -194,19 +188,280 @@
                                                                                 <img
                                                                                     src="{{asset('assets/images/user.png') }}"
                                                                                     alt="">
-                                                                                <h4>No Invitee</h4>
-                                                                                {{--                                                                                <p>{{ ($y++) }}</p>--}}
+                                                                                <h4 style="font-size: 14px;">No
+                                                                                    Invitee</h4>
                                                                             </div>
                                                                         </div>
-                                                                        {{--                                                                        <h4>Newbies</h4>--}}
                                                                     </li>
                                                                 @endforelse
                                                             </ul>
                                                         </li>
-                                                    @endforeach
+                                                        @if($pregrad->boardChildren(Request::segment(2))->count() === 1)
+                                                            <li>
+                                                                <div>
+                                                                    <div class="inviterCard invitees newbie">
+                                                                        <img
+                                                                            src="{{asset('assets/images/user.png') }}"
+                                                                            alt="">
+                                                                        <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                    </div>
+                                                                </div>
+                                                                <ul>
+                                                                    <li>
+                                                                        <div>
+                                                                            <div class="inviterCard invitees newbie">
+                                                                                <img
+                                                                                    src="{{asset('assets/images/user.png') }}"
+                                                                                    alt="">
+                                                                                <h4 style="font-size: 14px;">No
+                                                                                    Invitee</h4>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div>
+                                                                            <div class="inviterCard invitees newbie">
+                                                                                <img
+                                                                                    src="{{asset('assets/images/user.png') }}"
+                                                                                    alt="">
+                                                                                <h4 style="font-size: 14px;">No
+                                                                                    Invitee</h4>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        @endif
+                                                    @empty
+                                                        <li>
+                                                            <div>
+                                                                <div class="inviterCard invitees newbie">
+                                                                    <img
+                                                                        src="{{asset('assets/images/user.png') }}"
+                                                                        alt="">
+                                                                    <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                </div>
+                                                            </div>
+                                                            <ul>
+                                                                <li>
+                                                                    <div>
+                                                                        <div class="inviterCard invitees newbie">
+                                                                            <img
+                                                                                src="{{asset('assets/images/user.png') }}"
+                                                                                alt="">
+                                                                            <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div>
+                                                                        <div class="inviterCard invitees newbie">
+                                                                            <img
+                                                                                src="{{asset('assets/images/user.png') }}"
+                                                                                alt="">
+                                                                            <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                        <li>
+                                                            <div>
+                                                                <div class="inviterCard invitees newbie">
+                                                                    <img
+                                                                        src="{{asset('assets/images/user.png') }}"
+                                                                        alt="">
+                                                                    <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                </div>
+                                                            </div>
+                                                            <ul>
+                                                                <li>
+                                                                    <div>
+                                                                        <div class="inviterCard invitees newbie">
+                                                                            <img
+                                                                                src="{{asset('assets/images/user.png') }}"
+                                                                                alt="">
+                                                                            <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div>
+                                                                        <div class="inviterCard invitees newbie">
+                                                                            <img
+                                                                                src="{{asset('assets/images/user.png') }}"
+                                                                                alt="">
+                                                                            <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    @endforelse
                                                 </ul>
                                             </li>
-                                        @endforeach
+                                        @empty
+{{--                                    <h4>Grad</h4>--}}
+                                    <ul>
+{{--                                            <li class="heading">--}}
+{{--                                                <h4>Pre-grads</h4>--}}
+{{--                                                <h4>Undergrads</h4>--}}
+{{--                                                <h4>Newbies</h4>--}}
+{{--                                            </li>--}}
+
+                                            <li>
+                                                <div>
+                                                    <div class="inviterCard invitees pregrad">
+                                                        <img
+                                                            src="{{asset('assets/images/user.png') }}"
+                                                            alt="">
+                                                        <h4 style="font-size: 14px;">No Invitee</h4>
+                                                    </div>
+                                                </div>
+                                                <ul>
+                                                    <li>
+                                                        <div>
+                                                            <div class="inviterCard invitees undergrad">
+                                                                <img
+                                                                    src="{{asset('assets/images/user.png') }}"
+                                                                    alt="">
+                                                                <h4 style="font-size: 14px;">No Invitee</h4>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div>
+                                                                    <div class="inviterCard invitees newbie">
+                                                                        <img
+                                                                            src="{{asset('assets/images/user.png') }}"
+                                                                            alt="">
+                                                                        <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div>
+                                                                    <div class="inviterCard invitees newbie">
+                                                                        <img
+                                                                            src="{{asset('assets/images/user.png') }}"
+                                                                            alt="">
+                                                                        <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <div>
+                                                            <div class="inviterCard invitees newbie">
+                                                                <img
+                                                                    src="{{asset('assets/images/user.png') }}"
+                                                                    alt="">
+                                                                <h4 style="font-size: 14px;">No Invitee</h4>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div>
+                                                                    <div class="inviterCard invitees newbie">
+                                                                        <img
+                                                                            src="{{asset('assets/images/user.png') }}"
+                                                                            alt="">
+                                                                        <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div>
+                                                                    <div class="inviterCard invitees newbie">
+                                                                        <img
+                                                                            src="{{asset('assets/images/user.png') }}"
+                                                                            alt="">
+                                                                        <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <div class="inviterCard invitees pregrad">
+                                                        <img
+                                                            src="{{asset('assets/images/user.png') }}"
+                                                            alt="">
+                                                        <h4 style="font-size: 14px;">No Invitee</h4>
+                                                    </div>
+                                                </div>
+                                                <ul>
+                                                    <li>
+                                                        <div>
+                                                            <div class="inviterCard invitees undergrad">
+                                                                <img
+                                                                    src="{{asset('assets/images/user.png') }}"
+                                                                    alt="">
+                                                                <h4 style="font-size: 14px;">No Invitee</h4>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div>
+                                                                    <div class="inviterCard invitees newbie">
+                                                                        <img
+                                                                            src="{{asset('assets/images/user.png') }}"
+                                                                            alt="">
+                                                                        <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div>
+                                                                    <div class="inviterCard invitees newbie">
+                                                                        <img
+                                                                            src="{{asset('assets/images/user.png') }}"
+                                                                            alt="">
+                                                                        <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <div>
+                                                            <div class="inviterCard invitees newbie">
+                                                                <img
+                                                                    src="{{asset('assets/images/user.png') }}"
+                                                                    alt="">
+                                                                <h4 style="font-size: 14px;">No Invitee</h4>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div>
+                                                                    <div class="inviterCard invitees newbie">
+                                                                        <img
+                                                                            src="{{asset('assets/images/user.png') }}"
+                                                                            alt="">
+                                                                        <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div>
+                                                                    <div class="inviterCard invitees newbie">
+                                                                        <img
+                                                                            src="{{asset('assets/images/user.png') }}"
+                                                                            alt="">
+                                                                        <h4 style="font-size: 14px;">No Invitee</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        @endforelse
                                     </ul>
                                 </li>
                             @endforeach

@@ -21,16 +21,19 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $users = User::whereRole('user')->orderByDesc('created_at')->get();
         try {
             if (request()->ajax()) {
-                return datatables()->of(User::whereRole('user')->orderByDesc('created_at')->get())
+                return datatables()->of($users)
                     ->addIndexColumn()
                     ->addColumn('name', function ($data) {
                         return $data->first_name . ' ' . $data->last_name;
                     })
-                    ->addColumn('action', function ($data) {
+                    ->addColumn('action', function ($data) use ($users) {
+                        $elementId = $users->count() === 1 ? 'ok_delete' : $data->id;
+                        $class = $users->count() === 1 ? '' : 'delete';
 //                        return '<a title="Edit" href="user/edit/' . $data->id . '" class="btn btn-dark btn-sm"><i class="fas fa-pencil-alt"></i></a>&nbsp;<button title="Delete" type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>';
-                        return '<a title="Edit" href="user/edit/' . $data->id . '" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a><a title="View" href="user/show/' . $data->id . '" class="ml-2 btn btn-secondary btn-sm"><i class="fas fa-eye"></i></a><button title="Delete" type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm ml-2"><i class="fa fa-trash"></i></button>';
+                        return '<a title="Edit" href="user/edit/' . $data->id . '" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a><a title="View" href="user/show/' . $data->id . '" class="ml-2 btn btn-secondary btn-sm"><i class="fas fa-eye"></i></a><button title="Delete" type="button"  name="delete" id="' . $elementId . '" data-deleting_id="' . $data->id . '" class="'.$class.' btn btn-danger btn-sm ml-2"><i class="fa fa-trash"></i></button>';
                     })
                     ->rawColumns(['name', 'action'])
                     ->make(true);
@@ -74,8 +77,8 @@ class UserController extends Controller
                 }
             }],
             'phone' => 'required',
-            'password' => 'required|string|min:8|confirmed',
-            'password_confirmation' => 'required|string|min:8',
+            'password' => 'required|string|confirmed',
+            'password_confirmation' => 'required|string',
             'user_image' => 'mimes:jpg,jpeg,png',
         ]);
 
@@ -197,38 +200,49 @@ class UserController extends Controller
      */
     public function destroy($id, Request $request)
     {
-        DB::beginTransaction();
-        if (!empty($request['new_user_id'])) {
-            try {
-                // Replace deleting user invitees with the selected user.
-                $this->replaceUserInvitees($request);
-                $this->replaceUserInBoards($request);
-                $this->replaceGiftLogs($request);
-
-                $user = User::find($id);
-                $user->delete();
-                DB::commit();
-                echo 1;
-            } catch (\Exception $exception){
-                DB::rollBack();
-                echo $exception->getMessage();
-            }
+        $usersCount = User::whereRole('user')->orderByDesc('created_at')->get()->count();
+        if ($usersCount === 1 && empty($request['new_user_id'])) {
+            $user = User::find($request->delete_user_id);
+            $user->delete();
+            DB::commit();
+            echo 1;
         } else {
-            DB::rollBack();
-            echo 'Please Select a User to Replace With';
+            DB::beginTransaction();
+            if (!empty($request['new_user_id'])) {
+                try {
+                    // Replace deleting user invitees with the selected user.
+                    $this->replaceUserInvitees($request);
+                    $this->replaceUserInBoards($request);
+                    $this->replaceGiftLogs($request);
+
+                    $user = User::find($id);
+                    $user->delete();
+                    DB::commit();
+                    echo 1;
+                } catch (\Exception $exception) {
+                    DB::rollBack();
+                    echo $exception->getMessage();
+                }
+            } else {
+                DB::rollBack();
+                echo 'Please Select a User to Replace With';
+            }
         }
     }
 
-    private function replaceUserInvitees($request){
+    private function replaceUserInvitees($request)
+    {
         User::where('invited_by', $request['delete_user_id'])->update(['invited_by' => $request['new_user_id']]);
     }
 
-    private function replaceUserInBoards($request){
+    private function replaceUserInBoards($request)
+    {
         UserBoards::where('parent_id', $request['delete_user_id'])->update(['parent_id' => $request['new_user_id']]);
         UserBoards::where('user_id', $request['delete_user_id'])->update(['user_id' => $request['new_user_id']]);
     }
 
-    private function replaceGiftLogs($request){
+    private function replaceGiftLogs($request)
+    {
         GiftLogs::where('sent_by', $request['delete_user_id'])->update(['sent_by' => $request['new_user_id']]);
         GiftLogs::where('sent_to', $request['delete_user_id'])->update(['sent_to' => $request['new_user_id']]);
     }
