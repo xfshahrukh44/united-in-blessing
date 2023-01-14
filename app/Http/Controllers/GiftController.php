@@ -229,21 +229,6 @@ class GiftController extends Controller
 
                                     } elseif($y == 2){
                                         $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])->has('newbies', '<', 8)->first();
-                                        if(is_null($upperLevelBoard)) {
-                                            $board = Boards::create([
-                                                'board_number' => '12343'.rand(0, 10),
-                                                'previous_board_number' => null,
-                                                'amount' => $boardValues[$arrayPosition],
-                                                'status' => 'active'
-                                            ]);
-                                            $upperLevelBoard = UserBoards::create([
-                                                'user_id' => $grad->user_id,
-                                                'board_id' => $board->id,
-                                                'parent_id' => '',
-                                                'user_board_roles' => 'grad',
-                                                'position' => ''
-                                            ]);
-                                        }
                                         $sameLevelBoard = UserBoards::where('board_id', $upperLevelBoard->id)->first();
                                     }
 //                                    UserBoardsController::create($grad->user->id, $createBoard->id, $undergrads[0]->user->id, 'newbie', 'left');
