@@ -28,10 +28,10 @@ class GiftController extends Controller
                 return datatables()->of(GiftLogs::orderByDesc('created_at')->where('status', '!=', 'accepted')->with('sender', 'receiver', 'board')->get())
                     ->addIndexColumn()
                     ->addColumn('sent_by', function ($data) {
-                        return $data->sender->username . ' (' . $data->sender->first_name . ' ' . $data->sender->last_name . ')';
+                        return $data->sender ? $data->sender->username . ' (' . $data->sender->first_name . ' ' . $data->sender->last_name . ')' : '---';
                     })
                     ->addColumn('sent_to', function ($data) {
-                        return $data->receiver->username . ' (' . $data->receiver->first_name . ' ' . $data->receiver->last_name . ')';
+                        return $data->receiver ? $data->receiver->username . ' (' . $data->receiver->first_name . ' ' . $data->receiver->last_name . ')' : '---';
                     })
                     ->addColumn('board_number', function ($data) {
                         return $data->board->board_number ?? '---';
@@ -148,13 +148,13 @@ class GiftController extends Controller
                 $grandParent = $boardUser->board_parent($boardUser->board_id)->board_parent($boardUser->board_id);
                 $sibling = $this->siblings($grandParent);
                 $undergrads = [];
-                if($sibling) {
+                if ($sibling) {
                     $undergrads = $sibling->boardChildren($sibling->board_id);
                 }
 
                 $newbies = [];
                 $response = null;
-                if(count($undergrads) > 0) {
+                if (count($undergrads) > 0) {
                     $newbies = $undergrads[0]->boardChildren($sibling->board_id);
                     $response = $this->giftFromOtherMembersOfSameMatrix($newbies[0]);
                 }
@@ -227,7 +227,7 @@ class GiftController extends Controller
                                             ->has('newbies', '<', 8)
                                             ->first();
 
-                                    } elseif($y == 2){
+                                    } elseif ($y == 2) {
                                         $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])->has('newbies', '<', 8)->first();
                                         $sameLevelBoard = UserBoards::where('board_id', $upperLevelBoard->id)->first();
                                     }
@@ -320,6 +320,139 @@ class GiftController extends Controller
     }
 
     // Check if other members of the same matrix have gifted
+//    public function giftFromOtherMembersOfSameMatrix($boardUser)
+//    {
+//        switch ($boardUser->user_board_roles) {
+//
+//            // check if user who's gift is accepted is undergrad
+//            case 'undergrad':
+//                // get newbies of this undergrad
+//                $newbies = $boardUser->boardChildren($boardUser->board_id);
+//
+//                // check if there are two newbies else return false
+//                if ($newbies->count() > 1) {
+//                    foreach ($newbies as $key => $newbie) {
+//                        $gift = GiftLogs::where('sent_by', $newbie->user_id)
+//                            ->where('board_id', $newbie->board_id)
+//                            ->first();
+//
+//                        if (!empty($gift)) {
+//                            if ($gift->status !== 'accepted') {
+//                                return false;
+//                            }
+//                        }
+//                        if ($key === 1) {
+//                            //Get Sibling
+//                            $sibling = $this->siblings($boardUser);
+//                            $siblingGift = GiftLogs::where('sent_by', $sibling->user_id)
+//                                ->where('board_id', $sibling->board_id)
+//                                ->first();
+//                            if (!is_null($siblingGift)) {
+//                                if ($siblingGift->status == 'accepted') {
+//                                    // Get it's children
+//                                    if (!is_null($sibling)) {
+//                                        foreach ($sibling->boardChildren($sibling->board_id) as $newbie) {
+//                                            $siblingGift = GiftLogs::where('sent_by', $newbie->user_id)
+//                                                ->where('board_id', $newbie->board_id)
+//                                                ->first();
+//
+//                                            if ($siblingGift->status == 'accepted') {
+//                                                $sibling = $this->siblings($newbie);
+//
+//                                                if (!is_null($sibling)) {
+//                                                    $siblingGift = GiftLogs::where('sent_by', $sibling->user_id)
+//                                                        ->where('board_id', $sibling->board_id)
+//                                                        ->first();
+//
+//                                                    if ($siblingGift->status == 'accepted') {
+//                                                        return true;
+//                                                    } else {
+//                                                        return false;
+//                                                    }
+//                                                }
+//                                            } else {
+//                                                return false;
+//                                            }
+//                                        }
+//                                    } else {
+//                                        return false;
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    return false;
+//                }
+//                break;
+//
+//            case 'pregrad':
+//                // get newbies of this pregrad
+//                $newbies = $boardUser->boardChildren($boardUser->board_id);
+//
+//                // check if there are two newbies else return false
+//                if ($newbies->count() > 1) {
+//                    foreach ($newbies as $key => $newbie) {
+//                        $gift = GiftLogs::where('sent_by', $newbie->user_id)
+//                            ->where('board_id', $newbie->board_id)
+//                            ->first();
+//
+//                        if (!empty($gift)) {
+//                            if ($gift->status !== 'accepted') {
+//                                return false;
+//                            }
+//                        }
+//                        if ($key === 1) {
+//                            //Get Sibling
+//                            $sibling = $this->siblings($boardUser);
+//                            $siblingGift = GiftLogs::where('sent_by', $sibling->user_id)
+//                                ->where('board_id', $sibling->board_id)
+//                                ->first();
+//                            if (!is_null($siblingGift)) {
+//                                if ($siblingGift->status == 'accepted') {
+//                                    // Get it's children
+//                                    if (!is_null($sibling)) {
+//                                        foreach ($sibling->boardChildren($sibling->board_id) as $newbie) {
+//                                            $siblingGift = GiftLogs::where('sent_by', $newbie->user_id)
+//                                                ->where('board_id', $newbie->board_id)
+//                                                ->first();
+//
+//                                            if ($siblingGift->status == 'accepted') {
+//                                                $sibling = $this->siblings($newbie);
+//
+//                                                if (!is_null($sibling)) {
+//                                                    $siblingGift = GiftLogs::where('sent_by', $sibling->user_id)
+//                                                        ->where('board_id', $sibling->board_id)
+//                                                        ->first();
+//
+//                                                    if ($siblingGift->status == 'accepted') {
+//                                                        return true;
+//                                                    } else {
+//                                                        return false;
+//                                                    }
+//                                                }
+//                                            } else {
+//                                                return false;
+//                                            }
+//                                        }
+//                                    } else {
+//                                        return false;
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    return false;
+//                }
+//                break;
+//            case 'newbies':
+//        }
+//
+//        dd('Hello Nehal');
+//    }
+
+    // Check if other members of the same matrix have gifted
     public function giftFromOtherMembersOfSameMatrix($boardUser)
     {
         // Get Sibling
@@ -370,7 +503,8 @@ class GiftController extends Controller
         }
     }
 
-    public function addUsersToBoard($gift, $newBoard)
+    public
+    function addUsersToBoard($gift, $newBoard)
     {
         try {
             //  Get Details of selected newbie to find the matrix and it's parent
