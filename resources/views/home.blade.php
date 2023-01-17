@@ -120,7 +120,7 @@
                                 <tr>
                                     <td>${{ round($gift->amount) }}</td>
                                     <td>{{ $gift->board->board_number ?? '---' }}</td>
-                                    <td>Newbie</td>
+                                    <td class="text-capitalize">{{ $gift->userBoardPosition($gift->board->id, $gift->sender->id)->user_board_roles ?? '---' }}</td>
                                     <td>{{ $gift->sender->username ?? '---' }}</td>
                                     <td>{{ $gift->sender->phone ?? '---' }}</td>
                                     <td>{{ $gift->sender->email ?? '---' }}</td>

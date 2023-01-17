@@ -31,4 +31,13 @@ class GiftLogs extends Model
     {
         return $this->belongsTo(User::class, 'sent_to', 'id');
     }
+
+    public function userBoard() {
+        return $this->hasMany(UserBoards::class, 'board_id', 'board_id');
+    }
+
+    public function userBoardPosition($board_id, $user_id)
+    {
+        return $this->userBoard()->where('board_id', $board_id)->where('user_id', $user_id)->first();
+    }
 }
