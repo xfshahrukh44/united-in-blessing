@@ -109,7 +109,9 @@ class GiftController extends Controller
         DB::beginTransaction();
         // if there's status in request
         if ($request)
+        {
             $status = $request->status;
+        }
 
         GiftLogs::where('id', $id)
             ->update([
@@ -124,6 +126,7 @@ class GiftController extends Controller
             $boardUser = UserBoards::where('user_id', $gift->sent_by)
                 ->where('board_id', $gift->board_id)
                 ->first();
+            //dd($boardUser);
 
             // check if other newbies in the same matrix has gifted
             $response = $this->giftFromOtherMembersOfSameMatrix($boardUser);
@@ -446,10 +449,17 @@ class GiftController extends Controller
 //                    return false;
 //                }
 //                break;
-//            case 'newbies':
+//            case 'newbie':
+//                //dd($boardUser->user_board_roles);
+//                // get newbies of this undergrad
+//                $newbies = $boardUser->boardChildren($boardUser->board_id);
+//                //dd($newbies);
+//                if ($newbies->count() > 1) {
+//
+//                }
 //        }
 //
-//        dd('Hello Nehal');
+//        //dd('Hello Nehal');
 //    }
 
     // Check if other members of the same matrix have gifted

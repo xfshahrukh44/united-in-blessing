@@ -21,7 +21,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::whereRole('user')->orderByDesc('created_at')->get();
+        $users = User::whereRole('user')->orderBy('created_at', 'ASC')->get();
         try {
             if (request()->ajax()) {
                 return datatables()->of($users)

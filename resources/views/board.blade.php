@@ -19,17 +19,9 @@
             transition: all 0.3s ease-in-out;
         }
     </style>
-    <!-- Begin: Main Slider -->
-    {{--    <div class="main-slider">--}}
-    {{--        <img class="w-100" src="{{ asset('assets/images/ban1.jpg') }}" alt="First slide">--}}
-    {{--        <div class="overlay">--}}
-    {{--        </div>--}}
-    {{--    </div>--}}
-    <!-- END: Main Slider -->
 
     <section class="treeSec">
         <a href="{{ url()->previous() }}" class="backBtn">
-            {{--            <i class="fas fa-arrow-to-left"></i>--}}
             Back
         </a>
         <div class="container">
@@ -93,15 +85,7 @@
                         <ul class="tree vertical">
                             @foreach($boardGrad as $key => $grad)
                                 <li>
-                                    <div>
-                                        <div class="inviterCard invitees grad">
-                                            <img
-                                                src="{{ $grad['user']->user_image ? asset('upload/user/' . $grad['user']->user_image) : asset('assets/images/user.png') }}"
-                                                alt="">
-                                            <h4 style="color: {{ ($grad->user->acceptedGiftsInviters->count() == 0) ? '' : (($grad->user->acceptedGiftsInviters->count() == 1) ? '#ffc107' : 'green') }}">{{$grad['user']->username}}</h4>
-                                            {{--                                            <p>{{ ($key + 1) }}</p>--}}
-                                        </div>
-                                    </div>
+                                    @include('partials.inviteCard', ['userData' => $grad, 'class' => 'grad'])
                                     <h4>Grad</h4>
                                     <ul>
                                         @php $x = $y = 1 @endphp
@@ -116,76 +100,27 @@
                                             @endif
                                             @if($grad->boardChildren(Request::segment(2))->count() == 1 && $pregrad->position == 'right')
                                                 <li>
-                                                    <div>
-                                                        <div class="inviterCard invitees pregrad">
-                                                            <img
-                                                                src="{{asset('assets/images/user.png') }}"
-                                                                alt="">
-                                                            <h4>No Invitee</h4>
-                                                        </div>
-                                                    </div>
+                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'pregrad'])
                                                     <ul>
                                                         <li>
-                                                            <div>
-                                                                <div class="inviterCard invitees undergrad">
-                                                                    <img
-                                                                        src="{{asset('assets/images/user.png') }}"
-                                                                        alt="">
-                                                                    <h4>No Invitee</h4>
-                                                                </div>
-                                                            </div>
+                                                            @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
                                                             <ul>
                                                                 <li>
-                                                                    <div>
-                                                                        <div class="inviterCard invitees newbie">
-                                                                            <img
-                                                                                src="{{asset('assets/images/user.png') }}"
-                                                                                alt="">
-                                                                            <h4>No Invitee</h4>
-                                                                        </div>
-                                                                    </div>
+                                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                 </li>
                                                                 <li>
-                                                                    <div>
-                                                                        <div class="inviterCard invitees newbie">
-                                                                            <img
-                                                                                src="{{asset('assets/images/user.png') }}"
-                                                                                alt="">
-                                                                            <h4>No Invitee</h4>
-                                                                        </div>
-                                                                    </div>
+                                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                 </li>
                                                             </ul>
                                                         </li>
                                                         <li>
-                                                            <div>
-                                                                <div class="inviterCard invitees undergrad">
-                                                                    <img
-                                                                        src="{{asset('assets/images/user.png') }}"
-                                                                        alt="">
-                                                                    <h4>No Invitee</h4>
-                                                                </div>
-                                                            </div>
+                                                            @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
                                                             <ul>
                                                                 <li>
-                                                                    <div>
-                                                                        <div class="inviterCard invitees newbie">
-                                                                            <img
-                                                                                src="{{asset('assets/images/user.png') }}"
-                                                                                alt="">
-                                                                            <h4>No Invitee</h4>
-                                                                        </div>
-                                                                    </div>
+                                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                 </li>
                                                                 <li>
-                                                                    <div>
-                                                                        <div class="inviterCard invitees newbie">
-                                                                            <img
-                                                                                src="{{asset('assets/images/user.png') }}"
-                                                                                alt="">
-                                                                            <h4>No Invitee</h4>
-                                                                        </div>
-                                                                    </div>
+                                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                 </li>
                                                             </ul>
                                                         </li>
@@ -193,361 +128,98 @@
                                                 </li>
                                             @endif
                                             <li>
-                                                <div>
-                                                    <div class="inviterCard invitees pregrad">
-                                                        <img
-                                                            src="{{ $pregrad['user']->user_image ? asset('upload/user/' . $pregrad['user']->user_image) : asset('assets/images/user.png') }}"
-                                                            alt="">
-                                                        <h4 style="color: {{ ($pregrad->user->acceptedGiftsInviters->count() == 0) ? '' : (($pregrad->user->acceptedGiftsInviters->count() == 1) ? '#ffc107' : 'green') }}">{{$pregrad['user']->username}}</h4>
-                                                        {{--                                                        <p>{{ ($key + 1) }}</p>--}}
-                                                    </div>
-                                                </div>
+                                                @include('partials.inviteCard', ['userData' => $pregrad, 'class' => 'pregrad'])
                                                 <ul>
                                                     @forelse($pregrad->boardChildren(Request::segment(2)) as $key => $undergrad)
                                                         <li>
-                                                            <div>
-                                                                <div class="inviterCard invitees undergrad">
-                                                                    <img
-                                                                        src="{{ $undergrad['user']->user_image ? asset('upload/user/' . $undergrad['user']->user_image) : asset('assets/images/user.png') }}"
-                                                                        alt="">
-                                                                    <h4 style="color: {{ ($undergrad->user->acceptedGiftsInviters->count() == 0) ? 'black' : (($undergrad->user->acceptedGiftsInviters->count() == 1) ? '#ffc107' : 'green') }}">{{$undergrad['user']->username}}</h4>
-
-                                                                    {{--                                                                    <p>{{ ($x++) }}</p>--}}
-                                                                </div>
-                                                            </div>
-                                                            {{--                                                            <h4>undergrads</h4>--}}
+                                                            @include('partials.inviteCard', ['userData' => $undergrad, 'class' => 'undergrad'])
                                                             <ul>
                                                                 @forelse($undergrad->boardChildren(Request::segment(2)) as $key => $newbie)
                                                                     @if($undergrad->boardChildren(Request::segment(2))->count() == 1 && $newbie->position == 'right')
                                                                         <li>
-                                                                            <div>
-                                                                                <div
-                                                                                    class="inviterCard invitees newbie">
-                                                                                    <h4>No Invitee</h4>
-                                                                                    {{--                                                                                    <p>{{ ($y++) }}</p>--}}
-                                                                                </div>
-                                                                            </div>
-                                                                            {{--                                                                            <h4>Newbies</h4>--}}
+                                                                            @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                         </li>
                                                                     @endif
                                                                     <li>
-                                                                        <div>
-                                                                            <div class="inviterCard invitees newbie">
-                                                                                <img
-                                                                                    src="{{ $newbie['user']->user_image ? asset('upload/user/' . $newbie['user']->user_image) : asset('assets/images/user.png') }}"
-                                                                                    alt="">
-                                                                                <h4 style="color: {{ ($newbie->board->user_gift($newbie->user->id)->status == 'not_sent' || $newbie->board->user_gift($newbie->user->id)->status == 'pending') ? 'red' : (($newbie->user->acceptedGiftsInviters->count() == 0) ? '' : (($newbie->user->acceptedGiftsInviters->count() == 1) ? '#ffc107' : 'green')) }}">{{$newbie['user']->username}}</h4>
-                                                                                {{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                                            </div>
-                                                                        </div>
-                                                                        {{--                                                                        <h4>Newbies</h4>--}}
+                                                                        @include('partials.inviteCard', ['userData' => $newbie, 'class' => 'newbie'])
                                                                     </li>
                                                                     @if($undergrad->boardChildren(Request::segment(2))->count() == 1 && $newbie->position == 'left')
                                                                         <li>
-                                                                            <div>
-                                                                                <div
-                                                                                    class="inviterCard invitees newbie">
-                                                                                    <h4>No Invitee</h4>
-                                                                                    {{--                                                                                    <p>{{ ($y++) }}</p>--}}
-                                                                                </div>
-                                                                            </div>
-                                                                            {{--                                                                            <h4>Newbies</h4>--}}
+                                                                            @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                         </li>
                                                                     @endif
                                                                 @empty
                                                                     <li>
-                                                                        <div>
-                                                                            <div class="inviterCard invitees undergrad">
-                                                                                <img
-                                                                                    src="{{asset('assets/images/user.png') }}"
-                                                                                    alt="">
-                                                                                <h4>No Invitee</h4>
-                                                                                {{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                                            </div>
-                                                                        </div>
+                                                                        @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
                                                                     </li>
                                                                     <li>
-                                                                        <div>
-                                                                            <div class="inviterCard invitees undergrad">
-                                                                                <img
-                                                                                    src="{{asset('assets/images/user.png') }}"
-                                                                                    alt="">
-                                                                                <h4>No Invitee</h4>
-                                                                                {{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                                            </div>
-                                                                        </div>
+                                                                        @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
                                                                     </li>
                                                                 @endforelse
                                                             </ul>
                                                         </li>
                                                         @if($pregrad->boardChildren(Request::segment(2))->count() === 1)
                                                             <li>
-                                                                <div>
-                                                                    <div class="inviterCard invitees newbie">
-                                                                        <img
-                                                                            src="{{asset('assets/images/user.png') }}"
-                                                                            alt="">
-                                                                        <h4>No Invitee</h4>
-                                                                    </div>
-                                                                </div>
+                                                                @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                 <ul>
                                                                     <li>
-                                                                        <div>
-                                                                            <div class="inviterCard invitees newbie">
-                                                                                <img
-                                                                                    src="{{asset('assets/images/user.png') }}"
-                                                                                    alt="">
-                                                                                <h4>No Invitee</h4>
-                                                                                {{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                                            </div>
-                                                                        </div>
-                                                                        {{--                                                                        <h4>Newbies</h4>--}}
+                                                                        @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                     </li>
                                                                     <li>
-                                                                        <div>
-                                                                            <div class="inviterCard invitees newbie">
-                                                                                <img
-                                                                                    src="{{asset('assets/images/user.png') }}"
-                                                                                    alt="">
-                                                                                <h4>No Invitee</h4>
-                                                                                {{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                                            </div>
-                                                                        </div>
-                                                                        {{--                                                                        <h4>Newbies</h4>--}}
+                                                                        @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                     </li>
                                                                 </ul>
                                                             </li>
                                                         @endif
                                                     @empty
                                                         <li>
-                                                            <div>
-                                                                <div class="inviterCard invitees undergrad">
-                                                                    <img
-                                                                        src="{{asset('assets/images/user.png') }}"
-                                                                        alt="">
-                                                                    <h4>No Invitee</h4>
-                                                                    {{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                                </div>
-                                                            </div>
+                                                            @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
                                                             <ul>
                                                                 <li>
-                                                                    <div>
-                                                                        <div class="inviterCard invitees newbie">
-                                                                            <img
-                                                                                src="{{asset('assets/images/user.png') }}"
-                                                                                alt="">
-                                                                            <h4>No Invitee</h4>
-                                                                            {{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                                        </div>
-                                                                    </div>
-                                                                    {{--                                                                        <h4>Newbies</h4>--}}
+                                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                 </li>
                                                                 <li>
-                                                                    <div>
-                                                                        <div class="inviterCard invitees newbie">
-                                                                            <img
-                                                                                src="{{asset('assets/images/user.png') }}"
-                                                                                alt="">
-                                                                            <h4>No Invitee</h4>
-                                                                            {{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                                        </div>
-                                                                    </div>
-                                                                    {{--                                                                        <h4>Newbies</h4>--}}
+                                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                 </li>
                                                             </ul>
                                                         </li>
                                                         <li>
-                                                            <div>
-                                                                <div class="inviterCard invitees undergrad">
-                                                                    <img
-                                                                        src="{{asset('assets/images/user.png') }}"
-                                                                        alt="">
-                                                                    <h4>No Invitee</h4>
-                                                                    {{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                                </div>
-                                                            </div>
+                                                            @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
                                                             <ul>
                                                                 <li>
-                                                                    <div>
-                                                                        <div class="inviterCard invitees newbie">
-                                                                            <img
-                                                                                src="{{asset('assets/images/user.png') }}"
-                                                                                alt="">
-                                                                            <h4>No Invitee</h4>
-                                                                            {{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                                        </div>
-                                                                    </div>
-                                                                    {{--                                                                        <h4>Newbies</h4>--}}
+                                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                 </li>
                                                                 <li>
-                                                                    <div>
-                                                                        <div class="inviterCard invitees newbie">
-                                                                            <img
-                                                                                src="{{asset('assets/images/user.png') }}"
-                                                                                alt="">
-                                                                            <h4>No Invitee</h4>
-                                                                            {{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                                        </div>
-                                                                    </div>
-                                                                    {{--                                                                        <h4>Newbies</h4>--}}
+                                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                 </li>
                                                             </ul>
                                                         </li>
                                                     @endforelse
-                                                    {{--                                                    @foreach($pregrad->boardChildren(Request::segment(2)) as $key => $undergrad)--}}
-                                                    {{--                                                        <li>--}}
-                                                    {{--                                                            <div>--}}
-                                                    {{--                                                                <div class="inviterCard invitees undergrad">--}}
-                                                    {{--                                                                    <img--}}
-                                                    {{--                                                                        src="{{ $undergrad['user']->user_image ? asset('upload/user/' . $undergrad['user']->user_image) : asset('assets/images/user.png') }}"--}}
-                                                    {{--                                                                        alt="">--}}
-                                                    {{--                                                                    <h4 style="color: {{ ($undergrad->acceptedGiftsInviters->count() == 0) ? 'black' : (($undergrad->acceptedGiftsInviters->count() == 1) ? '#ffc107' : 'green') }}">{{$undergrad['user']->username}}</h4>--}}
-
-                                                    {{--                                                                    --}}{{--                                                                    <p>{{ ($x++) }}</p>--}}
-                                                    {{--                                                                </div>--}}
-                                                    {{--                                                            </div>--}}
-                                                    {{--                                                            --}}{{--                                                            <h4>undergrads</h4>--}}
-                                                    {{--                                                            <ul>--}}
-                                                    {{--                                                                @forelse($undergrad->boardChildren(Request::segment(2)) as $key => $newbie)--}}
-                                                    {{--                                                                    @if($undergrad->boardChildren(Request::segment(2))->count() == 1 && $newbie->position == 'right')--}}
-                                                    {{--                                                                        <li>--}}
-                                                    {{--                                                                            <div>--}}
-                                                    {{--                                                                                <div--}}
-                                                    {{--                                                                                    class="inviterCard invitees newbie">--}}
-                                                    {{--                                                                                    <h4>No Invitee</h4>--}}
-                                                    {{--                                                                                    --}}{{--                                                                                    <p>{{ ($y++) }}</p>--}}
-                                                    {{--                                                                                </div>--}}
-                                                    {{--                                                                            </div>--}}
-                                                    {{--                                                                            --}}{{--                                                                            <h4>Newbies</h4>--}}
-                                                    {{--                                                                        </li>--}}
-                                                    {{--                                                                    @endif--}}
-                                                    {{--                                                                    <li>--}}
-                                                    {{--                                                                        <div>--}}
-                                                    {{--                                                                            <div class="inviterCard invitees newbie">--}}
-                                                    {{--                                                                                <img--}}
-                                                    {{--                                                                                    src="{{ $newbie['user']->user_image ? asset('upload/user/' . $newbie['user']->user_image) : asset('assets/images/user.png') }}"--}}
-                                                    {{--                                                                                    alt="">--}}
-                                                    {{--                                                                                <h4 style="color: {{ ($newbie->board->user_gift($newbie->user->id)->status == 'not_sent' || $newbie->board->user_gift($newbie->user->id)->status == 'pending') ? 'red' : (($newbie->acceptedGiftsInviters->count() == 0) ? '' : (($newbie->acceptedGiftsInviters->count() == 1) ? '#ffc107' : 'green')) }}">{{$newbie['user']->username}}</h4>--}}
-                                                    {{--                                                                                --}}{{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                    {{--                                                                            </div>--}}
-                                                    {{--                                                                        </div>--}}
-                                                    {{--                                                                        --}}{{--                                                                        <h4>Newbies</h4>--}}
-                                                    {{--                                                                    </li>--}}
-                                                    {{--                                                                    @if($undergrad->boardChildren(Request::segment(2))->count() == 1 && $newbie->position == 'left')--}}
-                                                    {{--                                                                        <li>--}}
-                                                    {{--                                                                            <div>--}}
-                                                    {{--                                                                                <div--}}
-                                                    {{--                                                                                    class="inviterCard invitees newbie">--}}
-                                                    {{--                                                                                    <h4>No Invitee</h4>--}}
-                                                    {{--                                                                                    --}}{{--                                                                                    <p>{{ ($y++) }}</p>--}}
-                                                    {{--                                                                                </div>--}}
-                                                    {{--                                                                            </div>--}}
-                                                    {{--                                                                            --}}{{--                                                                            <h4>Newbies</h4>--}}
-                                                    {{--                                                                        </li>--}}
-                                                    {{--                                                                    @endif--}}
-                                                    {{--                                                                @empty--}}
-                                                    {{--                                                                    <li>--}}
-                                                    {{--                                                                        <div>--}}
-                                                    {{--                                                                            <div class="inviterCard invitees newbie">--}}
-                                                    {{--                                                                                <img--}}
-                                                    {{--                                                                                    src="{{asset('assets/images/user.png') }}"--}}
-                                                    {{--                                                                                    alt="">--}}
-                                                    {{--                                                                                <h4>No Invitee</h4>--}}
-                                                    {{--                                                                                --}}{{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                    {{--                                                                            </div>--}}
-                                                    {{--                                                                        </div>--}}
-                                                    {{--                                                                        --}}{{--                                                                        <h4>Newbies</h4>--}}
-                                                    {{--                                                                    </li>--}}
-                                                    {{--                                                                    <li>--}}
-                                                    {{--                                                                        <div>--}}
-                                                    {{--                                                                            <div class="inviterCard invitees newbie">--}}
-                                                    {{--                                                                                <img--}}
-                                                    {{--                                                                                    src="{{asset('assets/images/user.png') }}"--}}
-                                                    {{--                                                                                    alt="">--}}
-                                                    {{--                                                                                <h4>No Invitee</h4>--}}
-                                                    {{--                                                                                --}}{{--                                                                                <p>{{ ($y++) }}</p>--}}
-                                                    {{--                                                                            </div>--}}
-                                                    {{--                                                                        </div>--}}
-                                                    {{--                                                                        --}}{{--                                                                        <h4>Newbies</h4>--}}
-                                                    {{--                                                                    </li>--}}
-                                                    {{--                                                                @endforelse--}}
-                                                    {{--                                                            </ul>--}}
-                                                    {{--                                                        </li>--}}
-                                                    {{--                                                    @endforeach--}}
                                                 </ul>
                                             </li>
                                             @if($grad->boardChildren(Request::segment(2))->count() == 1 && $pregrad->position == 'left')
                                                 <li>
-                                                    <div>
-                                                        <div class="inviterCard invitees pregrad">
-                                                            <img
-                                                                src="{{asset('assets/images/user.png') }}"
-                                                                alt="">
-                                                            <h4>No Invitee</h4>
-                                                        </div>
-                                                    </div>
+                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'pregrad'])
                                                     <ul>
                                                         <li>
-                                                            <div>
-                                                                <div class="inviterCard invitees undergrad">
-                                                                    <img
-                                                                        src="{{asset('assets/images/user.png') }}"
-                                                                        alt="">
-                                                                    <h4>No Invitee</h4>
-                                                                </div>
-                                                            </div>
+                                                            @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
                                                             <ul>
                                                                 <li>
-                                                                    <div>
-                                                                        <div class="inviterCard invitees newbie">
-                                                                            <img
-                                                                                src="{{asset('assets/images/user.png') }}"
-                                                                                alt="">
-                                                                            <h4>No Invitee</h4>
-                                                                        </div>
-                                                                    </div>
+                                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                 </li>
                                                                 <li>
-                                                                    <div>
-                                                                        <div class="inviterCard invitees newbie">
-                                                                            <img
-                                                                                src="{{asset('assets/images/user.png') }}"
-                                                                                alt="">
-                                                                            <h4>No Invitee</h4>
-                                                                        </div>
-                                                                    </div>
+                                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                 </li>
                                                             </ul>
                                                         </li>
                                                         <li>
-                                                            <div>
-                                                                <div class="inviterCard invitees undergrad">
-                                                                    <img
-                                                                        src="{{asset('assets/images/user.png') }}"
-                                                                        alt="">
-                                                                    <h4>No Invitee</h4>
-                                                                </div>
-                                                            </div>
+                                                            @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
                                                             <ul>
                                                                 <li>
-                                                                    <div>
-                                                                        <div class="inviterCard invitees newbie">
-                                                                            <img
-                                                                                src="{{asset('assets/images/user.png') }}"
-                                                                                alt="">
-                                                                            <h4>No Invitee</h4>
-                                                                        </div>
-                                                                    </div>
+                                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                 </li>
                                                                 <li>
-                                                                    <div>
-                                                                        <div class="inviterCard invitees newbie">
-                                                                            <img
-                                                                                src="{{asset('assets/images/user.png') }}"
-                                                                                alt="">
-                                                                            <h4>No Invitee</h4>
-                                                                        </div>
-                                                                    </div>
+                                                                    @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                 </li>
                                                             </ul>
                                                         </li>
@@ -556,76 +228,27 @@
                                             @endif
                                         @empty
                                             <li>
-                                                <div>
-                                                    <div class="inviterCard invitees pregrad">
-                                                        <img
-                                                            src="{{asset('assets/images/user.png') }}"
-                                                            alt="">
-                                                        <h4>No Invitee</h4>
-                                                    </div>
-                                                </div>
+                                                @include('partials.inviteCard', ['userData' => null, 'class' => 'pregrad'])
                                                 <ul>
                                                     <li>
-                                                        <div>
-                                                            <div class="inviterCard invitees undergrad">
-                                                                <img
-                                                                    src="{{asset('assets/images/user.png') }}"
-                                                                    alt="">
-                                                                <h4>No Invitee</h4>
-                                                            </div>
-                                                        </div>
+                                                        @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
                                                         <ul>
                                                             <li>
-                                                                <div>
-                                                                    <div class="inviterCard invitees newbie">
-                                                                        <img
-                                                                            src="{{asset('assets/images/user.png') }}"
-                                                                            alt="">
-                                                                        <h4>No Invitee</h4>
-                                                                    </div>
-                                                                </div>
+                                                                @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                             </li>
                                                             <li>
-                                                                <div>
-                                                                    <div class="inviterCard invitees newbie">
-                                                                        <img
-                                                                            src="{{asset('assets/images/user.png') }}"
-                                                                            alt="">
-                                                                        <h4>No Invitee</h4>
-                                                                    </div>
-                                                                </div>
+                                                                @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                             </li>
                                                         </ul>
                                                     </li>
                                                     <li>
-                                                        <div>
-                                                            <div class="inviterCard invitees undergrad">
-                                                                <img
-                                                                    src="{{asset('assets/images/user.png') }}"
-                                                                    alt="">
-                                                                <h4>No Invitee</h4>
-                                                            </div>
-                                                        </div>
+                                                        @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
                                                         <ul>
                                                             <li>
-                                                                <div>
-                                                                    <div class="inviterCard invitees newbie">
-                                                                        <img
-                                                                            src="{{asset('assets/images/user.png') }}"
-                                                                            alt="">
-                                                                        <h4>No Invitee</h4>
-                                                                    </div>
-                                                                </div>
+                                                                @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                             </li>
                                                             <li>
-                                                                <div>
-                                                                    <div class="inviterCard invitees newbie">
-                                                                        <img
-                                                                            src="{{asset('assets/images/user.png') }}"
-                                                                            alt="">
-                                                                        <h4>No Invitee</h4>
-                                                                    </div>
-                                                                </div>
+                                                                @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                             </li>
                                                         </ul>
                                                     </li>
@@ -637,76 +260,27 @@
                                                 <h4>Newbies</h4>
                                             </li>
                                             <li>
-                                                <div>
-                                                    <div class="inviterCard invitees pregrad">
-                                                        <img
-                                                            src="{{asset('assets/images/user.png') }}"
-                                                            alt="">
-                                                        <h4>No Invitee</h4>
-                                                    </div>
-                                                </div>
+                                                @include('partials.inviteCard', ['userData' => null, 'class' => 'pregrad'])
                                                 <ul>
                                                     <li>
-                                                        <div>
-                                                            <div class="inviterCard invitees undergrad">
-                                                                <img
-                                                                    src="{{asset('assets/images/user.png') }}"
-                                                                    alt="">
-                                                                <h4>No Invitee</h4>
-                                                            </div>
-                                                        </div>
+                                                        @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
                                                         <ul>
                                                             <li>
-                                                                <div>
-                                                                    <div class="inviterCard invitees newbie">
-                                                                        <img
-                                                                            src="{{asset('assets/images/user.png') }}"
-                                                                            alt="">
-                                                                        <h4>No Invitee</h4>
-                                                                    </div>
-                                                                </div>
+                                                                @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                             </li>
                                                             <li>
-                                                                <div>
-                                                                    <div class="inviterCard invitees newbie">
-                                                                        <img
-                                                                            src="{{asset('assets/images/user.png') }}"
-                                                                            alt="">
-                                                                        <h4>No Invitee</h4>
-                                                                    </div>
-                                                                </div>
+                                                                @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                             </li>
                                                         </ul>
                                                     </li>
                                                     <li>
-                                                        <div>
-                                                            <div class="inviterCard invitees undergrad">
-                                                                <img
-                                                                    src="{{asset('assets/images/user.png') }}"
-                                                                    alt="">
-                                                                <h4>No Invitee</h4>
-                                                            </div>
-                                                        </div>
+                                                        @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
                                                         <ul>
                                                             <li>
-                                                                <div>
-                                                                    <div class="inviterCard invitees newbie">
-                                                                        <img
-                                                                            src="{{asset('assets/images/user.png') }}"
-                                                                            alt="">
-                                                                        <h4>No Invitee</h4>
-                                                                    </div>
-                                                                </div>
+                                                                @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                             </li>
                                                             <li>
-                                                                <div>
-                                                                    <div class="inviterCard invitees newbie">
-                                                                        <img
-                                                                            src="{{asset('assets/images/user.png') }}"
-                                                                            alt="">
-                                                                        <h4>No Invitee</h4>
-                                                                    </div>
-                                                                </div>
+                                                                @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                             </li>
                                                         </ul>
                                                     </li>

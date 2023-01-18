@@ -85,7 +85,7 @@
                 responsive: true,
                 processing: true,
                 serverSide: true,
-                pageLength: 10,
+                pageLength: 50,
                 ajax: {
                     url: `{{route('admin.boards.index')}}`,
                 },
