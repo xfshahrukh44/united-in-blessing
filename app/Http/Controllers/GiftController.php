@@ -160,7 +160,8 @@ class GiftController extends Controller
                 $response = null;
                 if (count($undergrads) > 0) {
                     $newbies = $undergrads[0]->boardChildren($sibling->board_id);
-                    $response = $this->giftFromOtherMembersOfSameMatrix($newbies[0]);
+                    if (!empty($newbies) && count($newbies) > 0)
+                        $response = $this->giftFromOtherMembersOfSameMatrix($newbies[0]);
                 }
                 // start checking from the left most newbie in the other matrix
 
@@ -188,6 +189,13 @@ class GiftController extends Controller
                             for ($x = 1; $x < 8; $x++) {
                                 if (!empty($gradInvitedBy)) {
                                     // find same level board of grad's inviter
+                                    if($grad->user->invitedBy->username == 'admin') {
+                                        $pregrad = UserBoards::where('board_id', $grad->board->id)
+                                            ->where('user_board_roles', 'pregrad')
+                                            ->where('position', 'left')
+                                            ->first();
+                                        $gradInvitedBy = $pregrad->user;
+                                    }
                                     $sameLevelBoard = UserBoards::where('user_id', $gradInvitedBy->id)
                                         ->where('user_board_roles', '!=', 'newbie')
                                         ->where('board_id', '!=', $grad->board_id)
@@ -224,7 +232,7 @@ class GiftController extends Controller
 //                                $undergrads = $leftPregrad->boardChildren($createBoard->id);
 
                                 // check if inviter is admin
-
+                                //dd($grad->user->invitedBy);
                                 if ($grad->user->invitedBy->username == 'admin') {
                                     if ($y == 1) {
                                         $sameLevelBoard = UserBoards::where('board_id', $createBoard->id)
@@ -472,7 +480,6 @@ class GiftController extends Controller
 
             if (!is_null($pregradGift)) {
                 if ($pregradGift->status == 'accepted') {
-
                     if ($pregrad->user_board_roles != 'newbie'){
                         $undergrads = $pregrad->boardChildren($pregrad->board_id);
 
