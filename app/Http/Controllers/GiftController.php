@@ -7,6 +7,7 @@ use App\Models\Boards;
 use App\Models\GiftLogs;
 use App\Models\RemoveUserRequest;
 use App\Models\UserBoards;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -159,7 +160,8 @@ class GiftController extends Controller
                 $response = null;
                 if (count($undergrads) > 0) {
                     $newbies = $undergrads[0]->boardChildren($sibling->board_id);
-                    $response = $this->giftFromOtherMembersOfSameMatrix($newbies[0]);
+                    if (!empty($newbies) && count($newbies) > 0)
+                        $response = $this->giftFromOtherMembersOfSameMatrix($newbies[0]);
                 }
                 // start checking from the left most newbie in the other matrix
 
@@ -187,6 +189,13 @@ class GiftController extends Controller
                             for ($x = 1; $x < 8; $x++) {
                                 if (!empty($gradInvitedBy)) {
                                     // find same level board of grad's inviter
+                                    if($grad->user->invitedBy->username == 'admin') {
+                                        $pregrad = UserBoards::where('board_id', $grad->board->id)
+                                            ->where('user_board_roles', 'pregrad')
+                                            ->where('position', 'left')
+                                            ->first();
+                                        $gradInvitedBy = $pregrad->user;
+                                    }
                                     $sameLevelBoard = UserBoards::where('user_id', $gradInvitedBy->id)
                                         ->where('user_board_roles', '!=', 'newbie')
                                         ->where('board_id', '!=', $grad->board_id)
@@ -223,7 +232,7 @@ class GiftController extends Controller
 //                                $undergrads = $leftPregrad->boardChildren($createBoard->id);
 
                                 // check if inviter is admin
-
+                                //dd($grad->user->invitedBy);
                                 if ($grad->user->invitedBy->username == 'admin') {
                                     if ($y == 1) {
                                         $sameLevelBoard = UserBoards::where('board_id', $createBoard->id)
@@ -462,9 +471,68 @@ class GiftController extends Controller
 //        //dd('Hello Nehal');
 //    }
 
+    public function checkGiftStatusOfSameMatrix($pregrad)
+    {
+        try {
+            $pregradGift = GiftLogs::where('sent_by', $pregrad->user_id)
+                ->where('board_id', $pregrad->board_id)
+                ->first();
+
+            if (!is_null($pregradGift)) {
+                if ($pregradGift->status == 'accepted') {
+                    if ($pregrad->user_board_roles != 'newbie'){
+                        $undergrads = $pregrad->boardChildren($pregrad->board_id);
+
+                        if ($undergrads->count() > 1){
+                            foreach ($undergrads as $undergrad){
+                                if(!$this->checkGiftStatusOfSameMatrix($undergrad)){
+                                    return false;
+                                }
+                            }
+
+                        } else{
+                            return false;
+                        }
+                    }
+                    return true;
+
+                } else{
+                    return false;
+                }
+            } else{
+                return false;
+            }
+
+        } catch (\Exception $exception) {
+            return false;
+        }
+
+    }
+
     // Check if other members of the same matrix have gifted
     public function giftFromOtherMembersOfSameMatrix($boardUser)
     {
+        switch ($boardUser->user_board_roles){
+            case 'pregrad':
+                $pregrad = $boardUser;
+                return $this->checkGiftStatusOfSameMatrix($pregrad);
+                break;
+
+            case 'undergrad':
+                $pregrad = $boardUser->board_parent($boardUser->board_id);
+                return $this->checkGiftStatusOfSameMatrix($pregrad);
+                break;
+
+            case 'newbie':
+                $pregrad = $boardUser->board_parent($boardUser->board_id)->board_parent($boardUser->board_id);
+                return $this->checkGiftStatusOfSameMatrix($pregrad);
+                break;
+
+            default:
+                return false;
+                break;
+        }
+
         // Get Sibling
         $sibling = $this->siblings($boardUser);
 
@@ -513,17 +581,24 @@ class GiftController extends Controller
         }
     }
 
-    public
-    function addUsersToBoard($gift, $newBoard)
+    public function addUsersToBoard($gift, $newBoard)
     {
         try {
             //  Get Details of selected newbie to find the matrix and it's parent
-            $newbie = UserBoards::where('user_id', $gift->sent_by)
+            $user = UserBoards::where('user_id', $gift->sent_by)
                 ->where('board_id', $gift->board_id)
                 ->first();
 
-            // Pregrad will become the grad
-            $grad = $newbie->parent->parent;
+            if ($user->user_board_roles == 'pregrad'){
+                // Pregrad will become the grad
+                $grad = $user;
+            } elseif ($user->user_board_roles == 'undergrad'){
+                // Pregrad will become the grad
+                $grad = $user->board_parent($user->board_id);
+            } elseif($user->user_board_roles == 'newbie'){
+                // Pregrad will become the grad
+                $grad = $user->board_parent($user->board_id)->board_parent($user->board_id);
+            }
 
             $addGradToBoard = UserBoardsController::create($grad->user_id, $newBoard->id, null, 'grad', null);
             if ($addGradToBoard instanceof \Exception)
@@ -546,4 +621,38 @@ class GiftController extends Controller
             return $exception;
         }
     }
+
+//    public function addUsersToBoard($gift, $newBoard)
+//    {
+//        try {
+//            //  Get Details of selected newbie to find the matrix and it's parent
+//            $newbie = UserBoards::where('user_id', $gift->sent_by)
+//                ->where('board_id', $gift->board_id)
+//                ->first();
+//
+//            dd($newbie);
+//            // Pregrad will become the grad
+//            $grad = $newbie->parent->parent;
+//
+//            $addGradToBoard = UserBoardsController::create($grad->user_id, $newBoard->id, null, 'grad', null);
+//            if ($addGradToBoard instanceof \Exception)
+//                throw $addGradToBoard;
+//
+//            foreach ($grad->boardChildren($gift->board_id) as $pregrad) {
+//                $addPregradsToBoard = UserBoardsController::create($pregrad->user_id, $newBoard->id, $grad->user_id, 'pregrad', $pregrad->position);
+//                if ($addPregradsToBoard instanceof \Exception)
+//                    throw $addPregradsToBoard;
+//
+//                foreach ($pregrad->boardChildren($gift->board_id) as $undergrad) {
+//                    $addUndergradToBoard = UserBoardsController::create($undergrad->user_id, $newBoard->id, $pregrad->user_id, 'undergrad', $undergrad->position);
+//                    if ($addUndergradToBoard instanceof \Exception)
+//                        throw $addUndergradToBoard;
+//                }
+//            }
+//
+//            return true;
+//        } catch (\Exception $exception) {
+//            return $exception;
+//        }
+//    }
 }

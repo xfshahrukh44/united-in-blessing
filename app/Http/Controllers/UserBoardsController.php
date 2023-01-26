@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Boards;
 use App\Models\GiftLogs;
 use App\Models\UserBoards;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class UserBoardsController extends Controller
@@ -84,12 +85,11 @@ class UserBoardsController extends Controller
 //        dd($request->all());
         $board = Boards::find($id);
         $input = $request->all();
-        
 
         try {
             // Check if grad has changed
             $grad = UserBoards::where('board_id', $id)->where('user_board_roles', 'grad')->first();
-            
+
             if (!$grad) {
                 $grad = new UserBoards();
 
@@ -119,6 +119,7 @@ class UserBoardsController extends Controller
                             ->first();
 
                         if (!${'pregrad_' . $position}) {
+                            // Pregrad Not Found! Creating A New One
                             ${'pregrad_' . $position} = new UserBoards();
 
                             ${'pregrad_' . $position}->user_id = $pregrad;
@@ -128,12 +129,23 @@ class UserBoardsController extends Controller
                             ${'pregrad_' . $position}->position = $position;
 
                             ${'pregrad_' . $position}->save();
-                        } else {
-                            ${'pregrad_' . $position . '_children'} = ${'pregrad_' . $position}->boardChildren($id);
-                            ${'pregrad_' . $position}->user_id = $pregrad;
 
-                            if (${'pregrad_' . $position}->isDirty()) {
-                                $this->updateMember(${'pregrad_' . $position}, ${'pregrad_' . $position . '_children'});
+                            // creating giftlog for this
+                            createGiftLog($pregrad, $grad->user_id, $id, $board->amount, 'pending');
+
+                        } else {
+                            // Replacing pregrad
+                            $old_pregrad = ${'pregrad_' . $position};
+                            $new_pregrad = clone $old_pregrad;
+                            ${'pregrad_' . $position . '_children'} = $old_pregrad->boardChildren($id);
+                            $new_pregrad->user_id = $pregrad;
+
+//                            if (${'pregrad_' . $position}->isDirty()) {
+                            if ($new_pregrad !== $old_pregrad) {
+                                $this->updateMember($new_pregrad, ${'pregrad_' . $position . '_children'});
+
+                                // update gift log
+                                createGiftLog($pregrad, $grad->user_id, $id, $board->amount, null, $old_pregrad->user_id);
                             }
                         }
                     }
@@ -160,12 +172,23 @@ class UserBoardsController extends Controller
                             ${'undergrad_' . $position}->position = $position;
 
                             ${'undergrad_' . $position}->save();
-                        } else{
-                            ${'undergrad_' . $position . '_children'} = ${'undergrad_' . $position}->boardChildren($id);
-                            ${'undergrad_' . $position}->user_id = $undergrad;
 
-                            if(${'undergrad_' . $position}->isDirty()){
-                                $this->updateMember(${'undergrad_' . $position}, ${'undergrad_' . $position . '_children'});
+                            // creating giftlog for this
+                            createGiftLog($undergrad, $grad->user_id, $id, $board->amount, 'pending');
+                        } else{
+                            // Replacing Undergrad
+                            $old_undergrad = ${'undergrad_' . $position};
+                            $new_undergrad = clone $old_undergrad;
+
+                            ${'undergrad_' . $position . '_children'} = $old_undergrad->boardChildren($id);
+                            $new_undergrad->user_id = $undergrad;
+
+//                            if(${'undergrad_' . $position}->isDirty()){
+                            if($new_undergrad !== $old_undergrad){
+                                $this->updateMember($new_undergrad, ${'undergrad_' . $position . '_children'});
+
+                                // update gift log
+                                createGiftLog($undergrad, $grad->user_id, $id, $board->amount, null, $old_undergrad->user_id);
                             }
                         }
                     }
@@ -228,13 +251,13 @@ class UserBoardsController extends Controller
         }
     }
 
-    public function updateMember($position, $children)
+    public function updateMember($new_pregrad, $children)
     {
         foreach ($children as $child) {
-            $child->parent_id = $position->user_id;
+            $child->parent_id = $new_pregrad->user_id;
             $child->save();
         }
-        $position->save();
+        $new_pregrad->save();
     }
 
     /**
