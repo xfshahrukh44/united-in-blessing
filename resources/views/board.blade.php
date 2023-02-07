@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="info">
                                     <p>Username</p>
-                                    <p>{{ $board->status }}</p>
+                                    <p>{{ ucfirst($board->status) }}</p>
                                 </div>
                             </div>
 
