@@ -59,6 +59,10 @@
             border-color: #f2f2f2;
         }
 
+        .modal-content {
+            background-color: #FFFFE0 !important;
+        }
+
     </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">

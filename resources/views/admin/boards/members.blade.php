@@ -18,11 +18,11 @@
             border: 1px solid var(--primary);
             transition: all 0.3s ease-in-out;
         }
-        
+
         .treeSec form button.cancelBtn{
             right: 200px;
         }
-        
+
         select[readonly]{
             pointer-events: none;
         }
@@ -40,7 +40,7 @@
             {{--            <i class="fas fa-arrow-to-left"></i>--}}
             Back
         </a>
-        
+
         <div class="container">
             <div class="row my-5 justify-content-center">
                 <div class="col-md-8">
@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="info">
                                     <p>Username</p>
-                                    <p>{{ $board->status }}</p>
+                                    <p>{{ ucfirst($board->status) }}</p>
                                 </div>
                             </div>
                         </div>
@@ -73,10 +73,10 @@
             <div class="row">
                 <div class="col-12">
                     <div>
-                        <form action="{{ route('admin.update.board.members', $board->id) }}" method="POST">
+                        <form action="{{ route('admin.update.board.members', $board->id) }}" method="POST" id="updateBoardForm">
                             @csrf
-                            <button class="themeBtn" type="submit">Update Board</button>
-                            <button class="themeBtn cancelBtn" type="button" onClick="window.location.reload();" style="display:none">Cancel Selection</button>
+{{--                            <button class="themeBtn" type="submit">Update Board</button>--}}
+{{--                            <button class="themeBtn cancelBtn" type="button" onClick="window.location.reload();" style="display:none">Cancel Selection</button>--}}
                             <ul class="tree vertical">
                                 @forelse($boardGrad as $key => $grad)
                                     <li>
@@ -422,7 +422,10 @@
             $('select').attr('readonly', true);
             $('.cancelBtn').show()
             $(this).attr('readonly', false);
-            
+
+            $('#updateBoardForm').submit();
+
+
            /* $('select').each(function () {
                 $('select').find('option').removeAttr('disabled');
             });
