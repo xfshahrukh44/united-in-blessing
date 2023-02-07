@@ -68,4 +68,13 @@ class UserBoards extends Model
             ->where('position', $position)
             ->first();
     }
+
+    public function getFormattedUserBoardRolesAttribute() {
+        return [
+            'pregrad' => 'Pre-Grad',
+            'undergrad' => 'undergrad',
+            'newbie' => 'newbie',
+            'grad' => 'grad'
+        ][$this->user_board_roles];
+    }
 }

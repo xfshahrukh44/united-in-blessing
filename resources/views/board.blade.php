@@ -150,17 +150,17 @@
                                                                     @endif
                                                                 @empty
                                                                     <li>
-                                                                        @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
+                                                                        @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                     </li>
                                                                     <li>
-                                                                        @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
+                                                                        @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
                                                                     </li>
                                                                 @endforelse
                                                             </ul>
                                                         </li>
                                                         @if($pregrad->boardChildren(Request::segment(2))->count() === 1)
                                                             <li>
-                                                                @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
+                                                                @include('partials.inviteCard', ['userData' => null, 'class' => 'undergrad'])
                                                                 <ul>
                                                                     <li>
                                                                         @include('partials.inviteCard', ['userData' => null, 'class' => 'newbie'])
