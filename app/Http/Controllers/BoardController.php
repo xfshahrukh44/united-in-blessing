@@ -100,6 +100,9 @@ class BoardController extends Controller
                     ->addColumn('amount', function ($data) {
                         return '$ ' . $data->amount;
                     })
+                    ->addColumn('status', function ($data) {
+                        return ucfirst($data->status);
+                    })
                     ->addColumn('action', function ($data) {
                         return '<a title="Show" href="' . route('board.index', $data->id) . '" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></a>
                             <a title="Edit" href="board/edit/' . $data->id . '" class="btn btn-dark btn-sm"><i class="fas fa-pencil-alt"></i></a>

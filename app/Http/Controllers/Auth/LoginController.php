@@ -67,16 +67,30 @@ class LoginController extends Controller
 
         $credentials = $request->only('username', 'password');
         $credentials['is_blocked'] = 'no';
-        if (Auth::attempt($credentials)) {
-            if (Auth::user()->role == 'admin') {
-                return redirect()->route('dashboard');
-            } else {
-                return redirect()->route('home');
-            }
-        }
 
+        $user = User::where('username', '=', $request['username'])->first();
+        if($user) {
+            $hasher = app('hash');
+            if ($hasher->check($request['password'], $user->password)) {
+                if(Auth::attempt($credentials)) {
+                    if ($user->role == 'admin') {
+                        return redirect()->route('dashboard');
+                    } else {
+                        return redirect()->route('home');
+                    }
+                }
+            } else {
+                return redirect()->back()
+                    ->with("error", "Invalid password.")
+                    ->withInput();
+            }
+        } else {
+            return redirect()->back()
+                ->with("error", "Invalid username.")
+                ->withInput();
+        }
         return redirect()->back()
-            ->with("error", "These credentials doesn't match our record.")
+            ->with("error", "These credentials do not match our records.")
             ->withInput();
     }
 }
