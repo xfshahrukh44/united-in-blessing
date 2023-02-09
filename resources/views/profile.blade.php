@@ -4,7 +4,7 @@
 @section('content')
     <style>
         .navigation-menu .nav-inner .nav-link{
-            color: #fff;
+            /*color: #fff;*/
         }
         .backBtn{
             margin: 5rem 0 1rem;
