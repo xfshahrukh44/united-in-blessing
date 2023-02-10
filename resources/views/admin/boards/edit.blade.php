@@ -1,5 +1,18 @@
 @extends('admin.layouts.app')
 @section('title', 'Edit Board')
+@section('page_css')
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+@endsection
 @section('section')
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -38,7 +51,7 @@
                                         <div class="col-md-6">
                                             <label for="board_number">Board Number</label>
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="board_number" id="board_number"
+                                                <input type="number" class="form-control" name="board_number" id="board_number"
                                                        value="{{ $board->board_number }}" required>
                                             </div>
                                         </div>

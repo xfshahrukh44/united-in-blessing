@@ -5,6 +5,17 @@
         .invalid-feedback {
             display: block;
         }
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
     </style>
 @endsection
 @section('section')
@@ -45,7 +56,7 @@
                                         <div class="col-md-6">
                                             <label for="board_number">Board Number</label>
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="board_number"
+                                                <input type="number" class="form-control" name="board_number"
                                                        id="board_number"
                                                        value="{{ old('board_number') }}" required>
                                                 @error('board_number')

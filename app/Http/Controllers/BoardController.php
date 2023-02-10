@@ -64,7 +64,7 @@ class BoardController extends Controller
         DB::beginTransaction();
         try {
             $board = Boards::create([
-                'board_number' => ($request) ? ($request->board_number ?? $request->board_number) : 'board-' . ($latest_board->count() + 1),
+                'board_number' => ($request) ? ($request->board_number ?? $request->board_number) : ($latest_board->count() + 1),
                 'previous_board_number' => ($request) ? ($request->previous_board_number ?? $request->previous_board_number) : $previous_board_number,
                 'amount' => ($request) ? ($request->amount ?? '') : (string)((int)$amount),
             ]);
