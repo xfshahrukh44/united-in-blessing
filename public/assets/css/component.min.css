@@ -259,7 +259,7 @@
     width: 100%;
     color: white;
     background: rgba(0, 0, 0, 0);
-    font-size: 60px;
+    font-size: 3.75rem;
     font-weight: 300;
     text-align: center;
     border: 0px;
@@ -289,7 +289,7 @@
     border-color: green;
     opacity: 1;
     padding: 10px 17px;
-    font-size: 27px;
+    font-size: 1.6875rem;
 }
 
 #search.open {
