@@ -104,9 +104,9 @@ class BoardController extends Controller
                         return ucfirst($data->status);
                     })
                     ->addColumn('action', function ($data) {
+                        //<a title="Users" href="' . route('admin.board.members', $data->id) . '" class="btn btn-secondary btn-sm"><i class="fas fa-users"></i></a>
                         return '<a title="Show" href="' . route('board.index', $data->id) . '" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></a>
                             <a title="Edit" href="board/edit/' . $data->id . '" class="btn btn-dark btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                            <a title="Users" href="' . route('admin.board.members', $data->id) . '" class="btn btn-secondary btn-sm"><i class="fas fa-users"></i></a>
                             <button title="Delete" type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>';
                     })
                     ->rawColumns(['amount', 'action'])

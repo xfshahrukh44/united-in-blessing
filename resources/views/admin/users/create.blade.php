@@ -40,6 +40,9 @@
                             <form class="attribute-form" method="post" action="{{ route('user.store') }}"
                                   enctype="multipart/form-data">
                                 @csrf
+                                @if(isset($user))
+                                    <input type="hidden" name="new_user_id" value="{{ $user->id }}">
+                                @endif
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -59,7 +62,7 @@
                                             <div class="form-group">
                                                 <input type="text" class="form-control" name="inviters_username"
                                                        id="inviters_username"
-                                                       value="{{ old('inviters_username') }}" required>
+                                                       value="{{ isset($user) ? $user->invitedBy->username : old('inviters_username') }}" {{ isset($user) ? 'readonly' : 'required' }}>
                                                 @error('inviters_username')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

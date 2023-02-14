@@ -99,7 +99,7 @@ Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function
 
     // Users
     Route::get('users', [UserController::class, 'index'])->name('users.index');
-    Route::get('user/create', [UserController::class, 'create'])->name('user.create');
+    Route::get('user/create/{id?}', [UserController::class, 'create'])->name('user.create');
     Route::get('user/show/{user}', [UserController::class, 'show'])->name('user.show');
     Route::post('user/store', [UserController::class, 'store'])->name('user.store');
     Route::get('user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');

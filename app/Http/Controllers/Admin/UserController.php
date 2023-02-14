@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ArchivedUser;
 use App\Models\GiftLogs;
 use App\Models\User;
 use App\Models\UserBoards;
@@ -51,9 +52,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function create()
+    public function create($id = null)
     {
-        return view('admin.users.create');
+        $data['user'] = User::with('invitedBy')->where('id', $id)->firstOrFail();
+        //dd($data['user']->invitedBy->username);
+        $data['password'] = UserProfileChangedLogs::where('user_id', $id)->where('key', 'password')->latest()->first();
+        return view('admin.users.create', $data);
     }
 
     /**
@@ -88,20 +92,44 @@ class UserController extends Controller
 
         try {
             $inviter = User::where('username', $request->inviters_username)->first();
+            if($request->new_user_id) {
+                $userId = $request->new_user_id;
+                User::where('id', $userId)->update([
+                    'username' => $request->username,
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'role' => 'user',
+                    'password' => Hash::make($request->password)
+                ]);
 
-            $user = User::create([
-                'invited_by' => $inviter->id,
-                'username' => $request->username,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'role' => 'user',
-                'password' => Hash::make($request->password),
-            ]);
+                $oldUser = User::find($userId);
+                ArchivedUser::create([
+                    'invited_by' => $inviter->id,
+                    'username' => $oldUser->username,
+                    'first_name' => $oldUser->first_name,
+                    'last_name' => $oldUser->last_name,
+                    'email' => $oldUser->email,
+                    'phone' => $oldUser->phone,
+                    'role' => 'user',
+                    'password' => Hash::make($oldUser->password)
+                ]);
+            } else {
+                $userId = User::create([
+                    'invited_by' => $inviter->id,
+                    'username' => $request->username,
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'role' => 'user',
+                    'password' => Hash::make($request->password)
+                ])->id;
+            }
 
-            $userLogs = generateUserProfileLogs($user->id, 'username', $request->username, 0, 'New Account Created', 'accepted');
-            $passLogs = generateUserProfileLogs($user->id, 'password', $request->password, 0, 'New Account Created', 'accepted');
+            generateUserProfileLogs($userId, 'username', $request->username, 0, 'New Account Created', 'accepted');
+            generateUserProfileLogs($userId, 'password', $request->password, 0, 'New Account Created', 'accepted');
 
             return redirect()->back()->with('success', 'New User Created Successfully');
         } catch (\Exception $exception) {
