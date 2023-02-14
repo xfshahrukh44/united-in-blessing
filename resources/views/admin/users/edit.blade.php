@@ -95,11 +95,11 @@
                                             <div class="form-group">
                                                 <select name="is_blocked" id="block" class="form-control">
                                                     <option
-                                                        value="yes" {{ $user->is_blocked == 'yes' ? 'selected' : '' }}>
+                                                        value="yes" {{ $user->is_blocked == 'yes' ? 'selected' : '' }} data-value="inactive" data-route="{{ route('user.create', $user->id) }}">
                                                         Inactive
                                                     </option>
                                                     <option
-                                                        value="no" {{ $user->is_blocked == 'no' ? 'selected' : '' }}>
+                                                        value="no" {{ $user->is_blocked == 'no' ? 'selected' : '' }} data-value="active">
                                                         Active
                                                     </option>
                                                 </select>
@@ -156,6 +156,24 @@
             </div>
         </section>
     </div>
+    <div id="confirmModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header"  style="background-color: #343a40;
+            color: #fff;">
+                    <h2 class="modal-title">Confirmation</h2>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <h4 align="center" style="margin: 0;">Do you want to replace user ?</h4>
+                </div>
+                <div class="modal-footer">
+                    <a href="" id="replace_user" class="btn btn-warning">Yes</a>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -166,6 +184,13 @@
                 responsive: true,
                 processing: true,
                 pageLength: 10,
+            });
+
+            $('[name="is_blocked"]').on('change', () => {
+                if($('option:selected', this).data('value') === 'inactive') {
+                    $('#confirmModal').modal('show');
+                    $('#replace_user').attr('href', $('option:selected', this).data('route'));
+                }
             });
         });
     </script>

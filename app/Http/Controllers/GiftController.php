@@ -26,7 +26,8 @@ class GiftController extends Controller
     {
         try {
             if (request()->ajax()) {
-                return datatables()->of(GiftLogs::orderByDesc('created_at')->where('status', '!=', 'accepted')->with('sender', 'receiver', 'board')->get())
+                //->where('status', '!=', 'accepted')
+                return datatables()->of(GiftLogs::orderByDesc('created_at')->with('sender', 'receiver', 'board')->groupBy('sent_by', 'sent_to')->get())
                     ->addIndexColumn()
                     ->addColumn('sent_by', function ($data) {
                         return $data->sender ? $data->sender->username . ' (' . $data->sender->first_name . ' ' . $data->sender->last_name . ')' : '---';
@@ -40,10 +41,16 @@ class GiftController extends Controller
                     ->addColumn('amount', function ($data) {
                         return '$ ' . $data->amount;
                     })
-                    ->addColumn('action', function ($data) {
-                        return '<a title="Edit" href="' . route('admin.gift.edit', $data->id) . '" class="btn btn-dark btn-sm"><i class="fas fa-pencil-alt"></i></a>&nbsp;<button title="Delete" type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>';
+                    ->addColumn('status', function ($data) {
+                        return ucfirst($data->status);
                     })
-                    ->rawColumns(['sent_by', 'sent_to', 'board_number', 'amount', 'action'])
+                    ->addColumn('action', function ($data) {
+                        if($data->status === 'accepted') {
+                            return '---';
+                        }
+                        return '<a disabled title="Edit" href="' . route('admin.gift.edit', $data->id) . '" class="btn btn-dark btn-sm"><i class="fas fa-pencil-alt"></i></a>&nbsp;<button title="Delete" type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>';
+                    })
+                    ->rawColumns(['sent_by', 'sent_to', 'board_number', 'amount', 'action', 'status'])
                     ->make(true);
             }
         } catch (\Exception $ex) {
