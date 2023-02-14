@@ -18,6 +18,6 @@ class ArchivedUser extends Model
      * @var array
      */
     protected $fillable = [
-        'invited_by', 'username', 'first_name', 'last_name', 'email', 'phone', 'role', 'timezone', 'is_blocked', 'password', 'user_image'
+        'invited_by', 'username', 'first_name', 'last_name', 'email', 'phone', 'role', 'timezone', 'is_blocked', 'password', 'user_image', 'replaced_by'
     ];
 }

@@ -27,6 +27,7 @@ class CreateArchivedUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('user_image')->nullable();
+            $table->uuid('replaced_by');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
