@@ -113,7 +113,8 @@ class UserController extends Controller
                     'email' => $oldUser->email,
                     'phone' => $oldUser->phone,
                     'role' => 'user',
-                    'password' => Hash::make($oldUser->password)
+                    'password' => Hash::make($oldUser->password),
+                    'replaced_by' => $userId
                 ]);
             } else {
                 $userId = User::create([
