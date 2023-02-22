@@ -107,11 +107,6 @@
                                         <i class="fas fa-eye-slash" style="display: none"></i>
                                     </button>
                                 </div>
-                                @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
                             </div>
                             <div class="col-md-6 mb-4">
                                 <div class="passwordWrap">
@@ -127,6 +122,7 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                                <span class="invalid-feedback password-error text-danger" role="alert"></span>
                             </div>
                             <div class="mb-4">
                                 <div class="form-check">
@@ -165,6 +161,16 @@
                 $(this).parent().find('.fa-eye-slash').hide();
                 $(this).parent().find('.fa-eye').show();
             }
-        })
+        });
+
+        $(function() {
+            $('[name="password_confirmation"]').keyup(function() {
+                $(".password-error").empty().addClass('d-none');
+                var password = $('[name="password"]').val();
+                if(password !== $(this).val()) {
+                    return $(".password-error").removeClass('d-none').html('<strong>Passwords do not match!</strong>');
+                }
+            });
+        });
     </script>
 @endsection
