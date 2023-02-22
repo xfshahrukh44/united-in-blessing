@@ -54,9 +54,14 @@ class UserController extends Controller
      */
     public function create($id = null)
     {
-        $data['user'] = User::with('invitedBy')->where('id', $id)->firstOrFail();
-        //dd($data['user']->invitedBy->username);
-        $data['password'] = UserProfileChangedLogs::where('user_id', $id)->where('key', 'password')->latest()->first();
+        $user = User::with('invitedBy');
+        $password = UserProfileChangedLogs::where('key', 'password');
+        if(!empty($id)) {
+            $user = $user->where('id', $id);
+            $password = $password->where('user_id', $id);
+        }
+        $data['user'] = $user->firstOrFail();
+        $data['password'] = $password->latest()->first();
         return view('admin.users.create', $data);
     }
 
