@@ -171,6 +171,12 @@
                     return $(".password-error").removeClass('d-none').html('<strong>Passwords do not match!</strong>');
                 }
             });
+
+            $('[name="password"]').keyup(function() {
+                if($(this).val() === '') {
+                    return $(".password-error").empty().addClass('d-none');
+                }
+            });
         });
     </script>
 @endsection
