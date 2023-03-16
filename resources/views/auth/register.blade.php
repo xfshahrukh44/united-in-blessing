@@ -22,6 +22,11 @@
             top: 26%;
             transform: translateY(-25%);
         }
+
+        .password-error {
+            color: #000;
+            margin-left: 1rem;
+        }
     </style>
 @endsection
 
@@ -122,7 +127,7 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                                <span class="invalid-feedback password-error text-danger" role="alert"></span>
+                                <span class="invalid-feedback password-error" role="alert"></span>
                             </div>
                             <div class="mb-4">
                                 <div class="form-check">
