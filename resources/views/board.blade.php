@@ -198,7 +198,12 @@
                                                 </ul>
                                             </li>
                                             @if($grad->boardChildren(Request::segment(2))->count() == 1 && $pregrad->position == 'left')
-                                                <li>
+                                                    <li class="heading">
+                                                        <h4>Pre-grads</h4>
+                                                        <h4>Undergrads</h4>
+                                                        <h4>Newbies</h4>
+                                                    </li>
+                                                    <li>
                                                     @include('partials.inviteCard', ['userData' => null, 'class' => 'pregrad'])
                                                     <ul>
                                                         <li>
