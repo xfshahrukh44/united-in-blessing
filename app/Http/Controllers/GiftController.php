@@ -27,7 +27,7 @@ class GiftController extends Controller
         try {
             if (request()->ajax()) {
                 //->where('status', '!=', 'accepted')
-                return datatables()->of(GiftLogs::orderByDesc('created_at')->with('sender', 'receiver', 'board')->groupBy('sent_by', 'sent_to')->get())
+                return datatables()->of(GiftLogs::has('sender')->has('receiver')->orderByDesc('created_at')->with('sender', 'receiver', 'board')->groupBy('sent_by', 'sent_to')->get())
                     ->addIndexColumn()
                     ->addColumn('sent_by', function ($data) {
                         return $data->sender ? $data->sender->username . ' (' . $data->sender->first_name . ' ' . $data->sender->last_name . ')' : '---';
@@ -157,7 +157,11 @@ class GiftController extends Controller
                 // If all the newbies in the same matrix has gifted then take there grand parent and find it's sibling
                 // to check if newbies in other matrix have gifted.
                 $grandParent = $boardUser->board_parent($boardUser->board_id)->board_parent($boardUser->board_id);
-                $sibling = $this->siblings($grandParent);
+                $sibling = null;
+                if($grandParent) {
+                    $sibling = $this->siblings($grandParent);
+                }
+
                 $undergrads = [];
                 if ($sibling) {
                     $undergrads = $sibling->boardChildren($sibling->board_id);
