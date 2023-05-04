@@ -17,8 +17,8 @@ class SettingsSeeder extends Seeder
         Settings::truncate();
 
         Settings::create([
-            'site_title' => 'United In Blessings',
-            'company_name' => 'United In Blessings',
+            'site_title' => 'United In Blessing',
+            'company_name' => 'United In Blessing',
             'email' => 'admin@uib.com',
             'phone_no_1' => '(123) 456-7890',
             'address' => 'Lorem Street, Abc road',
