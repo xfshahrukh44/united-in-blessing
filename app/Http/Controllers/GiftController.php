@@ -139,6 +139,8 @@ class GiftController extends Controller
             // check if other newbies in the same matrix has gifted
             $response = $this->giftFromOtherMembersOfSameMatrix($boardUser);
 
+            // dd($response);
+
             if ($response) {
                 // create new board of same amount to move the users of the same matrix
                 $createBoard = BoardController::create($gift->amount, $gift->board->board_number);
@@ -179,7 +181,7 @@ class GiftController extends Controller
 
 
                 if ($response) {
-//                    Set board status to retired
+                //                    Set board status to retired
                     $board = Boards::where('id', $sibling->board_id)->update([
                         'status' => 'retired',
                     ]);
@@ -188,8 +190,8 @@ class GiftController extends Controller
                     $grad = UserBoards::where('board_id', $sibling->board_id)->where('user_board_roles', 'grad')->first();
                     $gradInvitedBy = $grad->user->invitedBy;
 
-//                    dd($createBoard);
-//                    dd($grad->user->invitedBy);
+                //                    dd($createBoard);
+                //                    dd($grad->user->invitedBy);
 
                     // define board values
                     $boardValues = array('100', '400', '1000', '2000');
