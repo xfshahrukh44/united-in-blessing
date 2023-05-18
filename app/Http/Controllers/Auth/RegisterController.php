@@ -71,6 +71,17 @@ class RegisterController extends Controller
                     ) {
                         $fail("There's no place left in the board or the person that invited you is 'newbie' in the board. Please try again later.");
                     }
+
+                    /***** Newbies Validation *****/
+                    if (is_null(UserBoards::where('user_id', $inviter->id)
+                        ->whereHas('board', function ($q){
+                            $q->where('amount', '100');
+                        })
+                        ->has('newbies', '<', 8)
+                        ->first())
+                    ) {
+                        $fail("There's no place left in the board or the person that invited you is 'newbie' in the board. Please try again later.");
+                    }
                 }
             }],
             'username' => ['required', 'alpha_dash', 'unique:user_profile_changed_logs,value'],
@@ -103,7 +114,8 @@ class RegisterController extends Controller
             ->has('newbies', '<', 8)
             ->first();
 
-        $board_member = $invited_user_board->boardChildren($invited_user_board->board_id);
+        $board_member = $invited_user_board->boardChildren($invited_user_board->board_id ?? 0);
+
 
         switch ($invited_user_board->user_board_roles) {
             case('grad'):
@@ -210,30 +222,33 @@ class RegisterController extends Controller
                             $position = 'right';
                     }
                 } else {
-                    // Get Siblings
+                    // Get Only One Sibling Of Specific Board
                     $sibling = $this->siblings($invited_user_board);
 
-                    if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
-                        $parent_id = $sibling->user_id;
+                    /***** If no any sibling found *****/
+                    if($sibling) {
+                        if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
+                            $parent_id = $sibling->user_id;
 
-                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
-                            if ($child->position == 'left')
-                                $position = 'right';
-                        }
-                    } else {
-                        $parent = $invited_user_board->parent;
-                        $sibling = $this->siblings($parent);
+                            foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
+                                if ($child->position == 'left')
+                                    $position = 'right';
+                            }
+                        } else {
+                            $parent = $invited_user_board->parent;
+                            $sibling = $this->siblings($parent);
 
-                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
-                            if ($child->boardChildren($invited_user_board->board_id)->count() < 2) {
-                                $parent_id = $child->user_id;
+                            foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
+                                if ($child->boardChildren($invited_user_board->board_id)->count() < 2) {
+                                    $parent_id = $child->user_id;
 
-                                foreach ($child->boardChildren($invited_user_board->board_id) as $newbie) {
-                                    if ($child->position == 'left')
-                                        $position = 'right';
+                                    foreach ($child->boardChildren($invited_user_board->board_id) as $newbie) {
+                                        if ($child->position == 'left')
+                                            $position = 'right';
+                                    }
+
+                                    break;
                                 }
-
-                                break;
                             }
                         }
                     }
@@ -241,75 +256,78 @@ class RegisterController extends Controller
 
                 break;
 
-//            case('newbie'):
-//                if ($this->siblings($invited_user_board) == null) {
-//                    $parent_id = $invited_user_board->parent_id;
-//
-//                    if ($invited_user_board->position == 'left')
-//                        $position = 'right';
-//                } else {
-//                    $parent = $invited_user_board->parent;
-//                    $sibling = $this->siblings($parent);
-//
-//                    if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
-//                        $parent_id = $sibling->user_id;
-//
-//                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
-//                            $parent_id = $child->parent_id;
-//
-//                            if ($child->position == 'left')
-//                                $position = 'right';
-//
-//                            break;
-//                        }
-//                    } else {
-//                        // Pregrad
-//                        $parent = $parent->parent;
-//                        $sibling = $this->siblings($parent);
-//
-//                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $undergrad) {
-//                            if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
-//                                $parent_id = $undergrad->user_id;
-//
-//                                if ($undergrad->position == 'left')
-//                                    $position = 'right';
-//
-//                                break;
-//                            }
-//                        }
-//                    }
-//                }
-//                break;
+            //            case('newbie'):
+            //                if ($this->siblings($invited_user_board) == null) {
+            //                    $parent_id = $invited_user_board->parent_id;
+            //
+            //                    if ($invited_user_board->position == 'left')
+            //                        $position = 'right';
+            //                } else {
+            //                    $parent = $invited_user_board->parent;
+            //                    $sibling = $this->siblings($parent);
+            //
+            //                    if ($sibling->boardChildren($invited_user_board->board_id)->count() < 2) {
+            //                        $parent_id = $sibling->user_id;
+            //
+            //                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
+            //                            $parent_id = $child->parent_id;
+            //
+            //                            if ($child->position == 'left')
+            //                                $position = 'right';
+            //
+            //                            break;
+            //                        }
+            //                    } else {
+            //                        // Pregrad
+            //                        $parent = $parent->parent;
+            //                        $sibling = $this->siblings($parent);
+            //
+            //                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $undergrad) {
+            //                            if ($undergrad->boardChildren($invited_user_board->board_id)->count() < 2) {
+            //                                $parent_id = $undergrad->user_id;
+            //
+            //                                if ($undergrad->position == 'left')
+            //                                    $position = 'right';
+            //
+            //                                break;
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //                break;
         }
 
-        // Create User
-        $user = User::create([
-            'invited_by' => $invited_user->id,
-            'username' => $data['username'],
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'password' => Hash::make($data['password']),
-        ]);
+        /***** If no any parent found *****/
+        if(!empty($parent_id)) {
+            // Create User
+            $user = User::create([
+                'invited_by' => $invited_user->id,
+                'username' => $data['username'],
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'email' => $data['email'],
+                'phone' => $data['phone'],
+                'password' => Hash::make($data['password']),
+            ]);
 
-        // Add User to the board
-        UserBoards::create([
-            'user_id' => $user->id,
-            'board_id' => $invited_user_board->board_id,
-            'parent_id' => $parent_id,
-            'user_board_roles' => $role != '' ? $role : 'newbie',
-            'position' => $position
-        ]);
+            // Add User to the board
+            UserBoards::create([
+                'user_id' => $user->id,
+                'username' => $data['username'],
+                'board_id' => $invited_user_board->board_id,
+                'parent_id' => $parent_id,
+                'user_board_roles' => $role != '' ? $role : 'newbie',
+                'position' => $position
+            ]);
 
-        // Get grad of the board to send the gift
-        $boardGrad = UserBoards::where('board_id', $invited_user_board->board_id)
-            ->where('user_board_roles', 'grad')
-            ->with('user', 'board')
-            ->first();
+            // Get grad of the board to send the gift
+            $boardGrad = UserBoards::where('board_id', $invited_user_board->board_id)
+                ->where('user_board_roles', 'grad')
+                ->with('user', 'board')
+                ->first();
 
-        // If role is empty so it means that the new user is newbie and create a gift log to send the gift to the admin.
-        //if (empty($role)) {
+            // If role is empty so it means that the new user is newbie and create a gift log to send the gift to the admin.
+            //if (empty($role)) {
             GiftLogs::create([
                 'sent_by' => $user->id,
                 'sent_to' => $boardGrad->user_id,
@@ -317,12 +335,18 @@ class RegisterController extends Controller
                 'amount' => $boardGrad->board->amount,
                 'status' => 'pending',
             ]);
-        //}
+            //}
 
-        $userLogs = generateUserProfileLogs($user->id, 'username', $data['username'], 0, 'New Account Created', 'accepted');
-        $passLogs = generateUserProfileLogs($user->id, 'password', $data['password'], 0, 'New Account Created', 'accepted');
+            $userLogs = generateUserProfileLogs($user->id, 'username', $data['username'], 0, 'New Account Created', 'accepted');
+            $passLogs = generateUserProfileLogs($user->id, 'password', $data['password'], 0, 'New Account Created', 'accepted');
 
-        return $user;
+            return $user;
+        }
+
+
+        $error = \Illuminate\Validation\ValidationException::withMessages(['inviters_username' => "There's no place left in the board or the person that invited you is 'newbie' in the board. Please try again later."]);
+        throw $error;
+
     }
 
     protected function siblings($user)

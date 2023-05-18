@@ -149,6 +149,7 @@ class GiftController extends Controller
 
                 // move users of the same matrix to the new board
                 $addUserToBoard = $this->addUsersToBoard($gift, $createBoard);
+
                 if ($addUserToBoard instanceof \Exception) {
                     DB::rollBack();
                     return redirect()->back()->with('error', $addUserToBoard->getMessage());
@@ -620,10 +621,21 @@ class GiftController extends Controller
                 if ($addPregradsToBoard instanceof \Exception)
                     throw $addPregradsToBoard;
 
-                foreach ($pregrad->boardChildren($gift->board_id) as $undergrad) {
+                foreach ($pregrad->boardChildren($gift->board_id) as $key => $undergrad) {
                     $addUndergradToBoard = UserBoardsController::create($undergrad->user_id, $newBoard->id, $pregrad->user_id, 'undergrad', $undergrad->position);
                     if ($addUndergradToBoard instanceof \Exception)
                         throw $addUndergradToBoard;
+
+//                    if($key == 0) /***** Get First undergrad id for use in the parent newbie *****/
+//                    {
+//                        /***** Add the old board grad in the new left board as a Newbies *****/
+//                        if ($pregrad->position == 'left') {
+//                            UserBoardsController::create($gift->sent_to, $newBoard->id, $undergrad->user_id, 'newbie', $undergrad->position);
+//                            if ($addUndergradToBoard instanceof \Exception)
+//                                throw $addUndergradToBoard;
+//                        }
+//                    }
+
                 }
             }
 
