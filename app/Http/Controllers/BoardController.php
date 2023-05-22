@@ -22,6 +22,8 @@ class BoardController extends Controller
                 ->with(['user', 'children'])
                 ->get();
 
+//            dd($boardGrad->toArray());
+
             return view('board', compact('board', 'boardGrad', 'gifts'));
         } catch (\Exception $exception) {
             return back()->withErrors($exception->getMessage());

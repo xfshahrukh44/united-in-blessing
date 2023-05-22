@@ -68,8 +68,11 @@ class UserSeeder extends Seeder
         UserBoards::create([
             'user_id' => $pringles2025->id,
             'board_id' => $board100->id,
+            //'parent_id' => $admin->id,
+            'parent_id' => '',
             'user_board_roles' => 'grad',
             'position' => 'left',
+            'username' => $pringles2025->username
         ]);
 
         UserProfileChangedLogs::create([
@@ -90,6 +93,7 @@ class UserSeeder extends Seeder
 
         $heart2hand = User::create([
             'invited_by' => $admin->id,
+//            'invited_by' => $pringles2025->id,
             'username' => '4Pringles2025',
             'first_name' => 'Elliott',
             'last_name' => 'Nichols',
@@ -104,6 +108,7 @@ class UserSeeder extends Seeder
             'parent_id' => $pringles2025->id,
             'user_board_roles' => 'pregrad',
             'position' => 'left',
+            'username' => $heart2hand->username
         ]);
 
         UserProfileChangedLogs::create([
@@ -121,6 +126,14 @@ class UserSeeder extends Seeder
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
+
+//        GiftLogs::create([
+//            'sent_by' => $heart2hand->id,
+//            'sent_to' => $admin->id,
+//            'board_id' => $board100->id,
+//            'amount' => $board100->amount,
+//            'status' => 'pending'
+//        ]);
 
 //        $giftgiver = User::create([
 //            'invited_by' => $admin->id,

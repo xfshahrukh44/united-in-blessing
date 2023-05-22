@@ -1,7 +1,9 @@
 @extends('admin.layouts.login-layout')
 
 @section('content')
-
+    @if($errors->any())
+        <div class="alert alert-danger">{!! implode('', $errors->all('<div>:message</div>')) !!}</div>
+    @endif
 <div class="container">
     <div class="row justify-content-center">
         <div class="login-box">
@@ -16,9 +18,9 @@
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="input-group mb-3">
-                            <input id="email" type="email" placeholder="Enter Email"
-                                class="form-control @error('email') is-invalid @enderror" name="email"
-                                value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <input id="username" type="text" placeholder="Enter Username"
+                                class="form-control @error('username') is-invalid @enderror" name="username"
+                                value="{{ old('username') }}" required autocomplete="email" autofocus>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>

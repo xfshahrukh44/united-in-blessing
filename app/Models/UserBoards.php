@@ -14,7 +14,7 @@ class UserBoards extends Model
 //    protected $primaryKey = null;
 //    public $incrementing = false;
 
-    protected $fillable = ['user_id', 'board_id', 'parent_id', 'user_board_roles', 'position'];
+    protected $fillable = ['user_id', 'username', 'board_id', 'parent_id', 'user_board_roles', 'position'];
 
     public function user()
     {
@@ -59,7 +59,7 @@ class UserBoards extends Model
      */
     public function boardChildren($board_id)
     {
-        return $this->children()->where('board_id', $board_id)->with('board.gifts')->orderBy('position')->get();
+        return $this->children()->where('board_id', $board_id)->with('board.gifts')->whereHas('user')->orderBy('position')->get();
     }
 
     public function boardMember($board_id, $user_board_role, $position){
