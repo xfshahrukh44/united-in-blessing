@@ -68,8 +68,8 @@ class UserSeeder extends Seeder
         UserBoards::create([
             'user_id' => $pringles2025->id,
             'board_id' => $board100->id,
-            //'parent_id' => $admin->id,
-            'parent_id' => '',
+            'parent_id' => $admin->id,
+//            'parent_id' => '',
             'user_board_roles' => 'grad',
             'position' => 'left',
             'username' => $pringles2025->username
@@ -92,8 +92,8 @@ class UserSeeder extends Seeder
         ]);
 
         $heart2hand = User::create([
-            'invited_by' => $admin->id,
-//            'invited_by' => $pringles2025->id,
+//            'invited_by' => $admin->id,
+            'invited_by' => $pringles2025->id,
             'username' => '4Pringles2025',
             'first_name' => 'Elliott',
             'last_name' => 'Nichols',
