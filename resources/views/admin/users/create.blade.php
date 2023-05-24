@@ -62,7 +62,7 @@
                                             <div class="form-group">
                                                 <input type="text" class="form-control" name="inviters_username"
                                                        id="inviters_username"
-                                                       value="{{ isset($user) ? $user->invitedBy->username : old('inviters_username') }}" {{ isset($user) ? 'readonly' : 'required' }}>
+                                                       value="{{ isset($user) ? ($user->invitedBy ? $user->invitedBy->username : old('inviters_username')) : old('inviters_username') }}"{{ isset($user) ? 'readonly' : 'required' }}>
                                                 @error('inviters_username')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
