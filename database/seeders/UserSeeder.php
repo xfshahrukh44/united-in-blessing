@@ -30,19 +30,20 @@ class UserSeeder extends Seeder
         $board400 = Boards::create([
             'board_number' => '1234567',
             'amount' => '400',
-            'previous_board_number' => '1234566',
+            //'previous_board_number' => '1234566',
+            'previous_board_number' => '123455',
         ]);
 
-        $board1000 = Boards::create([
-            'board_number' => '1234578',
-            'amount' => '1000',
-            'previous_board_number' => '1234577',
-        ]);
-
-        $board2000 = Boards::create([
-            'board_number' => '1234580',
-            'amount' => '2000',
-        ]);
+//        $board1000 = Boards::create([
+//            'board_number' => '1234578',
+//            'amount' => '1000',
+//            'previous_board_number' => '1234577',
+//        ]);
+//
+//        $board2000 = Boards::create([
+//            'board_number' => '1234580',
+//            'amount' => '2000',
+//        ]);
 
         $admin = User::create([
             'invited_by' => '0',
@@ -68,11 +69,8 @@ class UserSeeder extends Seeder
         UserBoards::create([
             'user_id' => $pringles2025->id,
             'board_id' => $board100->id,
-            'parent_id' => $admin->id,
-//            'parent_id' => '',
             'user_board_roles' => 'grad',
             'position' => 'left',
-            'username' => $pringles2025->username
         ]);
 
         UserProfileChangedLogs::create([
@@ -92,8 +90,7 @@ class UserSeeder extends Seeder
         ]);
 
         $heart2hand = User::create([
-//            'invited_by' => $admin->id,
-            'invited_by' => $pringles2025->id,
+            'invited_by' => $admin->id,
             'username' => '4Pringles2025',
             'first_name' => 'Elliott',
             'last_name' => 'Nichols',
@@ -108,7 +105,6 @@ class UserSeeder extends Seeder
             'parent_id' => $pringles2025->id,
             'user_board_roles' => 'pregrad',
             'position' => 'left',
-            'username' => $heart2hand->username
         ]);
 
         UserProfileChangedLogs::create([
@@ -126,14 +122,6 @@ class UserSeeder extends Seeder
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
-
-//        GiftLogs::create([
-//            'sent_by' => $heart2hand->id,
-//            'sent_to' => $admin->id,
-//            'board_id' => $board100->id,
-//            'amount' => $board100->amount,
-//            'status' => 'pending'
-//        ]);
 
 //        $giftgiver = User::create([
 //            'invited_by' => $admin->id,
