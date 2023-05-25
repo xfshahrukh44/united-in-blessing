@@ -109,7 +109,7 @@ class RegisterController extends Controller
 
         $invited_user_board = UserBoards::where('user_id', $invited_user->id)
             ->whereHas('board', function ($q){
-                $q->where('amount', '100');
+                $q->where('status', 'active')->where('amount', '100');
             })
             ->has('newbies', '<', 8)
             ->first();
