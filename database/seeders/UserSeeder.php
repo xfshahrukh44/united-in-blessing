@@ -34,6 +34,12 @@ class UserSeeder extends Seeder
             'previous_board_number' => '123455',
         ]);
 
+        $board1000 = Boards::create([
+            'board_number' => '1234578',
+            'amount' => '1000',
+            'previous_board_number' => '1234577',
+        ]);
+
 //        $board1000 = Boards::create([
 //            'board_number' => '1234578',
 //            'amount' => '1000',
