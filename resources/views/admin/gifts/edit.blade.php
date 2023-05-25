@@ -33,6 +33,7 @@
                             <form class="attribute-form" method="post" action="{{ route('admin.gift.update',$gift->id) }}"
                                   enctype="multipart/form-data">
                                 @csrf
+
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">

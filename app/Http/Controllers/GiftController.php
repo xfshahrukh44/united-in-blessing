@@ -48,7 +48,9 @@ class GiftController extends Controller
                         if($data->status === 'accepted') {
                             return '---';
                         }
-                        return '<a disabled title="Edit" href="' . route('admin.gift.edit', $data->id) . '" class="btn btn-dark btn-sm"><i class="fas fa-pencil-alt"></i></a>&nbsp;<button title="Delete" type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>';
+                        return $data->board != null ? '<a disabled title="Edit" href="' . route('admin.gift.edit', $data->id) . '" class="btn btn-dark btn-sm"><i class="fas fa-pencil-alt"></i></a>' : '' . '&nbsp;<button title="Delete" type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>';
+
+//                        return '<a disabled title="Edit" href="' . route('admin.gift.edit', $data->id) . '" class="btn btn-dark btn-sm"><i class="fas fa-pencil-alt"></i></a>&nbsp;<button title="Delete" type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>';
                     })
                     ->rawColumns(['sent_by', 'sent_to', 'board_number', 'amount', 'action', 'status'])
                     ->make(true);
@@ -200,7 +202,7 @@ class GiftController extends Controller
                             for ($x = 1; $x < 8; $x++) {
                                 if (!empty($gradInvitedBy)) {
                                     // find same level board of grad's inviter
-                                    if($grad->user->invitedBy->username == 'admin') {
+                                    if($grad->user->invitedBy!=null && $grad->user->invitedBy->username == 'admin') {
                                         $pregrad = UserBoards::where('board_id', $grad->board->id)
                                             ->where('user_board_roles', 'pregrad')
                                             ->where('position', 'left')
@@ -244,7 +246,7 @@ class GiftController extends Controller
 
                                 // check if inviter is admin
                                 //dd($grad->user->invitedBy);
-                                if ($grad->user->invitedBy->username == 'admin') {
+                                if($grad->user->invitedBy!=null && $grad->user->invitedBy->username == 'admin') {
                                     if ($y == 1) {
                                         $sameLevelBoard = UserBoards::where('board_id', $createBoard->id)
                                             ->has('newbies', '<', 8)
@@ -258,7 +260,7 @@ class GiftController extends Controller
                                 }
                             }
 
-                            if ($sameLevelBoard) {
+                            if (isset($sameLevelBoard)) {
                                 $userPlacement = RegisterController::getPositionToPlaceUserInBoard($sameLevelBoard);
 
                                 // Add User to the board
