@@ -418,9 +418,10 @@ class GiftController extends Controller
                                     }
                                 }
                             }
+//                            dd($gradInvitedBy->invitedBy);
 
 
-                            if (empty($gradInvitedBy)) {
+//                            if (empty($gradInvitedBy)) {
 //                                // Move grad to upper level board
 //                                if ($y == 2) {
 //                                    $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])->has('newbies', '<', 8)->first();
@@ -432,7 +433,7 @@ class GiftController extends Controller
 //                                $undergrads = $leftPregrad->boardChildren($createBoard->id);
 
                                 // check if inviter is admin
-                                //dd($grad->user->invitedBy);
+//                                dd($grad->user->invitedBy, $y);
                                 if ($grad->user->invitedBy->username == 'admin') {
                                     if ($y == 1) {
                                         $sameLevelBoard = UserBoards::where('board_id', $createBoard->id)
@@ -440,12 +441,23 @@ class GiftController extends Controller
                                             ->first();
 
                                     } elseif ($y == 2) {
-                                        $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])->has('newbies', '<', 8)->first();
-                                        $sameLevelBoard = UserBoards::where('board_id', $upperLevelBoard->id)->first();
+                                        $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])
+                                            ->has('newbies', '<', 8)
+                                            ->whereHas('members', function ($query) use ($grad) {
+                                                $query->where('user_id', '!=', $grad->user->id);
+                                            })
+                                            ->first();
+
+                                        if (!empty($upperLevelBoard))
+                                            $sameLevelBoard = UserBoards::where('board_id', $upperLevelBoard->id)->first();
+                                        else{
+                                            break;
+                                        }
                                     }
-//                                    UserBoardsController::create($grad->user->id, $createBoard->id, $undergrads[0]->user->id, 'newbie', 'left');
+
+                                    UserBoardsController::create($grad->user->id, $sameLevelBoard->board->id, $undergrads[0]->user->id, 'newbie', 'left');
                                 }
-                            }
+//                            }
 
                             if ($sameLevelBoard) {
                                 $userPlacement = RegisterController::getPositionToPlaceUserInBoard($sameLevelBoard);
