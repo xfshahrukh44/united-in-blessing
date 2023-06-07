@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -178,12 +179,21 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $old_user = $user->toArray();
+        $userId = $user->id;
 
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'username' => 'required|alpha_dash|unique:user_profile_changed_logs,value,' . $user->id . ',user_id|unique:users,username,' . $user->id,
+            //'username' => 'required|alpha_dash|unique:user_profile_changed_logs,value,' . $user->id . ',user_id|unique:users,username,' . $user->id,
+            'username' => [
+                'required',
+                'alpha_dash',
+                Rule::unique('users', 'username')->ignore($userId),
+//                Rule::unique('user_profile_changed_logs', 'value')->where(function ($query) use ($userId) {
+//                    return $query->where('user_id', $userId);
+//                })
+            ],
             'invited_by' => 'required|alpha_dash',
             'phone' => 'required',
             'user_image' => 'mimes:jpg,jpeg,png',
