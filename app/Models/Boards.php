@@ -32,4 +32,9 @@ class Boards extends Model
     {
         return $this->gifts()->where('sent_by', $user_id)->first();
     }
+
+    public function user_boards ()
+    {
+        return $this->hasMany(UserBoards::class, 'board_id', 'id');
+    }
 }

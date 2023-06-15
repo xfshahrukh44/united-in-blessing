@@ -563,27 +563,33 @@ class GiftController extends Controller
                     $sibling = $this->siblings($parent);
 
                     // Get it's children
-                    foreach ($sibling->boardChildren($sibling->board_id) as $newbie) {
-                        $siblingGift = GiftLogs::where('sent_by', $newbie->user_id)
-                            ->where('board_id', $newbie->board_id)
-                            ->first();
+                    if ($sibling) {
+                        foreach ($sibling->boardChildren($sibling->board_id) as $newbie) {
+                            $siblingGift = GiftLogs::where('sent_by', $newbie->user_id)
+                                ->where('board_id', $newbie->board_id)
+                                ->first();
 
-                        if ($siblingGift->status == 'accepted') {
-                            $sibling = $this->siblings($newbie);
-
-                            if (!is_null($sibling)) {
-                                $siblingGift = GiftLogs::where('sent_by', $sibling->user_id)
-                                    ->where('board_id', $sibling->board_id)
-                                    ->first();
-
-                                if ($siblingGift->status == 'accepted') {
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+//                        dd($siblingGift);
+                            if (!$siblingGift) {
+                                continue;
                             }
-                        } else {
-                            return false;
+                            if ($siblingGift->status == 'accepted') {
+                                $sibling = $this->siblings($newbie);
+
+                                if (!is_null($sibling)) {
+                                    $siblingGift = GiftLogs::where('sent_by', $sibling->user_id)
+                                        ->where('board_id', $sibling->board_id)
+                                        ->first();
+
+                                    if ($siblingGift->status == 'accepted') {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            } else {
+                                return false;
+                            }
                         }
                     }
                 }

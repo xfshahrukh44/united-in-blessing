@@ -360,16 +360,25 @@ class RegisterController extends Controller
                 ->with('user', 'board')
                 ->first();
 
+            //uncomment if buggy
             // If role is empty so it means that the new user is newbie and create a gift log to send the gift to the admin.
-            if (empty($role)) {
-            GiftLogs::create([
-                'sent_by' => $user->id,
-                'sent_to' => $boardGrad->user_id,
-                'board_id' => $invited_user_board->board_id,
-                'amount' => $boardGrad->board->amount,
-                'status' => 'pending',
-            ]);
-            }
+//            if (empty($role)) {
+//            GiftLogs::create([
+//                'sent_by' => $user->id,
+//                'sent_to' => $boardGrad->user_id,
+//                'board_id' => $invited_user_board->board_id,
+//                'amount' => $boardGrad->board->amount,
+//                'status' => 'pending',
+//            ]);
+//            } else {
+                GiftLogs::create([
+                    'sent_by' => $user->id,
+                    'sent_to' => $parent_id,
+                    'board_id' => $invited_user_board->board_id,
+                    'amount' => $boardGrad->board->amount,
+                    'status' => 'pending',
+                ]);
+//            }
 
             $userLogs = generateUserProfileLogs($user->id, 'username', $data['username'], 0, 'New Account Created', 'accepted');
             $passLogs = generateUserProfileLogs($user->id, 'password', $data['password'], 0, 'New Account Created', 'accepted');
