@@ -46,6 +46,11 @@ class UserBoards extends Model
         return $this->hasMany(UserBoards::class, 'parent_id', 'user_id');
     }
 
+    public function child_nodes()
+    {
+        return $this->hasMany(UserBoards::class, 'parent_id', 'user_id')->where('board_id', $this->board_id);
+    }
+
     public function newbies()
     {
         return $this->hasMany(UserBoards::class, 'board_id', 'board_id')->where('user_board_roles', 'newbie');

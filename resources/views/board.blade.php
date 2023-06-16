@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="info">
                                     <p>{{ $board->board_number }}</p>
-                                    <p>132456</p>
+                                    <p>{{ $board->previous_board_number ?? '' }}</p>
                                 </div>
                             </div>
                             <div class="col-md-6">

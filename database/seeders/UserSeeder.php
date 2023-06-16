@@ -27,18 +27,18 @@ class UserSeeder extends Seeder
             'previous_board_number' => '123454',
         ]);
 
-        $board400 = Boards::create([
-            'board_number' => '1234567',
-            'amount' => '400',
-            //'previous_board_number' => '1234566',
-            'previous_board_number' => '123455',
-        ]);
-
-        $board1000 = Boards::create([
-            'board_number' => '1234578',
-            'amount' => '1000',
-            'previous_board_number' => '1234577',
-        ]);
+//        $board400 = Boards::create([
+//            'board_number' => '1234567',
+//            'amount' => '400',
+//            //'previous_board_number' => '1234566',
+//            'previous_board_number' => '123455',
+//        ]);
+//
+//        $board1000 = Boards::create([
+//            'board_number' => '1234578',
+//            'amount' => '1000',
+//            'previous_board_number' => '1234577',
+//        ]);
 
 //        $board1000 = Boards::create([
 //            'board_number' => '1234578',
@@ -127,6 +127,16 @@ class UserSeeder extends Seeder
             'value' => 'user@123',
             'old_value' => 0,
             'message' => 'New Account Created',
+        ]);
+
+        $asd441 = User::create([
+            'invited_by' => $admin->id,
+            'username' => 'asd441',
+            'first_name' => 'Cedric',
+            'last_name' => 'Maya',
+            'email' => 'asd441@mailinator.com',
+            'phone' => '619-779-7928',
+            'password' => Hash::make('user@123'),
         ]);
 
 //        $giftgiver = User::create([

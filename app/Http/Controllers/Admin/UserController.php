@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ArchivedUser;
+use App\Models\Boards;
 use App\Models\GiftLogs;
 use App\Models\User;
 use App\Models\UserBoards;
@@ -60,7 +61,7 @@ class UserController extends Controller
             $user = $user->where('id', $id);
             $password = $password->where('user_id', $id);
         }
-        $data['user'] = $user->firstOrFail();
+//        $data['user'] = $user->firstOrFail();
         $data['password'] = $password->latest()->first();
         return view('admin.users.create', $data);
     }
@@ -97,6 +98,73 @@ class UserController extends Controller
 
         try {
             $inviter = User::where('username', $request->inviters_username)->first();
+            $board_ids_inviter_is_part_of = Boards::where('status', 'active')->whereHas('user_boards', function($q) use ($inviter) {
+                return $q->where('user_id', $inviter->id);
+            })->pluck('id');
+
+            $boards_with_children_space = [];
+            $boards_with_any_space = [];
+            foreach ($board_ids_inviter_is_part_of as $board_id) {
+                $children_count = UserBoards::where('board_id', $board_id)->where('parent_id', $inviter->id)->count();
+                $member_count = UserBoards::where('board_id', $board_id)->count();
+
+                if ($children_count < 2) {
+                    $boards_with_children_space []= $board_id;
+                }
+
+                if ($member_count < 15) {
+                    $boards_with_any_space []= $board_id;
+                }
+            }
+
+            if (count($boards_with_children_space) == 0) {
+                if (count($boards_with_any_space) == 0) {
+                    return redirect()->back()->with('error', 'NO SPACE FOUND FOR USER');
+                }
+                $destination_board_id = $boards_with_any_space[0];
+            } else {
+                $destination_board_id = $boards_with_children_space[0];
+            }
+
+            $pregrad_count = UserBoards::where('board_id', $destination_board_id)->where('user_board_roles', 'pregrad')->count();
+            if ($pregrad_count > 1) {
+                $undergrad_count = UserBoards::where('board_id', $destination_board_id)->where('user_board_roles', 'undergrad')->count();
+                if ($undergrad_count > 3) {
+                    $newbie_count = UserBoards::where('board_id', $destination_board_id)->where('user_board_roles', 'newbie')->count();
+                    if ($newbie_count > 7) {
+                        return redirect()->back()->with('error', 'NO SPACE FOUND FOR USER');
+                    } else {
+                        $user_board_role = 'newbie';
+                        $parent_role = 'undergrad';
+                    }
+                } else {
+                    $user_board_role = 'undergrad';
+                    $parent_role = 'pregrad';
+                }
+            } else {
+                $user_board_role = 'pregrad';
+                $parent_role = 'grad';
+            }
+
+            $potential_parents = UserBoards::where('board_id', $destination_board_id)->where('user_board_roles', $parent_role)->orderBy('position', 'ASC')->get();
+
+            foreach ($potential_parents as $key => $board_member) {
+                if ($board_member->child_nodes()->count() >= 2) {
+                    unset($potential_parents[$key]);
+                }
+            }
+
+            if (count($potential_parents) == 0) {
+                return redirect()->back()->with('error', 'NO SPACE FOUND FOR USER');
+            }
+
+            $parent = $potential_parents->first();
+            if ($parent->child_nodes()->count() == 0) {
+                $position = 'left';
+            } else {
+                $position = 'right';
+            }
+
             if($request->new_user_id) {
                 $userId = $request->new_user_id;
                 User::where('id', $userId)->update([
@@ -122,8 +190,9 @@ class UserController extends Controller
                     'replaced_by' => $userId
                 ]);
             } else {
-                $userId = User::create([
-                    'invited_by' => $inviter->id,
+                $user = User::create([
+//                    'invited_by' => $inviter->id,
+                    'invited_by' => $parent->user_id,
                     'username' => $request->username,
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,
@@ -131,7 +200,27 @@ class UserController extends Controller
                     'phone' => $request->phone,
                     'role' => 'user',
                     'password' => Hash::make($request->password)
-                ])->id;
+                ]);
+                $userId = $user->id;
+
+                $user_board = UserBoards::create([
+                    'user_id' => $userId,
+                    'username' => $request->username,
+                    'board_id' => $destination_board_id,
+                    'parent_id' => $parent->user_id,
+                    'user_board_roles' => $user_board_role,
+                    'position' => $position,
+                ]);
+
+                $destination_board = Boards::find($destination_board_id);
+                GiftLogs::create([
+                    'sent_by' => $userId,
+                    'sent_to' => $parent->user_id,
+                    'board_id' => $destination_board_id,
+                    'amount' => $destination_board->amount,
+                    'status' => 'pending',
+                ]);
+
             }
 
             generateUserProfileLogs($userId, 'username', $request->username, 0, 'New Account Created', 'accepted');
