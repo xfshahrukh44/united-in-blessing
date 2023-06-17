@@ -441,16 +441,15 @@ class GiftController extends Controller
                                                 ->has('newbies', '<', 8)
                                                 ->first();
 
-                                        } elseif ($y == 2) {
-                                            $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])->has('newbies', '<', 8)->first();
-                                            $sameLevelBoard = UserBoards::where('board_id', $upperLevelBoard->id)->first();
-                                        }
-//                                    UserBoardsController::create($grad->user->id, $createBoard->id, $undergrads[0]->user->id, 'newbie', 'left');
+                                    } elseif ($y == 2) {
+                                        $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])->has('newbies', '<', 8)->first();
+                                        $sameLevelBoard = UserBoards::where('board_id', $upperLevelBoard->id)->first();
                                     }
+//                                    UserBoardsController::create($grad->user->id, $createBoard->id, $undergrads[0]->user->id, 'newbie', 'left');
                                 }
                             }
 
-                            if (isset($sameLevelBoard) && $sameLevelBoard) {
+                            if ($sameLevelBoard) {
                                 $userPlacement = RegisterController::getPositionToPlaceUserInBoard($sameLevelBoard);
 
                                 // Add User to the board
@@ -538,8 +537,6 @@ class GiftController extends Controller
     // Check if other members of the same matrix have gifted
     public function giftFromOtherMembersOfSameMatrix($boardUser)
     {
-        $user_board = $boardUser;
-
         // Get Sibling
         $sibling = $this->siblings($boardUser);
 
@@ -556,92 +553,28 @@ class GiftController extends Controller
                     $sibling = $this->siblings($parent);
 
                     // Get it's children
-                    if ($sibling) {
-                        foreach ($sibling->boardChildren($sibling->board_id) as $newbie) {
-                            $siblingGift = GiftLogs::where('sent_by', $newbie->user_id)
-                                ->where('board_id', $newbie->board_id)
-                                ->first();
+                    foreach ($sibling->boardChildren($sibling->board_id) as $newbie) {
+                        $siblingGift = GiftLogs::where('sent_by', $newbie->user_id)
+                            ->where('board_id', $newbie->board_id)
+                            ->first();
 
-                            if (!$siblingGift) {
-                                return false;
-                            }
+                        if ($siblingGift->status == 'accepted') {
+                            $sibling = $this->siblings($newbie);
 
-                            if ($siblingGift->status == 'accepted') {
-                                $sibling = $this->siblings($newbie);
+                            if (!is_null($sibling)) {
+                                $siblingGift = GiftLogs::where('sent_by', $sibling->user_id)
+                                    ->where('board_id', $sibling->board_id)
+                                    ->first();
 
-                                if (!is_null($sibling)) {
-                                    $siblingGift = GiftLogs::where('sent_by', $sibling->user_id)
-                                        ->where('board_id', $sibling->board_id)
-                                        ->first();
-
-                                    if ($siblingGift->status == 'accepted') {
-                                        //if all undergrads have given gifts
-                                        if ($user_board->user_board_roles == 'undergrad') {
-                                            //add grad of previous board as a newbie
-                                            $board = Boards::find($user_board->board_id);
-                                            if (is_null($board->previous_board_number)) {
-                                                return false;
-                                            }
-                                            if (!$previous_board = Boards::where('board_number', $board->previous_board_number)->first()) {
-                                                return false;
-                                            }
-                                            if (!$grad = $previous_board->grad()) {
-                                                return false;
-                                            }
-                                            $potential_parents = UserBoards::where('board_id', $board->id)->where('user_board_roles', 'undergrad')
-                                                ->whereHas('parent', function ($q) {
-                                                    return $q->orderBy('position', 'ASC');
-                                                })
-                                                ->orderBy('position', 'ASC')->get();
-                                            foreach ($potential_parents as $key => $board_member) {
-                                                if ($board_member->child_nodes()->count() >= 2) {
-                                                    unset($potential_parents[$key]);
-                                                }
-                                            }
-                                            if (count($potential_parents) == 0) {
-                                                return false;
-                                            }
-                                            $parent = $potential_parents->first();
-                                            if ($parent->child_nodes()->count() == 0) {
-                                                $position = 'left';
-                                            } else {
-                                                $position = 'right';
-                                            }
-
-                                            $user_board = UserBoards::create([
-                                                'user_id' => $grad->user->id,
-                                                'username' => $grad->user->username,
-                                                'board_id' => $board->id,
-                                                'parent_id' => $parent->user_id,
-                                                'user_board_roles' => 'newbie',
-                                                'position' => $position,
-                                            ]);
-
-                                            GiftLogs::create([
-                                                'sent_by' => $grad->user->id,
-                                                'sent_to' => $parent->user_id,
-                                                'board_id' => $board->id,
-                                                'amount' => $board->amount,
-                                                'status' => 'pending',
-                                            ]);
-
-                                            return false;
-                                        }
-                                        //if matrix role is not newbie
-                                        if ($user_board->user_board_roles != 'newbie') {
-                                            return false;
-                                        }
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
+                                if ($siblingGift->status == 'accepted') {
+                                    return true;
+                                } else {
+                                    return false;
                                 }
-                            } else {
-                                return false;
                             }
+                        } else {
+                            return false;
                         }
-                    } else {
-                        return false;
                     }
                 }
             }
