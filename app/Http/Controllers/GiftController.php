@@ -420,7 +420,7 @@ class GiftController extends Controller
                             }
 
 
-                            if (empty($gradInvitedBy)) {
+//                            if (empty($gradInvitedBy)) {
 //                                // Move grad to upper level board
 //                                if ($y == 2) {
 //                                    $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])->has('newbies', '<', 8)->first();
