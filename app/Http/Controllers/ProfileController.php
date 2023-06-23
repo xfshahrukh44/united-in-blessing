@@ -22,8 +22,8 @@ class ProfileController extends Controller
             'email' => 'required|email|max:255',
             'phone' => 'required',
             'user_image' => 'mimes:jpg,jpeg,png',
-            'password' => ['required', 'string', 'confirmed'],
-            'password_confirmation' => ['required', 'string'],
+            'password' => ['sometimes', 'confirmed'],
+            'password_confirmation' => ['required_with:password'],
         ]);
 
         if ($validator->fails()){
@@ -37,6 +37,14 @@ class ProfileController extends Controller
             $user_image = $fileName;
         }
 
+        if ($request->has('password')) {
+            $user = User::find(Auth::id());
+
+            // Update the user's password
+            $user->password = Hash::make($request->password);
+            $user->save();
+        }
+
         try {
             $user = User::updateOrCreate(
                 [
@@ -48,7 +56,7 @@ class ProfileController extends Controller
                     'email' => $request['email'],
                     'phone' => $request['phone'],
                     'user_image' => $user_image ?? null,
-                    'password' => Hash::make($request['password']),
+//                    'password' => Hash::make($request['password']),
                 ]
             );
 
