@@ -96,7 +96,7 @@
                             <div class="col-md-6 mb-4">
                                 <div class="passwordWrap">
                                     <input type="password" class="form-control" placeholder="Password" name="password"
-                                           required value="">
+                                            value="">
                                     <button type="button" class="revealPassword">
                                         <i class="fas fa-eye"></i>
                                         <i class="fas fa-eye-slash" style="display: none"></i>
@@ -112,7 +112,7 @@
                                 <div class="passwordWrap">
                                     <input type="password" class="form-control" placeholder="Confirm Password"
                                            name="password_confirmation" value=""
-                                           required>
+                                           >
                                     <button type="button" class="revealPassword">
                                         <i class="fas fa-eye"></i>
                                         <i class="fas fa-eye-slash" style="display: none"></i>

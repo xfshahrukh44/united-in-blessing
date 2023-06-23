@@ -48880,3 +48880,7 @@ a.text-muted:hover {
 footer.main-footer strong a {
     color: #f66001 !important;
 }
+.select2-container--default .select2-selection--single{
+    min-height: 38px !important;
+    height: 100% !important;
+}

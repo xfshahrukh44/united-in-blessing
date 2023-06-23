@@ -91,8 +91,11 @@
                                             <div class="form-group">
                                                 <select name="amount" id="amount" class="form-control" required>
                                                     <option value="">Select Board Value</option>
+                                                    <option value="50">$50</option>
                                                     <option value="100">$100</option>
+                                                    <option value="200">$200</option>
                                                     <option value="400">$400</option>
+                                                    <option value="500">$500</option>
                                                     <option value="1000">$1000</option>
                                                     <option value="2000">$2000</option>
                                                 </select>
@@ -167,6 +170,12 @@
 @endsection
 
 @section('script')
+    <script>
+        $(document).ready(function () {
+            // $('input[name="phone"]').inputmask('999-999-9999');
+            $('#grad').select2();
+        })
+    </script>
     <script>
         $('select#previous_board_number').on('change', function () {
             if ($(this).val() != '') {

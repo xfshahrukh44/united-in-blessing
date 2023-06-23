@@ -77,12 +77,24 @@
                                                 <select name="amount" id="amount" class="form-control">
                                                     <option value="">Please Select Value</option>
                                                     <option
+                                                        value="50" {{ (request()->get('amount') == '50') ? 'selected' : '' }}>
+                                                        $50
+                                                    </option>
+                                                    <option
                                                         value="100" {{ (request()->get('amount') == '100') ? 'selected' : '' }}>
                                                         $100
                                                     </option>
                                                     <option
+                                                        value="200" {{ (request()->get('amount') == '200') ? 'selected' : '' }}>
+                                                        $200
+                                                    </option>
+                                                    <option
                                                         value="400" {{ (request()->get('amount') == '400') ? 'selected' : '' }}>
                                                         $400
+                                                    </option>
+                                                    <option
+                                                        value="500" {{ (request()->get('amount') == '500') ? 'selected' : '' }}>
+                                                        $500
                                                     </option>
                                                     <option
                                                         value="1000" {{ (request()->get('amount') == '1000') ? 'selected' : '' }}>

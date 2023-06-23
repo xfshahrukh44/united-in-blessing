@@ -99,6 +99,27 @@ class UserController extends Controller
 
         try {
             $inviter = User::where('username', $request->inviters_username)->first();
+
+            //if invited by admin
+            if ($request->inviters_username == 'admin') {
+                $user = User::create([
+                    'invited_by' => $inviter->id,
+//                    'invited_by' => $parent->user_id,
+                    'username' => $request->username,
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'role' => 'user',
+                    'password' => Hash::make($request->password)
+                ]);
+
+                generateUserProfileLogs($user->id, 'username', $request->username, 0, 'New Account Created', 'accepted');
+                generateUserProfileLogs($user->id, 'password', $request->password, 0, 'New Account Created', 'accepted');
+
+                return redirect()->back()->with('success', 'New User Created Successfully');
+            }
+
             $board_ids_inviter_is_part_of = Boards::where('status', 'active')->whereHas('user_boards', function($q) use ($inviter) {
                 return $q->where('user_id', $inviter->id);
             })->pluck('id');
