@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
@@ -21,6 +22,8 @@ class ProfileController extends Controller
             'email' => 'required|email|max:255',
             'phone' => 'required',
             'user_image' => 'mimes:jpg,jpeg,png',
+            'password' => ['required', 'string', 'confirmed'],
+            'password_confirmation' => ['required', 'string'],
         ]);
 
         if ($validator->fails()){
@@ -45,6 +48,7 @@ class ProfileController extends Controller
                     'email' => $request['email'],
                     'phone' => $request['phone'],
                     'user_image' => $user_image ?? null,
+                    'password' => Hash::make($request['password']),
                 ]
             );
 

@@ -28,7 +28,7 @@
                 <h2>Contact US</h2>
                 <h3>Hello {{ Auth::user()->username }}</h3>
                 <h3>Please Contact An ADMIN</h3>
-                <h3>(Chris, Dee or Elliott)</h3>
+                <h3>(Chris or Elliott)</h3>
                 <h3>VIA</h3>
                 <h3>TELEGRAM <a href=""><i class="fab fa-telegram-plane" aria-hidden="true"></i></a> Message</h3>
                 <h3>for</h3>

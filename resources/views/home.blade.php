@@ -8,7 +8,7 @@
     <div class="main-slider">
         <img class="w-100" src="{{ asset('assets/images/ban1.jpg') }}" alt="First slide">
         <div class="overlay">
-            <h3>Welcome UIB</h3>
+            <h3>Welcome</h3>
             <h2>{{ Auth::user()->first_name . ' ' . Auth::user()->last_name }} ({{ Auth::user()->username }})</h2>
         </div>
     </div>
