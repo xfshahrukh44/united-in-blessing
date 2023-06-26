@@ -66,22 +66,21 @@ class BoardController extends Controller
         DB::beginTransaction();
         try {
 
-            $boardNumber = ($request && $request->board_number) ? $request->board_number : ($latest_board->count() + 1);
-            $previousBoardNumber = ($request && $request->previous_board_number) ? $request->previous_board_number : $previous_board_number;
-            $amount = ($request && $request->amount) ? $request->amount : (string)((int)$amount);
+//            $boardNumber = ($request && $request->board_number) ? $request->board_number : ($latest_board->count() + 1);
+//            $previousBoardNumber = ($request && $request->previous_board_number) ? $request->previous_board_number : $previous_board_number;
+//            $amounts = ($request && $request->amount) ? $request->amount : (string)((int)$amount);
+//
+//            $board = Boards::create([
+//                'board_number' => $boardNumber,
+//                'previous_board_number' => $previousBoardNumber,
+//                'amount' => $amounts,
+//            ]);
 
             $board = Boards::create([
-                'board_number' => $boardNumber,
-                'previous_board_number' => $previousBoardNumber,
-                'amount' => $amount,
+                'board_number' => ($request) ? ($request->board_number ?? $request->board_number) : ($latest_board->count() + 1),
+                'previous_board_number' => ($request) ? ($request->previous_board_number ?? $request->previous_board_number) : $previous_board_number,
+                'amount' => ($request) ? ($request->amount ?? '0') : (string)((int)$amount),
             ]);
-
-//            $board = Boards::create([
-//                'board_number' => ($request) ? ($request->board_number ?? $request->board_number) : ($latest_board->count() + 1),
-//                'previous_board_number' => ($request) ? ($request->previous_board_number ?? $request->previous_board_number) : $previous_board_number,
-////                'amount' => $request->amount,
-//                'amount' => ($request) ? ($request->amount ?? $request->amount) : (string)((int)$amount),
-//            ]);
 
             if ($request) {
                 $grad = UserBoards::create([
