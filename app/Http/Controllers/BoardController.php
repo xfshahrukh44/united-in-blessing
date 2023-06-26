@@ -68,7 +68,7 @@ class BoardController extends Controller
             $board = Boards::create([
                 'board_number' => ($request) ? ($request->board_number ?? $request->board_number) : ($latest_board->count() + 1),
                 'previous_board_number' => ($request) ? ($request->previous_board_number ?? $request->previous_board_number) : $previous_board_number,
-                'amount' => ($request) ? ($request->amount ?? '') : (string)((int)$amount),
+                'amount' => ($request) ? ($request->amount ?? $request->amount->value) : (string)((int)$amount),
             ]);
 
             if ($request) {
