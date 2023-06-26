@@ -380,7 +380,7 @@ class GiftController extends Controller
 //                    dd($grad->user->invitedBy);
 
                     // define board values
-                    $boardValues = array('100', '400', '1000', '2000');
+                    $boardValues = array('50', '100', '200', '400', '500', '1000', '2000');
                     $arrayPosition = array_search($grad->board->amount, $boardValues);
 
                     for ($y = 1; $y < 3; $y++) {
