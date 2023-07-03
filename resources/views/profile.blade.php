@@ -40,7 +40,7 @@
                                     <div class="profileDetl">
                                         <h3>{{ Auth::user()->username }}</h3>
                                         <ul>
-                                            <li><a href="mailto: {{ Auth::user()->email }}">Email:
+                                            <li><a href="mailto:{{ Auth::user()->email }}">Email:
                                                     {{ Auth::user()->email }}</a></li>
                                             <li class="saperator"></li>
                                             <li>
