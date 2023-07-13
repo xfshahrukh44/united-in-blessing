@@ -101,7 +101,7 @@ class UserController extends Controller
             $inviter = User::where('username', $request->inviters_username)->first();
 
             //if invited by admin
-            if ($request->inviters_username == 'admin') {
+            if ($request->has('inviters_username') && strtolower($request->inviters_username) == 'admin') {
                 $user = User::create([
                     'invited_by' => $inviter->id,
 //                    'invited_by' => $parent->user_id,
