@@ -349,7 +349,8 @@ class UserController extends Controller
         $usersCount = User::whereRole('user')->orderByDesc('created_at')->get()->count();
         if ($usersCount === 1 && empty($request['new_user_id'])) {
             $user = User::find($request->delete_user_id);
-            $user->delete();
+//            $user->delete();
+            $user->forceDelete();
             DB::commit();
             echo 1;
         } else {
