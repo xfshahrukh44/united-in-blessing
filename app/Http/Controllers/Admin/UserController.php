@@ -351,6 +351,13 @@ class UserController extends Controller
             $user = User::find($request->delete_user_id);
 //            $user->delete();
             $user->forceDelete();
+
+            //delete logs
+            $username_log = UserProfileChangedLogs::where('key', 'username')->where('value', $user->username)->first();
+            if ($username_log) {
+                $username_log->forceDelete();
+            }
+
             DB::commit();
             echo 1;
         } else {
