@@ -18,7 +18,7 @@
                 @if(count($userData->user->sentByGifts) > 0 && $userData->user->sentByGifts[0]->status === 'pending')
                     <h4 style="color: red">{{$userData['user']->username}}</h4>
                 @else
-                    <h4 style="color: {{ ($userData->user->acceptedGiftsInviters->count() == 1) ? '#ffc107' : (($userData->user->acceptedGiftsInviters->count() == 2) ? 'green' : 'black') }}">{{$userData['user']->username}}</h4>
+                    <h4 style="color: {{ ($userData->user->acceptedGiftsInviters->count() == 1) ? '#ffc107' : (($userData->user->acceptedGiftsInviters->count() == 2) ? 'green' : (($userData->user->acceptedGiftsInviters->count() == 0) ? 'red' : 'black')) }}">{{$userData['user']->username}}</h4>
                 @endif
             </div>
         </div>
