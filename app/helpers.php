@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Boards;
 use App\Models\GiftLogs;
 use App\Models\UserProfileChangedLogs;
 
@@ -48,4 +49,10 @@ if (!function_exists('createGiftLog')) {
 
         return $giftlog->save();
     }
+}
+
+function get_board_grad ($board_id)
+{
+    $board = Boards::find($board_id);
+    return $board && $board->grad() && $board->grad()->user ? $board->grad()->user : null;
 }
