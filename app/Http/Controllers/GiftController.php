@@ -327,7 +327,6 @@ class GiftController extends Controller
             $boardUser = UserBoards::where('user_id', $gift->sent_by)
                 ->where('board_id', $gift->board_id)
                 ->first();
-            //dd($boardUser);
 
             // check if other newbies in the same matrix has gifted
             $response = $this->giftFromOtherMembersOfSameMatrix($boardUser);
@@ -585,11 +584,24 @@ class GiftController extends Controller
                                             if (!$grad = $previous_board->grad()) {
                                                 return false;
                                             }
-                                            $potential_parents = UserBoards::where('board_id', $board->id)->where('user_board_roles', 'undergrad')
+
+                                            $potential_parents = [];
+                                            $potential_parents_left = UserBoards::where('board_id', $board->id)->where('user_board_roles', 'undergrad')
                                                 ->whereHas('parent', function ($q) {
-                                                    return $q->orderBy('position', 'ASC');
+                                                    return $q->where('position', 'left');
                                                 })
                                                 ->orderBy('position', 'ASC')->get();
+                                            $potential_parents_right = UserBoards::where('board_id', $board->id)->where('user_board_roles', 'undergrad')
+                                                ->whereHas('parent', function ($q) {
+                                                    return $q->where('position', 'right');
+                                                })
+                                                ->orderBy('position', 'ASC')->get();
+                                            foreach ($potential_parents_left as $item) {
+                                                $potential_parents []= $item;
+                                            }
+                                            foreach ($potential_parents_right as $item) {
+                                                $potential_parents []= $item;
+                                            }
                                             foreach ($potential_parents as $key => $board_member) {
                                                 if ($board_member->child_nodes()->count() >= 2) {
                                                     unset($potential_parents[$key]);
@@ -598,7 +610,9 @@ class GiftController extends Controller
                                             if (count($potential_parents) == 0) {
                                                 return false;
                                             }
-                                            $parent = $potential_parents->first();
+
+//                                            $parent = $potential_parents->first();
+                                            $parent = $potential_parents[0];
                                             if ($parent->child_nodes()->count() == 0) {
                                                 $position = 'left';
                                             } else {

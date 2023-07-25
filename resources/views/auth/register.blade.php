@@ -48,7 +48,7 @@
                             </div>
                             <div class="col-md-6 mb-4">
                                 <input type="text" class="form-control" placeholder="Please Enter Inviter Username"
-                                       name="inviters_username" value="{{ old('inviters_username') }}" required>
+                                       name="inviters_username" value="{{ old('inviters_username') }}" required autofocus>
                                 @error('inviters_username')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

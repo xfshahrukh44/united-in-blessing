@@ -69,7 +69,7 @@ class UserSeeder extends Seeder
             'last_name' => 'Nichols',
             'email' => 'elliottnichols59@gmail.com',
             'phone' => '619-779-7928',
-            'password' => Hash::make('user@123'),
+            'password' => Hash::make('Pa$$w0rd!'),
         ]);
 
         UserBoards::create([
@@ -90,7 +90,7 @@ class UserSeeder extends Seeder
         UserProfileChangedLogs::create([
             'user_id' => $pringles2025->id,
             'key' => 'password',
-            'value' => 'user@123',
+            'value' => 'Pa$$w0rd!',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -102,7 +102,7 @@ class UserSeeder extends Seeder
             'last_name' => 'Nichols',
             'email' => 'elliottnichols59@gmail.com',
             'phone' => '619-779-7928',
-            'password' => Hash::make('user@123'),
+            'password' => Hash::make('Pa$$w0rd!'),
         ]);
 
         UserBoards::create([
@@ -124,7 +124,7 @@ class UserSeeder extends Seeder
         UserProfileChangedLogs::create([
             'user_id' => $heart2hand->id,
             'key' => 'password',
-            'value' => 'user@123',
+            'value' => 'Pa$$w0rd!',
             'old_value' => 0,
             'message' => 'New Account Created',
         ]);
@@ -136,7 +136,7 @@ class UserSeeder extends Seeder
             'last_name' => 'Maya',
             'email' => 'asd441@mailinator.com',
             'phone' => '619-779-7928',
-            'password' => Hash::make('user@123'),
+            'password' => Hash::make('Pa$$w0rd!'),
         ]);
 
 //        $giftgiver = User::create([
@@ -146,7 +146,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -168,7 +168,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $giftgiver->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -180,7 +180,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -202,7 +202,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $saabkptr->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -214,7 +214,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -236,7 +236,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $mar1000->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -248,7 +248,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -270,7 +270,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $rdkh1->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -282,7 +282,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -304,7 +304,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $coachmakayla1->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -316,7 +316,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -338,7 +338,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $maehelen->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -350,7 +350,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -372,7 +372,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $synergy3->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -384,7 +384,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -406,7 +406,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $daddysgirl->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -418,7 +418,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -440,7 +440,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $pringles2020->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -452,7 +452,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -474,7 +474,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $team2K->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -486,7 +486,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -508,7 +508,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $generous1->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -532,7 +532,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $pringles2025->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -544,7 +544,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -566,7 +566,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $nzinga->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -578,7 +578,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -600,7 +600,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $LoyalT1->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -612,7 +612,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -634,7 +634,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $ghettoeinstein1->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -646,7 +646,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -668,7 +668,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $Zamiyrah->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -693,7 +693,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $maehelen->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -705,7 +705,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -727,7 +727,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $EyeAmLove1->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -751,7 +751,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $daddysgirl->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -775,7 +775,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $LoyalT1->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -799,7 +799,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $Zamiyrah->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -823,7 +823,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $maehelen->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -847,7 +847,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $pringles2025->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -859,7 +859,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -881,7 +881,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $hearts->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -893,7 +893,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -915,7 +915,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $DaisyMary->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
@@ -927,7 +927,7 @@ class UserSeeder extends Seeder
 //            'last_name' => 'Nichols',
 //            'email' => 'elliottnichols59@gmail.com',
 //            'phone' => '619-779-7928',
-//            'password' => Hash::make('user@123'),
+//            'password' => Hash::make('Pa$$w0rd!'),
 //        ]);
 //
 //        UserBoards::create([
@@ -949,7 +949,7 @@ class UserSeeder extends Seeder
 //        UserProfileChangedLogs::create([
 //            'user_id' => $DJs2021->id,
 //            'key' => 'password',
-//            'value' => 'user@123',
+//            'value' => 'Pa$$w0rd!',
 //            'old_value' => 0,
 //            'message' => 'New Account Created',
 //        ]);
