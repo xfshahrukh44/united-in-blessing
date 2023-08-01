@@ -333,7 +333,7 @@ class GiftController extends Controller
 
             if ($response) {
                 // create new board of same amount to move the users of the same matrix
-                $createBoard = BoardController::create($gift->amount, $gift->board->board_number);
+                $createBoard = BoardController::create($gift->amount, $gift->board->board_number, 'auto');
                 if ($createBoard instanceof \Exception) {
                     DB::rollBack();
                     return redirect()->back()->with('error', $createBoard->getMessage());
@@ -379,7 +379,8 @@ class GiftController extends Controller
 //                    dd($grad->user->invitedBy);
 
                     // define board values
-                    $boardValues = array('50', '100', '200', '400', '500', '1000', '2000');
+//                    $boardValues = array('50', '100', '200', '400', '500', '1000', '2000');
+                    $boardValues = array('100', '400', '1000', '2000');
                     $arrayPosition = array_search($grad->board->amount, $boardValues);
 
                     for ($y = 1; $y < 3; $y++) {
@@ -571,73 +572,76 @@ class GiftController extends Controller
                                         ->first();
 
                                     if ($siblingGift->status == 'accepted') {
-                                        //if all undergrads have given gifts
-                                        if ($user_board->user_board_roles == 'undergrad') {
-                                            //add grad of previous board as a newbie
-                                            $board = Boards::find($user_board->board_id);
-                                            if (is_null($board->previous_board_number)) {
-                                                return false;
-                                            }
-                                            if (!$previous_board = Boards::where('board_number', $board->previous_board_number)->first()) {
-                                                return false;
-                                            }
-                                            if (!$grad = $previous_board->grad()) {
-                                                return false;
-                                            }
+//                                        //if all undergrads have given gifts
+//                                        if ($user_board->user_board_roles == 'undergrad') {
+//                                            //add grad of previous board as a newbie
+//                                            $board = Boards::find($user_board->board_id);
+//                                            if (is_null($board->previous_board_number)) {
+//                                                return false;
+//                                            }
+//                                            if (!$previous_board = Boards::where('board_number', $board->previous_board_number)->first()) {
+//                                                return false;
+//                                            }
+//                                            if (!$grad = $previous_board->grad()) {
+//                                                return false;
+//                                            }
+//
+//                                            $potential_parents = [];
+//                                            $potential_parents_left = UserBoards::where('board_id', $board->id)->where('user_board_roles', 'undergrad')
+//                                                ->whereHas('parent', function ($q) {
+//                                                    return $q->where('position', 'left');
+//                                                })
+//                                                ->orderBy('position', 'ASC')->get();
+//                                            $potential_parents_right = UserBoards::where('board_id', $board->id)->where('user_board_roles', 'undergrad')
+//                                                ->whereHas('parent', function ($q) {
+//                                                    return $q->where('position', 'right');
+//                                                })
+//                                                ->orderBy('position', 'ASC')->get();
+//                                            foreach ($potential_parents_left as $item) {
+//                                                $potential_parents []= $item;
+//                                            }
+//                                            foreach ($potential_parents_right as $item) {
+//                                                $potential_parents []= $item;
+//                                            }
+//                                            foreach ($potential_parents as $key => $board_member) {
+//                                                if ($board_member->child_nodes()->count() >= 2) {
+//                                                    unset($potential_parents[$key]);
+//                                                }
+//                                            }
+//                                            if (count($potential_parents) == 0) {
+//                                                return false;
+//                                            }
 
-                                            $potential_parents = [];
-                                            $potential_parents_left = UserBoards::where('board_id', $board->id)->where('user_board_roles', 'undergrad')
-                                                ->whereHas('parent', function ($q) {
-                                                    return $q->where('position', 'left');
-                                                })
-                                                ->orderBy('position', 'ASC')->get();
-                                            $potential_parents_right = UserBoards::where('board_id', $board->id)->where('user_board_roles', 'undergrad')
-                                                ->whereHas('parent', function ($q) {
-                                                    return $q->where('position', 'right');
-                                                })
-                                                ->orderBy('position', 'ASC')->get();
-                                            foreach ($potential_parents_left as $item) {
-                                                $potential_parents []= $item;
-                                            }
-                                            foreach ($potential_parents_right as $item) {
-                                                $potential_parents []= $item;
-                                            }
-                                            foreach ($potential_parents as $key => $board_member) {
-                                                if ($board_member->child_nodes()->count() >= 2) {
-                                                    unset($potential_parents[$key]);
-                                                }
-                                            }
-                                            if (count($potential_parents) == 0) {
-                                                return false;
-                                            }
-
-//                                            $parent = $potential_parents->first();
-                                            $parent = $potential_parents[0];
-                                            if ($parent->child_nodes()->count() == 0) {
-                                                $position = 'left';
-                                            } else {
-                                                $position = 'right';
-                                            }
-
-                                            $user_board = UserBoards::create([
-                                                'user_id' => $grad->user->id,
-                                                'username' => $grad->user->username,
-                                                'board_id' => $board->id,
-                                                'parent_id' => $parent->user_id,
-                                                'user_board_roles' => 'newbie',
-                                                'position' => $position,
-                                            ]);
-
-                                            GiftLogs::create([
-                                                'sent_by' => $grad->user->id,
-                                                'sent_to' => $parent->user_id,
-                                                'board_id' => $board->id,
-                                                'amount' => $board->amount,
-                                                'status' => 'pending',
-                                            ]);
-
-                                            return false;
-                                        }
+//                                            //reset index
+//                                            $potential_parents = array_values($potential_parents);
+//
+////                                            $parent = $potential_parents->first();
+//                                            $parent = $potential_parents[0];
+//                                            if ($parent->child_nodes()->count() == 0) {
+//                                                $position = 'left';
+//                                            } else {
+//                                                $position = 'right';
+//                                            }
+//
+//                                            UserBoards::create([
+//                                                'user_id' => $grad->user->id,
+//                                                'username' => $grad->user->username,
+//                                                'board_id' => $board->id,
+//                                                'parent_id' => $parent->user_id,
+//                                                'user_board_roles' => 'newbie',
+//                                                'position' => $position,
+//                                            ]);
+//
+//                                            GiftLogs::create([
+//                                                'sent_by' => $grad->user->id,
+//                                                'sent_to' => $parent->user_id,
+//                                                'board_id' => $board->id,
+//                                                'amount' => $board->amount,
+//                                                'status' => 'pending',
+//                                            ]);
+//
+//                                            return false;
+//                                        }
                                         //if matrix role is not newbie
                                         if ($user_board->user_board_roles != 'newbie') {
                                             return false;

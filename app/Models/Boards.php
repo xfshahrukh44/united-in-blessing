@@ -11,7 +11,7 @@ class Boards extends Model
 {
     use Uuids, HasFactory, SoftDeletes;
 
-    protected $fillable = ['board_number', 'previous_board_number', 'amount', 'status'];
+    protected $fillable = ['board_number', 'previous_board_number', 'amount', 'status', 'creation_method'];
 
     public function members()
     {

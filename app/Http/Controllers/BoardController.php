@@ -37,7 +37,7 @@ class BoardController extends Controller
         return view('admin.boards.create', $input);
     }
 
-    public static function create($amount = null, $previous_board_number = null)
+    public static function create($amount = null, $previous_board_number = null, $creation_method = 'manual')
     {
         $latest_board = Boards::all();
         $request = Request::capture() ?? null;
@@ -81,6 +81,7 @@ class BoardController extends Controller
                 'previous_board_number' => ($request) ? ($request->previous_board_number ?? $request->previous_board_number) : $previous_board_number,
                 'amount' => ($request && $request->amount) ? $request->amount : (string)((int)$amount),
 //                'amount' => ($request) ? ($request->amount ?? '0') : (string)((int)$amount),
+                'creation_method' => $creation_method
             ]);
 
             if ($request) {
@@ -109,7 +110,7 @@ class BoardController extends Controller
     {
         try {
             if (request()->ajax()) {
-                return datatables()->of(Boards::orderBy('amount', 'ASC')->get())
+                return datatables()->of(Boards::orderBy('created_at', 'DESC')->get())
                     ->addIndexColumn()
                     ->addColumn('amount', function ($data) {
                         return '$ ' . $data->amount;
