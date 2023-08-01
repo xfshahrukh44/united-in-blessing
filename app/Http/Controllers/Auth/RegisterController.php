@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Boards;
 use App\Models\GiftLogs;
 use App\Models\User;
 use App\Models\UserBoards;
@@ -383,6 +384,11 @@ class RegisterController extends Controller
 
             $userLogs = generateUserProfileLogs($user->id, 'username', $data['username'], 0, 'New Account Created', 'accepted');
             $passLogs = generateUserProfileLogs($user->id, 'password', $data['password'], 0, 'New Account Created', 'accepted');
+
+            $inviters_board = Boards::find($invited_user_board->board_id);
+            if ($inviters_board->creation_method == 'manual' && all_undergrads_filled($inviters_board->id)) {
+                add_previous_boards_grad_as_newbie($inviters_board->id);
+            }
 
             return $user;
         }
