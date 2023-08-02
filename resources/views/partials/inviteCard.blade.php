@@ -15,10 +15,11 @@
                 <img
                     src="{{ $userData['user']->user_image ? asset('upload/user/' . $userData['user']->user_image) : asset('assets/images/user.png') }}"
                     alt="">
-                @if(count($userData->user->sentByGifts) > 0 && $userData->user->sentByGifts[0]->status === 'pending')
+{{--                @if(count($userData->user->sentByGifts) > 0 && $userData->user->sentByGifts[0]->status === 'pending')--}}
+                @if(count($userData->user->_sentByGifts($userData->board_id)) > 0 && $userData->user->_sentByGifts($userData->board_id)[0]->status === 'pending')
                     <h4 style="color: red">{{$userData['user']->username}}</h4>
                 @else
-                    <h4 style="color: {{ ($userData->user->acceptedGiftsInviters->count() == 1) ? '#ffc107' : (($userData->user->acceptedGiftsInviters->count() == 2) ? 'green' : 'black') }}">{{$userData['user']->username}}</h4>
+                    <h4 style="color: {{ ($userData->user->_acceptedGiftsInviters($userData->board_id)->count() == 1) ? '#ffc107' : (($userData->user->_acceptedGiftsInviters($userData->board_id)->count() == 2) ? 'green' : 'black') }}">{{$userData['user']->username}}</h4>
                     {{--                    <h4 style="color: {{ ($userData->user->acceptedGiftsInviters->count() == 1) ? '#ffc107' : (($userData->user->acceptedGiftsInviters->count() == 2) ? 'green' : (($userData->user->acceptedGiftsInviters->count() == 0) ? 'red' : 'black')) }}">{{$userData['user']->username}}</h4>--}}
                 @endif
             </div>

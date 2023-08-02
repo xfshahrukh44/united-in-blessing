@@ -2,6 +2,7 @@
 
 use App\Models\Boards;
 use App\Models\GiftLogs;
+use App\Models\User;
 use App\Models\UserBoards;
 use App\Models\UserProfileChangedLogs;
 
@@ -83,6 +84,10 @@ function add_previous_boards_grad_as_newbie ($board_id) {
         return false;
     }
 
+    return add_newbie_to_board($board, $grad->user);
+}
+
+function add_newbie_to_board ($board, $user) {
     $potential_parents = [];
     $potential_parents_left = UserBoards::where('board_id', $board->id)->where('user_board_roles', 'undergrad')
         ->whereHas('parent', function ($q) {
@@ -120,8 +125,8 @@ function add_previous_boards_grad_as_newbie ($board_id) {
     }
 
     UserBoards::create([
-        'user_id' => $grad->user->id,
-        'username' => $grad->user->username,
+        'user_id' => $user->id,
+        'username' => $user->username,
         'board_id' => $board->id,
         'parent_id' => $parent->user_id,
         'user_board_roles' => 'newbie',
@@ -129,7 +134,7 @@ function add_previous_boards_grad_as_newbie ($board_id) {
     ]);
 
     GiftLogs::create([
-        'sent_by' => $grad->user->id,
+        'sent_by' => $user->id,
         'sent_to' => $parent->user_id,
         'board_id' => $board->id,
         'amount' => $board->amount,
@@ -137,4 +142,21 @@ function add_previous_boards_grad_as_newbie ($board_id) {
     ]);
 
     return true;
+}
+
+function get_inviter_tree ($user_id, $range) {
+    $user = User::find($user_id);
+    $inviters = [$user->invited_by];
+
+    for ($i = 1; $i < $range; $i++) {
+        $user = User::find($inviters[count($inviters) - 1]) ?? null;
+
+        if ($user->invited_by == '0') {
+            break;
+        }
+
+        $inviters []= $user->invited_by ?? null;
+    }
+
+    return $inviters;
 }

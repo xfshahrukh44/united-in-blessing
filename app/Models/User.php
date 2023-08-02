@@ -62,6 +62,13 @@ class User extends Authenticatable
             });
     }
 
+    public function _acceptedGiftsInviters($board_id){
+        return $this->hasMany(User::class, 'invited_by', 'id')
+            ->whereHas('giftLogs', function ($q) use ($board_id){
+                $q->where('status', 'accepted')->where('board_id', $board_id);
+            })->get();
+    }
+
     public function giftLogs(){
         return $this->hasMany(GiftLogs::class, 'sent_by');
     }
@@ -81,6 +88,11 @@ class User extends Authenticatable
     public function sentByGifts(){
 //        return GiftLogs::where("sent_by", $this->id)->sum('amount');
         return $this->hasMany(GiftLogs::class, 'sent_by', 'id');
+    }
+
+    public function _sentByGifts($board_id){
+//        return GiftLogs::where("sent_by", $this->id)->sum('amount');
+        return $this->hasMany(GiftLogs::class, 'sent_by', 'id')->where('board_id', $board_id)->get();
     }
 
     public function sentToGifts(){
