@@ -88,6 +88,16 @@ function add_previous_boards_grad_as_newbie ($board_id) {
 }
 
 function add_newbie_to_board ($board, $user) {
+    $user_board_check = UserBoards::where([
+        'user_id' => $user->id,
+        'board_id' => $board->id,
+        'user_board_roles' => 'newbie',
+    ])->first();
+
+    if ($user_board_check) {
+        return false;
+    }
+
     $potential_parents = [];
     $potential_parents_left = UserBoards::where('board_id', $board->id)->where('user_board_roles', 'undergrad')
         ->whereHas('parent', function ($q) {

@@ -33,7 +33,11 @@ class BoardController extends Controller
     public function createForm()
     {
         $input['boards'] = Boards::all();
-        $input['users'] = User::all();
+        $input['users'] = User::all()->filter(function ($user) {
+            $check = UserBoards::where(['user_id' => $user->id, 'user_board_roles' => 'grad'])->first();
+
+            return (bool)is_null($check);
+        });
         return view('admin.boards.create', $input);
     }
 

@@ -383,29 +383,6 @@ class GiftController extends Controller
                     $boardValues = array('100', '400', '1000', '2000');
                     $arrayPosition = array_search($grad->board->amount, $boardValues);
 
-                    //new logic
-                    if ($grad->board->amount != '2000') {
-                        $upgraded_board_amount = $boardValues[$arrayPosition + 1];
-
-                        $inviters = get_inviter_tree($grad->user->id, 10);
-                        foreach ($inviters as $inviter_id) {
-                            $member = UserBoards::whereHas('board', function ($q) use ($upgraded_board_amount) {
-                                return $q->where('amount', $upgraded_board_amount);
-                            })->where('user_id', $inviter_id)->first();
-
-                            if (!$member) {
-                                continue;
-                            }
-
-                            if (!all_undergrads_filled($member->board_id)) {
-                                continue;
-                            }
-
-                            $board = Boards::find($member->board_id);
-                            add_newbie_to_board($board, $grad->user);
-                        }
-                    }
-
                     //old logic (add grad as newbie)
                     for ($y = 1; $y < 3; $y++) {
                         if (array_key_exists($arrayPosition, $boardValues)) {
@@ -501,6 +478,30 @@ class GiftController extends Controller
                         }
 
                         $arrayPosition++;
+                    }
+
+                    //new logic
+                    if ($grad->board->amount != '2000') {
+                        $upgraded_board_amount = $boardValues[$arrayPosition + 1];
+
+                        $inviters = get_inviter_tree($grad->user->id, 10);
+                        foreach ($inviters as $inviter_id) {
+                            $member = UserBoards::whereHas('board', function ($q) use ($upgraded_board_amount) {
+                                return $q->where('amount', $upgraded_board_amount);
+                            })->where('user_id', $inviter_id)->first();
+
+                            if (!$member) {
+                                continue;
+                            }
+
+                            if (!all_undergrads_filled($member->board_id)) {
+                                continue;
+                            }
+
+                            $board = Boards::find($member->board_id);
+                            add_newbie_to_board($board, $grad->user);
+                            break;
+                        }
                     }
                 }
             }
