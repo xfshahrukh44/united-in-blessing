@@ -144,6 +144,73 @@ function add_newbie_to_board ($board, $user) {
     return true;
 }
 
+function add_newbie_to_board2 ($board, $user) {
+    $user_board_check = UserBoards::where([
+        'user_id' => $user->id,
+        'board_id' => $board->id,
+        'user_board_roles' => 'newbie',
+    ])->get();
+
+    if (count($user_board_check) > 0) {
+        return false;
+    }
+
+    $potential_parents = [];
+    $potential_parents_left = UserBoards::where('board_id', $board->id)->where('user_board_roles', 'undergrad')
+        ->whereHas('parent', function ($q) {
+            return $q->where('position', 'left');
+        })
+        ->orderBy('position', 'ASC')->get();
+    $potential_parents_right = UserBoards::where('board_id', $board->id)->where('user_board_roles', 'undergrad')
+        ->whereHas('parent', function ($q) {
+            return $q->where('position', 'right');
+        })
+        ->orderBy('position', 'ASC')->get();
+    foreach ($potential_parents_left as $item) {
+        $potential_parents []= $item;
+    }
+    foreach ($potential_parents_right as $item) {
+        $potential_parents []= $item;
+    }
+    foreach ($potential_parents as $key => $board_member) {
+        if ($board_member->child_nodes()->count() >= 2) {
+            unset($potential_parents[$key]);
+        }
+    }
+    if (count($potential_parents) == 0) {
+        return false;
+    }
+
+    //reset index
+    $potential_parents = array_values($potential_parents);
+
+    $parent = $potential_parents[0];
+    if ($parent->child_nodes()->count() == 0) {
+        $position = 'left';
+    } else {
+        $position = 'right';
+    }
+
+    UserBoards::create([
+        'user_id' => $user->id,
+        'username' => $user->username,
+        'board_id' => $board->id,
+        'parent_id' => $parent->user_id,
+        'user_board_roles' => 'newbie',
+        'position' => $position,
+    ]);
+
+    GiftLogs::create([
+        'sent_by' => $user->id,
+        'sent_to' => $parent->user_id,
+        'board_id' => $board->id,
+        'amount' => $board->amount,
+        'status' => 'pending',
+    ]);
+
+    return true;
+}
+
 function get_inviter_tree ($user_id, $range) {
     $user = User::find($user_id);
     $inviters = [$user->invited_by];
