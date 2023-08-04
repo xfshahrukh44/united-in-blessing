@@ -383,104 +383,8 @@ class GiftController extends Controller
                     $boardValues = array('100', '400', '1000', '2000');
                     $arrayPosition = array_search($grad->board->amount, $boardValues);
 
-                    //old logic (add grad as newbie)
-                    for ($y = 1; $y < 3; $y++) {
-                        if (array_key_exists($arrayPosition, $boardValues)) {
-                            // check inviters for upto 7 positions
-                            for ($x = 1; $x < 8; $x++) {
-                                if (!empty($gradInvitedBy)) {
-                                    // find same level board of grad's inviter
-                                    if($grad->user->invitedBy->username == 'admin') {
-                                        $pregrad = UserBoards::where('board_id', $grad->board->id)
-                                            ->where('user_board_roles', 'pregrad')
-                                            ->where('position', 'left')
-                                            ->first();
-                                        $gradInvitedBy = $pregrad->user;
-                                    }
-                                    $sameLevelBoard = UserBoards::where('user_id', $gradInvitedBy->id)
-                                        ->where('user_board_roles', '!=', 'newbie')
-                                        ->where('board_id', '!=', $grad->board_id)
-                                        ->whereHas('board', function ($q) use ($grad, $boardValues, $arrayPosition) {
-                                            $q->where('amount', $boardValues[$arrayPosition]);
-                                        })
-                                        ->has('newbies', '<', 8)
-                                        ->first();
-
-                                    // check if same level is not found
-                                    if (is_null($sameLevelBoard)) {
-                                        $gradInvitedBy = $gradInvitedBy->invitedBy;
-
-                                        // check if inviter not found
-                                        if (is_null($gradInvitedBy)) {
-                                            break;
-                                        }
-                                    } else {
-                                        break;
-                                    }
-                                }
-                            }
-
-
-                            if (empty($gradInvitedBy)) {
-//                                // Move grad to upper level board
-//                                if ($y == 2) {
-//                                    $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])->has('newbies', '<', 8)->first();
-//                                    dd(UserBoards::where('board_id', $upperLevelBoard->id)->get());
-//                                }
-//
-//                                // Move grad to same level board
-//                                $leftPregrad = UserBoards::where('board_id', $createBoard->id)->where('user_board_roles', 'pregrad')->where('position', 'left')->first();
-//                                $undergrads = $leftPregrad->boardChildren($createBoard->id);
-
-                                // check if inviter is admin
-                                //dd($grad->user->invitedBy);
-                                if ($grad->user->invitedBy->username == 'admin') {
-                                    if ($y == 1) {
-                                        $sameLevelBoard = UserBoards::where('board_id', $createBoard->id)
-                                            ->has('newbies', '<', 8)
-                                            ->first();
-
-                                    } elseif ($y == 2) {
-                                        $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])->has('newbies', '<', 8)->first();
-                                        $sameLevelBoard = UserBoards::where('board_id', $upperLevelBoard->id)->first();
-                                    }
-//                                    UserBoardsController::create($grad->user->id, $createBoard->id, $undergrads[0]->user->id, 'newbie', 'left');
-                                }
-                            }
-
-                            if ($sameLevelBoard) {
-                                $userPlacement = RegisterController::getPositionToPlaceUserInBoard($sameLevelBoard);
-
-                                // Add User to the board
-                                UserBoards::create([
-                                    'user_id' => $grad->user_id,
-                                    'board_id' => $sameLevelBoard->board_id,
-                                    'parent_id' => $userPlacement['parent_id'],
-                                    'user_board_roles' => $userPlacement['role'] != '' ? $userPlacement['role'] : 'newbie',
-                                    'position' => $userPlacement['position']
-                                ]);
-
-                                // Get grad of the board to send the gift
-                                $boardGrad = UserBoards::where('board_id', $sameLevelBoard->board_id)
-                                    ->where('user_board_roles', 'grad')
-                                    ->with('user', 'board')
-                                    ->first();
-
-                                // Create gift log
-                                GiftLogs::create([
-                                    'sent_by' => $grad->user_id,
-                                    'sent_to' => $boardGrad->user_id,
-                                    'board_id' => $sameLevelBoard->board_id,
-                                    'amount' => $sameLevelBoard->board->amount,
-                                    'status' => 'pending',
-                                ]);
-                            }
-                        }
-
-                        $arrayPosition++;
-                    }
-
                     //new logic
+                    $new_logic = false;
                     if ($grad->board->amount != '2000') {
                         $upgraded_board_amount = $boardValues[$arrayPosition + 1];
 
@@ -499,8 +403,107 @@ class GiftController extends Controller
                             }
 
                             $board = Boards::find($member->board_id);
-                            add_newbie_to_board($board, $grad->user);
+                            $new_logic = add_newbie_to_board($board, $grad->user);
                             break;
+                        }
+                    }
+
+                    //old logic (add grad as newbie)
+                    if (!$new_logic) {
+                        for ($y = 1; $y < 3; $y++) {
+                            if (array_key_exists($arrayPosition, $boardValues)) {
+                                // check inviters for upto 7 positions
+                                for ($x = 1; $x < 8; $x++) {
+                                    if (!empty($gradInvitedBy)) {
+                                        // find same level board of grad's inviter
+                                        if($grad->user->invitedBy->username == 'admin') {
+                                            $pregrad = UserBoards::where('board_id', $grad->board->id)
+                                                ->where('user_board_roles', 'pregrad')
+                                                ->where('position', 'left')
+                                                ->first();
+                                            $gradInvitedBy = $pregrad->user;
+                                        }
+                                        $sameLevelBoard = UserBoards::where('user_id', $gradInvitedBy->id)
+                                            ->where('user_board_roles', '!=', 'newbie')
+                                            ->where('board_id', '!=', $grad->board_id)
+                                            ->whereHas('board', function ($q) use ($grad, $boardValues, $arrayPosition) {
+                                                $q->where('amount', $boardValues[$arrayPosition]);
+                                            })
+                                            ->has('newbies', '<', 8)
+                                            ->first();
+
+                                        // check if same level is not found
+                                        if (is_null($sameLevelBoard)) {
+                                            $gradInvitedBy = $gradInvitedBy->invitedBy;
+
+                                            // check if inviter not found
+                                            if (is_null($gradInvitedBy)) {
+                                                break;
+                                            }
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                }
+
+
+                                if (empty($gradInvitedBy)) {
+    //                                // Move grad to upper level board
+    //                                if ($y == 2) {
+    //                                    $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])->has('newbies', '<', 8)->first();
+    //                                    dd(UserBoards::where('board_id', $upperLevelBoard->id)->get());
+    //                                }
+    //
+    //                                // Move grad to same level board
+    //                                $leftPregrad = UserBoards::where('board_id', $createBoard->id)->where('user_board_roles', 'pregrad')->where('position', 'left')->first();
+    //                                $undergrads = $leftPregrad->boardChildren($createBoard->id);
+
+                                    // check if inviter is admin
+                                    //dd($grad->user->invitedBy);
+                                    if ($grad->user->invitedBy->username == 'admin') {
+                                        if ($y == 1) {
+                                            $sameLevelBoard = UserBoards::where('board_id', $createBoard->id)
+                                                ->has('newbies', '<', 8)
+                                                ->first();
+
+                                        } elseif ($y == 2) {
+                                            $upperLevelBoard = Boards::where('amount', $boardValues[$arrayPosition])->has('newbies', '<', 8)->first();
+                                            $sameLevelBoard = UserBoards::where('board_id', $upperLevelBoard->id)->first();
+                                        }
+    //                                    UserBoardsController::create($grad->user->id, $createBoard->id, $undergrads[0]->user->id, 'newbie', 'left');
+                                    }
+                                }
+
+                                if ($sameLevelBoard) {
+                                    $userPlacement = RegisterController::getPositionToPlaceUserInBoard($sameLevelBoard);
+
+                                    // Add User to the board
+                                    UserBoards::create([
+                                        'user_id' => $grad->user_id,
+                                        'board_id' => $sameLevelBoard->board_id,
+                                        'parent_id' => $userPlacement['parent_id'],
+                                        'user_board_roles' => $userPlacement['role'] != '' ? $userPlacement['role'] : 'newbie',
+                                        'position' => $userPlacement['position']
+                                    ]);
+
+                                    // Get grad of the board to send the gift
+                                    $boardGrad = UserBoards::where('board_id', $sameLevelBoard->board_id)
+                                        ->where('user_board_roles', 'grad')
+                                        ->with('user', 'board')
+                                        ->first();
+
+                                    // Create gift log
+                                    GiftLogs::create([
+                                        'sent_by' => $grad->user_id,
+                                        'sent_to' => $boardGrad->user_id,
+                                        'board_id' => $sameLevelBoard->board_id,
+                                        'amount' => $sameLevelBoard->board->amount,
+                                        'status' => 'pending',
+                                    ]);
+                                }
+                            }
+
+                            $arrayPosition++;
                         }
                     }
                 }
