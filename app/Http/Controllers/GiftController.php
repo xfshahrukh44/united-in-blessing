@@ -298,13 +298,13 @@ class GiftController extends Controller
 //
 //    }
 
-/**
- * Update gift status.
- *
- * @param \Illuminate\Http\Request $request
- * @param int $id
- * @return \Illuminate\Http\RedirectResponse
- */
+    /**
+     * Update gift status.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, $id, $status = null)
     {
         DB::beginTransaction();
@@ -691,7 +691,7 @@ class GiftController extends Controller
     {
         try {
             //  Get Details of selected newbie to find the matrix and it's parent
-            $newbie = UserBoards::where('user_id', $gift->sent_by)
+            $newbie = UserBoards::with('parent.parent')->where('user_id', $gift->sent_by)
                 ->where('board_id', $gift->board_id)
                 ->first();
 
