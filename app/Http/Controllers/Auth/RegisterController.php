@@ -520,18 +520,21 @@ class RegisterController extends Controller
                         $parent = $invited_user_board->parent;
                         $sibling = (new RegisterController)->siblings($parent);
 
-                        foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
-                            if ($child->boardChildren($invited_user_board->board_id)->count() < 2) {
-                                $parent_id = $child->user_id;
+                        if ($sibling) {
+                            foreach ($sibling->boardChildren($invited_user_board->board_id) as $child) {
+                                if ($child->boardChildren($invited_user_board->board_id)->count() < 2) {
+                                    $parent_id = $child->user_id;
 
-                                foreach ($child->boardChildren($invited_user_board->board_id) as $newbie) {
-                                    if ($child->position == 'left')
-                                        $position = 'right';
+                                    foreach ($child->boardChildren($invited_user_board->board_id) as $newbie) {
+                                        if ($child->position == 'left')
+                                            $position = 'right';
+                                    }
+
+                                    break;
                                 }
-
-                                break;
                             }
                         }
+
                     }
                 }
 
