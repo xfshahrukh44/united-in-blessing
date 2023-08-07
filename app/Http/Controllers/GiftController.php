@@ -475,29 +475,38 @@ class GiftController extends Controller
                             if ($sameLevelBoard) {
                                 $userPlacement = RegisterController::getPositionToPlaceUserInBoard($sameLevelBoard);
 
-                                // Add User to the board
-                                UserBoards::create([
+                                $user_board_check = UserBoards::where([
                                     'user_id' => $grad->user_id,
                                     'board_id' => $sameLevelBoard->board_id,
-                                    'parent_id' => $userPlacement['parent_id'],
                                     'user_board_roles' => $userPlacement['role'] != '' ? $userPlacement['role'] : 'newbie',
-                                    'position' => $userPlacement['position']
-                                ]);
+                                ])->get();
 
-                                // Get grad of the board to send the gift
-                                $boardGrad = UserBoards::where('board_id', $sameLevelBoard->board_id)
-                                    ->where('user_board_roles', 'grad')
-                                    ->with('user', 'board')
-                                    ->first();
+                                if (count($user_board_check) == 0) {
+                                    // Add User to the board
+                                    UserBoards::create([
+                                        'user_id' => $grad->user_id,
+                                        'board_id' => $sameLevelBoard->board_id,
+                                        'parent_id' => $userPlacement['parent_id'],
+                                        'user_board_roles' => $userPlacement['role'] != '' ? $userPlacement['role'] : 'newbie',
+                                        'position' => $userPlacement['position']
+                                    ]);
 
-                                // Create gift log
-                                GiftLogs::create([
-                                    'sent_by' => $grad->user_id,
-                                    'sent_to' => $boardGrad->user_id,
-                                    'board_id' => $sameLevelBoard->board_id,
-                                    'amount' => $sameLevelBoard->board->amount,
-                                    'status' => 'pending',
-                                ]);
+                                    // Get grad of the board to send the gift
+                                    $boardGrad = UserBoards::where('board_id', $sameLevelBoard->board_id)
+                                        ->where('user_board_roles', 'grad')
+                                        ->with('user', 'board')
+                                        ->first();
+
+                                    // Create gift log
+                                    GiftLogs::create([
+                                        'sent_by' => $grad->user_id,
+                                        'sent_to' => $boardGrad->user_id,
+                                        'board_id' => $sameLevelBoard->board_id,
+                                        'amount' => $sameLevelBoard->board->amount,
+                                        'status' => 'pending',
+                                    ]);
+                                }
+
                             }
                         }
 
