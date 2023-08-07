@@ -5,6 +5,8 @@ use App\Models\GiftLogs;
 use App\Models\User;
 use App\Models\UserBoards;
 use App\Models\UserProfileChangedLogs;
+use Illuminate\Support\Facades\Hash;
+use Faker\Factory as Faker;
 
 if (!function_exists('generateUserProfileLogs')) {
     function generateUserProfileLogs($user_id, $key, $value, $old_value, $message, $status)
@@ -84,7 +86,7 @@ function add_previous_boards_grad_as_newbie ($board_id) {
         return false;
     }
 
-    return add_newbie_to_board($board, $grad->user);
+    return add_newbie_to_board2($board, $grad->user);
 }
 
 function add_newbie_to_board ($board, $user) {
@@ -226,4 +228,107 @@ function get_inviter_tree ($user_id, $range) {
     }
 
     return $inviters;
+}
+
+function auto_fill_board($board_id) {
+    $pregrad_count = UserBoards::where('board_id', $board_id)->where('user_board_roles', 'pregrad')->count();
+    for ($i = 0; $i < (2 - $pregrad_count); $i++) {
+        $parent_and_position = get_parent_and_position($board_id, 'grad');
+        $parent = $parent_and_position['parent'];
+        $position = $parent_and_position['position'];
+
+        $user = create_user_for_board($parent->user_id);
+
+        add_user_to_board($user, $board_id, $parent->user_id, 'pregrad', $position);
+    }
+
+
+    $undergrad_count = UserBoards::where('board_id', $board_id)->where('user_board_roles', 'undergrad')->count();
+    for ($i = 0; $i < (4 - $undergrad_count); $i++) {
+        $parent_and_position = get_parent_and_position($board_id, 'pregrad');
+        $parent = $parent_and_position['parent'];
+        $position = $parent_and_position['position'];
+
+        $user = create_user_for_board($parent->user_id);
+
+        add_user_to_board($user, $board_id, $parent->user_id, 'undergrad', $position);
+    }
+
+
+    $newbie_count = UserBoards::where('board_id', $board_id)->where('user_board_roles', 'newbie')->count();
+    for ($i = 0; $i < (8 - $newbie_count); $i++) {
+        $parent_and_position = get_parent_and_position($board_id, 'undergrad');
+        $parent = $parent_and_position['parent'];
+        $position = $parent_and_position['position'];
+
+        $user = create_user_for_board($parent->user_id);
+
+        add_user_to_board($user, $board_id, $parent->user_id, 'newbie', $position);
+    }
+
+    return true;
+}
+
+function create_user_for_board ($inviter_id) {
+    $faker = Faker::create();
+
+    return User::create([
+        'invited_by' => $inviter_id,
+        'username' => $faker->unique()->userName,
+        'first_name' => $faker->firstName,
+        'last_name' => $faker->lastName,
+        'email' => $faker->unique()->email,
+        'phone' => $faker->phoneNumber,
+        'password' => Hash::make('Pa$$w0rd!'),
+    ]);
+}
+
+function add_user_to_board ($user, $board_id, $parent_id, $role, $position) {
+    $board = Boards::find($board_id);
+    UserBoards::create([
+        'user_id' => $user->id,
+        'username' => $user->username,
+        'board_id' => $board_id,
+        'parent_id' => $parent_id,
+        'user_board_roles' => $role,
+        'position' => $position
+    ]);
+
+    GiftLogs::create([
+        'sent_by' => $user->id,
+        'sent_to' => $parent_id,
+        'board_id' => $board_id,
+        'amount' => $board->amount,
+        'status' => 'pending',
+    ]);
+
+    if ($board->creation_method == 'manual' && all_undergrads_filled($board->id)) {
+        add_previous_boards_grad_as_newbie($board->id);
+    }
+}
+
+function get_parent_and_position ($board_id, $parent_role) {
+    $potential_parents = UserBoards::where('board_id', $board_id)
+        ->where('user_board_roles', $parent_role)
+        ->orderBy('position', 'ASC')
+        ->get();
+
+    foreach ($potential_parents as $key => $board_member) {
+        if ($board_member->child_nodes()->count() >= 2) {
+            unset($potential_parents[$key]);
+        }
+    }
+
+    $parent = $potential_parents->first();
+
+    if ($parent->child_nodes()->count() == 0) {
+        $position = 'left';
+    } else {
+        $position = 'right';
+    }
+
+    return [
+        'parent' => $parent,
+        'position' => $position
+    ];
 }

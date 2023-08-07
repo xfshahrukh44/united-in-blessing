@@ -99,7 +99,13 @@
                     </div>
                 </div>
                 <div class="col-lg-12 text-center mt-3">
-                    <h3>Pending Incoming Gifts</h3>
+                    <h3>
+                        Pending Incoming Gifts
+                        {{--//testing--}}
+                        <span style="background-color: #f6600138">
+                            <a href="{{route('acceptAllGifts')}}">&nbsp;</a>
+                        </span>
+                    </h3>
                 </div>
                 <div class="col-lg-9">
                     <div class="table-responsive">

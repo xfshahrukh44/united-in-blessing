@@ -64,6 +64,7 @@ Route::prefix('/')->middleware('auth')->group(function (){
     // Board Tree
     Route::get('board-tree/{board_id}', [BoardController::class, 'index'])->name('board.index');
 
+    Route::get('auto-fill-board/{board_id}', [BoardController::class, 'autoFillBoard'])->name('board.autoFillBoard');
 });
 
 // User Dashboard while restricting admin to visit these pages
@@ -76,6 +77,7 @@ Route::prefix('/')->middleware(['auth', 'user'])->group(function (){
 
     // Gifts
     Route::get('update-gift-status/{id}/{status}', [GiftController::class, 'update'])->name('update-gift-status');
+    Route::get('accept-all-gifts', [GiftController::class, 'acceptAllGifts'])->name('acceptAllGifts');
 
     // Gifting Form
     Route::get('/gifting-forms', [FrontController::class, 'gifting_forms'])->name('front.gifting-forms');

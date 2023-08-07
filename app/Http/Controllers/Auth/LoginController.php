@@ -50,7 +50,8 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|alpha_dash',
+//            'username' => 'required|alpha_dash',
+            'username' => 'required',
             'password' => 'required|string',
         ]);
 

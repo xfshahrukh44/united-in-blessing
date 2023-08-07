@@ -12,6 +12,7 @@
         "bumbummen99/shoppingcart": "^4.2",
         "doctrine/dbal": "^3.6",
         "elibyy/tcpdf-laravel": "^9.1",
+        "fakerphp/faker": "^1.9",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",

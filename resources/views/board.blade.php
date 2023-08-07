@@ -36,7 +36,13 @@
                         <div class="row justify-content-between">
                             <div class="col-md-12 justify-content-center mb-4">
                                 <div class="titles">
-                                    <p>${{ $board->amount }} Board</p>
+                                    <p>
+                                        ${{ $board->amount }} Board
+                                        {{--//testing--}}
+                                        <span style="background-color: #f6600138">
+                                            <a href="{{route('board.autoFillBoard', $board->id)}}">&nbsp;</a>
+                                        </span>
+                                    </p>
                                 </div>
                             </div>
                             <div class="col-md-6">

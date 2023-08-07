@@ -305,7 +305,7 @@ class GiftController extends Controller
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id, $status = null)
+    public function update(Request $request, $id, $status = null, $redirect = true)
     {
         DB::beginTransaction();
         // if there's status in request
@@ -526,12 +526,33 @@ class GiftController extends Controller
             $msg = 'Your Request has been submitted to the Admin.';
         }
 
+        if (!$redirect) {
+            return true;
+        }
+
         if (Auth::user()->role == 'admin') {
             return redirect()->route('admin.gift.index')->with('success', 'Status Updated Successfully');
         } else {
             return redirect()->back()->with('success', $msg);
         }
 
+    }
+
+
+    public function acceptAllGifts(Request $request)
+    {
+        $pendingIncomingGifts = GiftLogs::whereHas('board', function ($q) {
+            return $q->whereHas('members', function ($q) {
+                return $q->where('user_board_roles', 'grad')->where('user_id', Auth::id());
+            });
+        })->where('status', 'pending')->with('board', 'sender')->orderBy('created_at', 'ASC')->get();
+
+        $request['status'] = 'accepted';
+        foreach ($pendingIncomingGifts as $gift) {
+            $this->update($request, $gift->id, 'accepted', false);
+        }
+
+        return redirect()->back();
     }
 
 

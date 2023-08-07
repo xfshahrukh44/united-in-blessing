@@ -30,6 +30,16 @@ class BoardController extends Controller
         }
     }
 
+    public function autoFillBoard($board_id)
+    {
+        try {
+            auto_fill_board($board_id);
+            return redirect()->route('board.index', $board_id);
+        } catch (\Exception $exception) {
+            return back()->withErrors($exception->getMessage());
+        }
+    }
+
     public function createForm()
     {
         $input['boards'] = Boards::all();
