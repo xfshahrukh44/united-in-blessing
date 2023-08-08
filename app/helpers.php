@@ -285,26 +285,36 @@ function create_user_for_board ($inviter_id) {
 
 function add_user_to_board ($user, $board_id, $parent_id, $role, $position) {
     $board = Boards::find($board_id);
-    UserBoards::create([
+
+    $user_board_check = UserBoards::where([
         'user_id' => $user->id,
         'username' => $user->username,
         'board_id' => $board_id,
-        'parent_id' => $parent_id,
-        'user_board_roles' => $role,
-        'position' => $position
-    ]);
+    ])->get();
 
-    GiftLogs::create([
-        'sent_by' => $user->id,
-        'sent_to' => $parent_id,
-        'board_id' => $board_id,
-        'amount' => $board->amount,
-        'status' => 'pending',
-    ]);
+    if (count($user_board_check) == 0) {
+        UserBoards::create([
+            'user_id' => $user->id,
+            'username' => $user->username,
+            'board_id' => $board_id,
+            'parent_id' => $parent_id,
+            'user_board_roles' => $role,
+            'position' => $position
+        ]);
 
-    if ($board->creation_method == 'manual' && all_undergrads_filled($board->id)) {
-        add_previous_boards_grad_as_newbie($board->id);
+        GiftLogs::create([
+            'sent_by' => $user->id,
+            'sent_to' => $parent_id,
+            'board_id' => $board_id,
+            'amount' => $board->amount,
+            'status' => 'pending',
+        ]);
+
+        if ($board->creation_method == 'manual' && all_undergrads_filled($board->id)) {
+            add_previous_boards_grad_as_newbie($board->id);
+        }
     }
+
 }
 
 function get_parent_and_position ($board_id, $parent_role) {
@@ -321,6 +331,49 @@ function get_parent_and_position ($board_id, $parent_role) {
 
     $parent = $potential_parents->first();
 
+    if ($parent->child_nodes()->count() == 0) {
+        $position = 'left';
+    } else {
+        $position = 'right';
+    }
+
+    return [
+        'parent' => $parent,
+        'position' => $position
+    ];
+}
+
+function get_left_most_undergrad_parent_and_position ($board_id) {
+    $potential_parents = [];
+    $potential_parents_left = UserBoards::where('board_id', $board_id)->where('user_board_roles', 'undergrad')
+        ->whereHas('parent', function ($q) {
+            return $q->where('position', 'left');
+        })
+        ->orderBy('position', 'ASC')->get();
+    $potential_parents_right = UserBoards::where('board_id', $board_id)->where('user_board_roles', 'undergrad')
+        ->whereHas('parent', function ($q) {
+            return $q->where('position', 'right');
+        })
+        ->orderBy('position', 'ASC')->get();
+    foreach ($potential_parents_left as $item) {
+        $potential_parents []= $item;
+    }
+    foreach ($potential_parents_right as $item) {
+        $potential_parents []= $item;
+    }
+    foreach ($potential_parents as $key => $board_member) {
+        if ($board_member->child_nodes()->count() >= 2) {
+            unset($potential_parents[$key]);
+        }
+    }
+    if (count($potential_parents) == 0) {
+        return false;
+    }
+
+    //reset index
+    $potential_parents = array_values($potential_parents);
+
+    $parent = $potential_parents[0];
     if ($parent->child_nodes()->count() == 0) {
         $position = 'left';
     } else {
