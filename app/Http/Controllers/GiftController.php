@@ -387,8 +387,11 @@ class GiftController extends Controller
                     //new logic
                     if ($grad->board->amount != '2000') {
                         $upgraded_board_amount = $boardValues[$arrayPosition + 1];
+                        Log::info('$upgraded_board_amount' . $upgraded_board_amount);
 
                         $inviters = get_inviter_tree($grad->user->id, 10);
+
+                        $inviter_as_parent_found = false;
                         foreach ($inviters as $inviter_id) {
                             $member = UserBoards::whereHas('board', function ($q) use ($upgraded_board_amount) {
                                 return $q->where('amount', $upgraded_board_amount)->where('status', 'active');
@@ -402,9 +405,27 @@ class GiftController extends Controller
                                 continue;
                             }
 
+
                             $board = Boards::find($member->board_id);
+                            Log::info('PROMOTION | upgraded amount: ' . $upgraded_board_amount);
+                            Log::info('PROMOTION | board id: ' . $board->id);
                             add_newbie_to_board2($board, $grad->user);
+                            $inviter_as_parent_found = true;
                             break;
+                        }
+
+                        //if $inviter_as_parent_found is still false
+                        if (!$inviter_as_parent_found) {
+                            $member = UserBoards::whereHas('board', function ($q) use ($upgraded_board_amount) {
+                                return $q->where('amount', $upgraded_board_amount)->where('status', 'active');
+                            })->has('newbies', '<', 8)->has('undergrads', '=', 4)->orderBy('created_at', 'ASC')->first();
+
+                            if ($member) {
+                                $board = Boards::find($member->board_id);
+                                Log::info('PROMOTION | upgraded amount: ' . $upgraded_board_amount);
+                                Log::info('PROMOTION | board id: ' . $board->id);
+                                add_newbie_to_board2($board, $grad->user);
+                            }
                         }
                     }
 
