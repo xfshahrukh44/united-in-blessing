@@ -102,9 +102,9 @@
                     <h3>
                         Pending Incoming Gifts
                         {{--//testing--}}
-                        <span style="background-color: #f6600138">
-                            <a href="{{route('acceptAllGifts')}}">&nbsp;</a>
-                        </span>
+{{--                        <span style="background-color: #f6600138">--}}
+{{--                            <a href="{{route('acceptAllGifts')}}">&nbsp;</a>--}}
+{{--                        </span>--}}
                     </h3>
                 </div>
                 <div class="col-lg-9">

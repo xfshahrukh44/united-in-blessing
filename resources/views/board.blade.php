@@ -39,9 +39,9 @@
                                     <p>
                                         ${{ $board->amount }} Board
                                         {{--//testing--}}
-                                        <span style="background-color: #f6600138">
-                                            <a href="{{route('board.autoFillBoard', $board->id)}}">&nbsp;</a>
-                                        </span>
+{{--                                        <span style="background-color: #f6600138">--}}
+{{--                                            <a href="{{route('board.autoFillBoard', $board->id)}}">&nbsp;</a>--}}
+{{--                                        </span>--}}
                                     </p>
                                 </div>
                             </div>
