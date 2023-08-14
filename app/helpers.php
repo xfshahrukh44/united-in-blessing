@@ -82,6 +82,11 @@ function add_previous_boards_grad_as_newbie ($board_id) {
     if (!$previous_board = Boards::where('board_number', $board->previous_board_number)->first()) {
         return false;
     }
+
+    if ($previous_board->status != 'retired') {
+        return false;
+    }
+
     if (!$grad = $previous_board->grad()) {
         return false;
     }

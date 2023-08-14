@@ -53,7 +53,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'inviters_username' => ['required', 'alpha_dash', function ($attribute, $val, $fail) {
+//            'inviters_username' => ['required', 'alpha_dash', function ($attribute, $val, $fail) {
+            'inviters_username' => ['required', function ($attribute, $val, $fail) {
                 if (!$val) return;
 
                 if (!User::where('username', $val)->exists()) {
