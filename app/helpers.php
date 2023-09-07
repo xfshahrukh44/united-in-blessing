@@ -155,7 +155,7 @@ function add_newbie_to_board2 ($board, $user) {
     $user_board_check = UserBoards::where([
         'user_id' => $user->id,
         'board_id' => $board->id,
-        'user_board_roles' => 'newbie',
+//        'user_board_roles' => 'newbie',
     ])->get();
 
     if (count($user_board_check) > 0) {
