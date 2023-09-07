@@ -175,7 +175,7 @@
                                 <tr>
                                     <td>${{ round($gift->amount) }}</td>
                                     <td>{{ $gift->board->board_number ?? '---' }}</td>
-                                    <td class="text-capitalize">{{ $gift->userBoardPosition($gift->board->id, $gift->sender->id)->formatted_user_board_roles ?? '---' }}</td>
+                                    <td class="text-capitalize">{{ $gift->userBoardPosition($gift->board_id, $gift->sender->id)->formatted_user_board_roles ?? '---' }}</td>
 {{--                                    <td>{{ $gift->receiver->username ?? '---' }}</td>--}}
                                     <td>{{ $grad->username ?? '---' }}</td>
                                     <td>{{ $gift->receiver->phone ?? '---' }}</td>

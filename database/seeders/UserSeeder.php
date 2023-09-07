@@ -139,6 +139,16 @@ class UserSeeder extends Seeder
             'password' => Hash::make('Pa$$w0rd!'),
         ]);
 
+        $asd442 = User::create([
+            'invited_by' => $admin->id,
+            'username' => 'asd442',
+            'first_name' => 'Cedric',
+            'last_name' => 'Maya 2',
+            'email' => 'asd442@mailinator.com',
+            'phone' => '619-779-7928',
+            'password' => Hash::make('Pa$$w0rd!'),
+        ]);
+
 //        $giftgiver = User::create([
 //            'invited_by' => $admin->id,
 //            'username' => 'giftgiver',
