@@ -409,8 +409,7 @@ class GiftController extends Controller
                             $board = Boards::find($member->board_id);
                             Log::info('PROMOTION | upgraded amount: ' . $upgraded_board_amount);
                             Log::info('PROMOTION | board id: ' . $board->id);
-                            add_newbie_to_board2($board, $grad->user);
-                            $inviter_as_parent_found = true;
+                            $inviter_as_parent_found = add_newbie_to_board2($board, $grad->user);
                             break;
                         }
 
@@ -418,7 +417,11 @@ class GiftController extends Controller
                         if (!$inviter_as_parent_found) {
                             $member = UserBoards::whereHas('board', function ($q) use ($upgraded_board_amount) {
                                 return $q->where('amount', $upgraded_board_amount)->where('status', 'active');
-                            })->has('newbies', '<', 8)->has('undergrads', '=', 4)->orderBy('created_at', 'ASC')->first();
+                            })
+                            ->whereNotExists(function ($q) use($grad) {
+                                return $q->where('user_id', $grad->user->id);
+                            })
+                            ->has('newbies', '<', 8)->has('undergrads', '=', 4)->orderBy('created_at', 'ASC')->first();
 
                             if ($member) {
                                 $board = Boards::find($member->board_id);

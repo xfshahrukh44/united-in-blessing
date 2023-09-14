@@ -390,3 +390,7 @@ function get_left_most_undergrad_parent_and_position ($board_id) {
         'position' => $position
     ];
 }
+
+function system_invitees_count ($user_id) {
+    return User::where('invited_by', $user_id)->count() ?? 0;
+}

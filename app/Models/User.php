@@ -99,6 +99,10 @@ class User extends Authenticatable
         return $this->hasMany(GiftLogs::class, 'sent_to', 'id');
     }
 
+    public function _sentToGifts($board_id){
+        return $this->hasMany(GiftLogs::class, 'sent_to', 'id')->where('board_id', $board_id)->get();
+    }
+
     public function sumAllGift(){
         return GiftLogs::where('sent_by', $this->id)->orWhere('sent_to', $this->id)->get();
 //        return $this->hasMany(GiftLogs::class, )

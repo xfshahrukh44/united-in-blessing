@@ -33,8 +33,13 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RemoveUserRequestController;
 use App\Http\Controllers\UserBoardsController;
 use App\Http\Controllers\UsernameController;
+use App\Models\GiftLogs;
+use App\Models\User;
+use App\Models\UserBoards;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use Faker\Factory as Faker;
 
 /*
 |--------------------------------------------------------------------------
@@ -283,3 +288,56 @@ Route::namespace('Admin')->prefix('/admin')->middleware('admin')->group(function
     /*  Shipping Services   */
     Route::match(['get', 'post'], 'shipping-services', [\App\Http\Controllers\Admin\ShippingServiceController::class, 'index'])->name('shippingServices');
 });
+
+Route::get('temp', function () {
+    $board_21_id = '5e423c7b-0674-4244-88c6-345d09f65686';
+    $board_11_id = '57396d97-8d81-4900-98ce-69bde72579e9';
+    $u8_id = '51290ac7-8939-4b42-8c45-40c2b80ef32c';
+    $u61_id = 'fa2e09bd-b712-4da1-b2d0-d5135fc1b84c';
+    $u63_id = '00e59752-e250-4cf9-8f95-d766cb851be5';
+    $u31_id = 'd551adfc-7425-4951-a661-0eae7c283507';
+
+    //Board Number: 21 - Undergrad U8 will get replace by U61
+    UserBoards::where([ 'board_id' => $board_21_id, 'user_id' => $u8_id ])->firstOrFail()->update([
+        'user_id' => $u61_id
+    ]);
+    GiftLogs::where([ 'board_id' => $board_21_id, 'sent_by' => $u61_id ])->firstOrFail()->update([
+        'status' => 'accepted'
+    ]);
+
+    //Board Number: 21 - Newbies:  will create two newbies U69 and U70 and it will take the place of U61
+    $faker = Faker::create();
+    $u69_id = User::create([ 'invited_by' => $u63_id, 'username' => 'U69', 'first_name' => 'User', 'last_name' => '69', 'email' => $faker->unique()->email, 'phone' => $faker->phoneNumber, 'role' => 'user', 'password' => Hash::make('Pa$$w0rd!') ])->id;
+    $u70_id = User::create([ 'invited_by' => $u63_id, 'username' => 'U70', 'first_name' => 'User', 'last_name' => '70', 'email' => $faker->unique()->email, 'phone' => $faker->phoneNumber, 'role' => 'user', 'password' => Hash::make('Pa$$w0rd!') ])->id;
+    generateUserProfileLogs($u69_id, 'username', 'U69', 0, 'New Account Created', 'accepted');
+    generateUserProfileLogs($u70_id, 'username', 'U70', 0, 'New Account Created', 'accepted');
+    generateUserProfileLogs($u69_id, 'password', 'Pa$$w0rd!', 0, 'New Account Created', 'accepted');
+    generateUserProfileLogs($u70_id, 'password', 'Pa$$w0rd!', 0, 'New Account Created', 'accepted');
+
+    UserBoards::where([ 'board_id' => $board_21_id, 'user_id' => $u61_id, 'position' => 'left' ])->firstOrFail()->update([
+        'user_id' => $u69_id
+    ]);
+    UserBoards::where([ 'board_id' => $board_21_id, 'user_id' => $u61_id, 'position' => 'right' ])->firstOrFail()->update([
+        'user_id' => $u70_id
+    ]);
+    GiftLogs::where([ 'board_id' => $board_21_id, 'sent_by' => $u61_id ])->firstOrFail()->update([
+        'sent_by' => $u69_id,
+        'status' => 'pending'
+    ]);
+    GiftLogs::where([ 'board_id' => $board_21_id, 'sent_by' => $u61_id ])->firstOrFail()->update([
+        'sent_by' => $u70_id,
+        'status' => 'pending'
+    ]);
+
+    //Board Number: 11 - Newbies: U8 will replace with U61
+    UserBoards::where([ 'board_id' => $board_11_id, 'user_id' => $u8_id, 'parent_id' => $u31_id ])->firstOrFail()->update([
+        'user_id' => $u61_id
+    ]);
+    GiftLogs::where([ 'board_id' => $board_11_id, 'sent_by' => $u8_id ])->firstOrFail()->update([
+        'sent_by' => $u61_id,
+        'status' => 'pending',
+    ]);
+
+
+
+})->name('temp');
