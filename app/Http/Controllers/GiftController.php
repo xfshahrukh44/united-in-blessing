@@ -33,7 +33,9 @@ class GiftController extends Controller
                         return $data->sender ? $data->sender->username . ' (' . $data->sender->first_name . ' ' . $data->sender->last_name . ')' : '---';
                     })
                     ->addColumn('sent_to', function ($data) {
-                        return $data->receiver ? $data->receiver->username . ' (' . $data->receiver->first_name . ' ' . $data->receiver->last_name . ')' : '---';
+                        $grad = get_board_grad($data->board_id) ?? $data->receiver;
+//                        return $data->receiver ? $data->receiver->username . ' (' . $data->receiver->first_name . ' ' . $data->receiver->last_name . ')' : '---';
+                        return $grad ? $grad->username . ' (' . $grad->first_name . ' ' . $grad->last_name . ')' : '---';
                     })
                     ->addColumn('board_number', function ($data) {
                         return $data->board->board_number ?? '---';
