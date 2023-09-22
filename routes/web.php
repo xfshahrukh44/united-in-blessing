@@ -33,6 +33,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RemoveUserRequestController;
 use App\Http\Controllers\UserBoardsController;
 use App\Http\Controllers\UsernameController;
+use App\Models\Boards;
 use App\Models\GiftLogs;
 use App\Models\User;
 use App\Models\UserBoards;
@@ -338,6 +339,40 @@ Route::get('temp', function () {
 //        'status' => 'pending',
 //    ]);
 
+//    -----------------------------------------------------------------------------------------------------------------------------
+//    21-09-23 task: delete user U65-U80
+    $users_to_purge = [
+        'fe92dfc0-97eb-4ad7-be99-f300f5d27cf1', //U65
+        '9d69e563-b503-4e67-8dac-9ae15d4862ef', //U66
+        '017e2cfa-5b22-4182-888f-8a858c5f8767', //U67
+        '08cc097f-4de9-446b-b7e0-d23f467f5034', //U68
+        'f98f8a7f-1861-4439-8168-8f8e59821416', //U69
+        '9628b484-2cef-4887-b0e6-ef1637826d26', //U70
+        '5926da42-3fd0-4e02-aa67-325470d69180', //U71
+        'cf9514cb-14c3-48d4-a44e-8871a7528841', //U72
+        '6960fc30-a57c-496d-a116-ecc117b5c2b7', //U73
+        'ec993ecb-927c-46d4-9951-2bbfceae04cd', //U74
+        '06a86888-3fc1-487c-9c1b-24a304ab4879', //U75
+        '5f38645b-5eb9-46f7-9df0-809ba07d805d', //U76
+        '59efabc9-d4ec-4018-b685-c83a34d83ed6', //U77
+        'a3d3b49c-b4e7-4617-ab12-f3ee590c46e0', //U78
+        '9b21c31c-ce30-46a0-a550-694aa749862f', //U79
+        'e685d8e7-7300-46b2-a427-09660118851d', //U80
+    ];
+    foreach ($users_to_purge as $user_to_purge) {
+        purge_user($user_to_purge);
+    }
 
-
+    $boards_to_purge = [
+        '24d917ad-f889-4d6e-bdad-252bd7762d0a', //board 23
+        'fb510846-375a-4d74-a944-d178e1f6fca6', //board 24
+        '501fbfd9-755d-4667-b4b7-968592039606', //board 25
+        '65fcb1f4-c15b-402c-b9b0-38a4a4f8e360', //board 26
+    ];
+    foreach ($boards_to_purge as $board_to_purge) {
+        purge_board($board_to_purge);
+    }
+    //update board 21 status
+    Boards::where('id', '5e423c7b-0674-4244-88c6-345d09f65686')->update([ 'status' => 'active' ]);
+    //    -----------------------------------------------------------------------------------------------------------------------------
 })->name('temp');

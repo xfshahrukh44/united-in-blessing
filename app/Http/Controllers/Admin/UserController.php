@@ -248,6 +248,11 @@ class UserController extends Controller
             generateUserProfileLogs($userId, 'username', $request->username, 0, 'New Account Created', 'accepted');
             generateUserProfileLogs($userId, 'password', $request->password, 0, 'New Account Created', 'accepted');
 
+            $inviters_board = Boards::find($destination_board_id);
+            if ($inviters_board->creation_method == 'manual' && all_undergrads_filled($inviters_board->id)) {
+                add_previous_boards_grad_as_newbie($inviters_board->id);
+            }
+
             return redirect()->back()->with('success', 'New User Created Successfully');
         } catch (\Exception $exception) {
             return redirect()->back()->with('error', $exception->getMessage());

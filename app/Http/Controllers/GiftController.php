@@ -301,6 +301,48 @@ class GiftController extends Controller
 //
 //    }
 
+    public function update(Request $request, $id, $status = null, $redirect = true)
+    {
+        if ($request)
+            $status = $request->status;
+
+        $gift = GiftLogs::where('id', $id)->first();
+        $gift->status = $status;
+        $gift->save();
+
+
+        if ($status == 'accepted') {
+            //if all gifts accepted
+            if (board_is_ready_to_retire($gift->board_id)) {
+                //mark board as retired
+                $board = Boards::find($gift->board_id);
+                $board->status = 'retired';
+                $board->save();
+
+                //split board
+                $split_board_res = split_board($board->id);
+                if ($split_board_res == false) {
+                    return redirect()->back()->with('error', 'Split board failed');
+                }
+
+                //add grad to left-split board as newbie
+                add_previous_boards_grad_as_newbie($split_board_res['left_board_id']);
+
+                //add grad to upper-value board
+                if ($board->amount != '2000') {
+                    $res = add_grad_to_upper_value_board($board->id);
+                    $res = add_grad_to_same_value_board($board->id);
+                }
+            }
+        }
+
+        if (Auth::user()->role == 'admin') {
+            return redirect()->route('admin.gift.index')->with('success', 'Status Updated Successfully');
+        } else {
+            return redirect()->back()->with('success', 'Status Updated Successfully');
+        }
+    }
+
     /**
      * Update gift status.
      *
@@ -308,7 +350,7 @@ class GiftController extends Controller
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id, $status = null, $redirect = true)
+    public function updateOld(Request $request, $id, $status = null, $redirect = true)
     {
         DB::beginTransaction();
         // if there's status in request
@@ -385,74 +427,6 @@ class GiftController extends Controller
 //                    $boardValues = array('50', '100', '200', '400', '500', '1000', '2000');
                     $boardValues = array('100', '400', '1000', '2000');
                     $arrayPosition = array_search($grad->board->amount, $boardValues);
-
-                    //new logic
-                    if ($grad->board->amount != '2000') {
-                        $upgraded_board_amount = $boardValues[$arrayPosition + 1];
-                        Log::info('$upgraded_board_amount' . $upgraded_board_amount);
-
-                        $inviters = get_inviter_tree($grad->user->id, 10);
-
-                        $inviter_as_parent_found = false;
-                        foreach ($inviters as $inviter_id) {
-                            $member = UserBoards::whereHas('board', function ($q) use ($upgraded_board_amount) {
-                                return $q->where('amount', $upgraded_board_amount)->where('status', 'active');
-                            })->where('user_id', $inviter_id)->first();
-
-                            if (!$member) {
-                                continue;
-                            }
-
-                            if (!all_undergrads_filled($member->board_id)) {
-                                continue;
-                            }
-
-
-                            $board = Boards::find($member->board_id);
-                            Log::info('PROMOTION | upgraded amount: ' . $upgraded_board_amount);
-                            Log::info('PROMOTION | board id: ' . $board->id);
-                            $inviter_as_parent_found = add_newbie_to_board2($board, $grad->user);
-                            break;
-                        }
-
-                        //if $inviter_as_parent_found is still false
-                        if (!$inviter_as_parent_found) {
-                            $member = UserBoards::whereHas('board', function ($q) use ($upgraded_board_amount) {
-                                return $q->where('amount', $upgraded_board_amount)->where('status', 'active');
-                            })
-                            ->whereNotExists(function ($q) use($grad) {
-                                return $q->where('user_id', $grad->user->id);
-                            })
-                            ->has('newbies', '<', 8)->has('undergrads', '=', 4)->orderBy('created_at', 'ASC')->first();
-
-                            if ($member) {
-                                $board = Boards::find($member->board_id);
-                                Log::info('PROMOTION | upgraded amount: ' . $upgraded_board_amount);
-                                Log::info('PROMOTION | board id: ' . $board->id);
-                                add_newbie_to_board2($board, $grad->user);
-                            }
-                        }
-                    }
-
-//                    //old logic transform
-//                    $current_board = Boards::find($gift->board_id);
-//                    $boards = Boards::where([
-//                        'previous_board_number' => $current_board->board_number,
-//                        'amount' => $current_board->amount
-//                    ])->get();
-//
-//                    foreach ($boards as $board) {
-//                        if (!all_undergrads_filled($board->id)) {
-//                            continue;
-//                        }
-//
-//                        $parent_and_position = get_left_most_undergrad_parent_and_position($board->id);
-//                        $parent = $parent_and_position['parent'];
-//                        $position = $parent_and_position['position'];
-//
-//                        add_user_to_board($grad->user, $board->id, $parent->user_id, 'newbie', $position);
-//                        break;
-//                    }
 
                     //old logic (add grad as newbie)
                     for ($y = 1; $y < 3; $y++) {
@@ -561,11 +535,100 @@ class GiftController extends Controller
 
                         $arrayPosition++;
                     }
+
+                    //new logic
+                    if ($grad->board->amount != '2000') {
+                        $upgraded_board_amount = $boardValues[$arrayPosition + 1];
+                        Log::info('$upgraded_board_amount' . $upgraded_board_amount);
+
+                        $inviters = get_inviter_tree($grad->user->id, 10);
+
+                        $inviter_as_parent_found = false;
+                        foreach ($inviters as $inviter_id) {
+                            $member = UserBoards::whereHas('board', function ($q) use ($upgraded_board_amount) {
+                                return $q->where('amount', $upgraded_board_amount)->where('status', 'active');
+                            })->where('user_id', $inviter_id)->first();
+
+                            if (!$member) {
+                                continue;
+                            }
+
+                            if (!all_undergrads_filled($member->board_id)) {
+                                continue;
+                            }
+
+
+                            $board = Boards::find($member->board_id);
+                            Log::info('PROMOTION | upgraded amount: ' . $upgraded_board_amount);
+                            Log::info('PROMOTION | board id: ' . $board->id);
+                            $inviter_as_parent_found = add_newbie_to_board2($board, $grad->user);
+                            break;
+                        }
+
+                        //if $inviter_as_parent_found is still false
+                        if (!$inviter_as_parent_found) {
+                            $member = UserBoards::whereHas('board', function ($q) use ($upgraded_board_amount) {
+                                return $q->where('amount', $upgraded_board_amount)->where('status', 'active');
+                            })
+                            ->whereNotExists(function ($q) use($grad) {
+                                return $q->where('user_id', $grad->user->id);
+                            })
+                            ->has('newbies', '<', 8)->has('undergrads', '=', 4)->orderBy('created_at', 'ASC')->first();
+
+                            if ($member) {
+                                $board = Boards::find($member->board_id);
+                                Log::info('PROMOTION | upgraded amount: ' . $upgraded_board_amount);
+                                Log::info('PROMOTION | board id: ' . $board->id);
+                                add_newbie_to_board2($board, $grad->user);
+                            }
+                        }
+                    }
+
+//                    //old logic transform
+//                    $current_board = Boards::find($gift->board_id);
+//                    $boards = Boards::where([
+//                        'previous_board_number' => $current_board->board_number,
+//                        'amount' => $current_board->amount
+//                    ])->get();
+//
+//                    foreach ($boards as $board) {
+//                        if (!all_undergrads_filled($board->id)) {
+//                            continue;
+//                        }
+//
+//                        $parent_and_position = get_left_most_undergrad_parent_and_position($board->id);
+//                        $parent = $parent_and_position['parent'];
+//                        $position = $parent_and_position['position'];
+//
+//                        add_user_to_board($grad->user, $board->id, $parent->user_id, 'newbie', $position);
+//                        break;
+//                    }
                 }
             }
 
             DB::commit();
             $msg = 'Status Updated Successfully';
+
+            //new logic 2
+            if ($first_board = Boards::find($gift->board_id)) {
+                if ($first_board->status == 'retired') {
+                    if ($board = Boards::where('previous_board_number', $first_board->board_number)->orderBy('board_number', 'DESC')->first()) {
+                        if (UserBoards::where('board_id', $board->id)->where('user_board_roles', 'newbie')->count() == 0) {
+                            add_previous_boards_grad_as_newbie($board->id);
+                        }
+                    }
+
+                    if ($board = Boards::where('previous_board_number', $first_board->board_number)->orderBy('board_number', 'ASC')->first()) {
+                        if (UserBoards::where('board_id', $board->id)->where('user_board_roles', 'newbie')->count() > 0) {
+                            UserBoards::where([
+                                'board_id' => $board->id,
+                                'user_id' => $first_board->grad()->id,
+                                'user_board_roles' => 'newbie'
+                            ])->forceDelete();
+                        }
+                    }
+                }
+            }
         } else {
             DB::beginTransaction();
             RemoveUserRequest::updateOrCreate(
@@ -608,6 +671,27 @@ class GiftController extends Controller
         $request['status'] = 'accepted';
         foreach ($pendingIncomingGifts as $gift) {
             $this->update($request, $gift->id, 'accepted', false);
+
+            //new logic 2
+            if ($first_board = Boards::find($gift->board_id)) {
+                if ($first_board->status == 'retired') {
+                    if ($board = Boards::where('previous_board_number', $first_board->board_number)->orderBy('board_number', 'DESC')->first()) {
+                        if (UserBoards::where('board_id', $board->id)->where('user_board_roles', 'newbie')->count() == 0) {
+                            add_previous_boards_grad_as_newbie($board->id);
+                        }
+                    }
+
+                    if ($board = Boards::where('previous_board_number', $first_board->board_number)->orderBy('board_number', 'ASC')->first()) {
+                        if (UserBoards::where('board_id', $board->id)->where('user_board_roles', 'newbie')->count() > 0) {
+                            UserBoards::where([
+                                'board_id' => $board->id,
+                                'user_id' => $first_board->grad()->id,
+                                'user_board_roles' => 'newbie'
+                            ])->forceDelete();
+                        }
+                    }
+                }
+            }
         }
 
         return redirect()->back();

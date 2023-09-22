@@ -124,7 +124,7 @@ class BoardController extends Controller
     {
         try {
             if (request()->ajax()) {
-                return datatables()->of(Boards::orderBy('created_at', 'DESC')->get())
+                return datatables()->of(Boards::orderByRaw('CONVERT(board_number, SIGNED) desc')->get())
                     ->addIndexColumn()
                     ->addColumn('amount', function ($data) {
                         return '$ ' . $data->amount;

@@ -42,4 +42,30 @@ class Boards extends Model
     {
         return $this->HasMany(UserBoards::class, 'board_id', 'id')->where('user_board_roles', 'grad')->first();
     }
+
+    public function pregrad ($position)
+    {
+        return $this->HasMany (UserBoards::class, 'board_id', 'id')->where([
+            'user_board_roles' => 'pregrad',
+            'position' => $position,
+        ])->first() ?? null;
+    }
+
+    public function undergrad ($position, $parent_id)
+    {
+        return $this->HasMany(UserBoards::class, 'board_id', 'id')->where([
+            'user_board_roles' => 'undergrad',
+            'position' => $position,
+            'parent_id' => $parent_id,
+        ])->first() ?? null;
+    }
+
+    public function newbie ($position, $parent_id)
+    {
+        return $this->HasMany(UserBoards::class, 'board_id', 'id')->where([
+            'user_board_roles' => 'newbie',
+            'position' => $position,
+            'parent_id' => $parent_id,
+        ])->first() ?? null;
+    }
 }
